@@ -102,7 +102,7 @@ const Landing: FC<Props> = () => {
       </div>
 
       <div className="w-full h-fit pt-6 px-[5%] flex justify-center">
-        <div className="w-[70%] h-[25rem] relative border-l-[0.75rem] border-r-[0.75rem] border-t-[0.75rem] border-slate-800 rounded-t-[2rem] overflow-hidden">
+        <div className="w-[70%] h-[30rem] relative border-l-[0.75rem] border-r-[0.75rem] border-t-[0.75rem] border-slate-800 rounded-t-[2rem] overflow-hidden">
           <img src={Hero_reports} alt="reports" className="object-fit object-center w-full"/>
         </div>
       </div>
