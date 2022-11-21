@@ -1,4 +1,4 @@
-import { FC, Suspense, lazy } from "react";
+import { FC} from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landing from "./Pages/Landing/Landing";
 

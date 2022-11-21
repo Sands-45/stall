@@ -4,6 +4,7 @@ import Logo from "../../Assets/Full Logo Tranparent Short.png";
 import landing_reports from "../../Assets/landing_reports.jpeg";
 import reports_data from "../../Assets/offline.jpg";
 import data_rep from "../../Assets/data_rep.png";
+import Hero_reports from "../../Assets/Hero_reports.png"
 import ear_products from "../../Assets/Deme Products/Earphones.png";
 import lap_products from "../../Assets/Deme Products/Dell XPS 360.png";
 import {
@@ -101,7 +102,9 @@ const Landing: FC<Props> = () => {
       </div>
 
       <div className="w-full h-fit pt-6 px-[5%] flex justify-center">
-        <div className="w-[70%] h-[25rem] relative border-l-[0.75rem] border-r-[0.75rem] border-t-[0.75rem] border-slate-800 rounded-t-[2rem]"></div>
+        <div className="w-[70%] h-[25rem] relative border-l-[0.75rem] border-r-[0.75rem] border-t-[0.75rem] border-slate-800 rounded-t-[2rem] overflow-hidden">
+          <img src={Hero_reports} alt="reports" className="object-fit object-center w-full"/>
+        </div>
       </div>
       {/**Hero ================= */}
 
