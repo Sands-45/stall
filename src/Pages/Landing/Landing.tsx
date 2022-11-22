@@ -23,7 +23,7 @@ const Landing: FC<Props> = () => {
     <div className="min-h-screen w-screen bg-slate-50 overflow-hidden overflow-y-scroll">
       <header className="w-full h-fit px-[5%]">
         <nav className="w-full h-16 pt-4 p-2 flex items-center justify-between space-x-6">
-          <div className="h-full w-52 flex items-center">
+          <div className="h-full w-60 flex items-center">
             <img
               src={Logo}
               alt="logo"
@@ -62,10 +62,10 @@ const Landing: FC<Props> = () => {
               Contact
             </Link>
           </div>
-          <div className="h-full w-52 flex items-center space-x-2">
-            <button className="outline-none h-9 px-4 rounded-full bg-inherit hover:opacity-80 transition-all text-sm text-cyan-750 font-medium capitalize tracking-wider">
-              Log In
-            </button>
+          <div className="h-full w-60 flex items-center space-x-2">
+            <Link to="/login" className="outline-none h-9 rounded-full bg-inherit hover:opacity-80 transition-all text-sm text-cyan-750 font-medium capitalize tracking-wider">
+              <div className="h-9 flex items-center justify-center px-6 rounded-full border border-cyan-750 select-none">Log In</div> 
+            </Link>
             <button className="outline-none h-9 px-4 rounded-full bg-cyan-750 hover:opacity-80 transition-all text-xs text-white font-medium capitalize tracking-wider">
               Get Started
             </button>
@@ -76,7 +76,7 @@ const Landing: FC<Props> = () => {
       <div className="w-full h-fit py-12 px-[5%] space-y-4">
         <h1 className="text-cyan-900 font-semibold text-[2.5rem] text-center">
           Your Go-To Digital Store <br />
-          Encompasing All Your Needs
+          Encompassing All Your Needs
         </h1>
         <p className="text-sm text-center text-cyan-800">
           Stall is your all In-One Store with features ranging from POS,
