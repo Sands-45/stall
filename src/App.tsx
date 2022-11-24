@@ -17,6 +17,7 @@ const Settings = lazy(() => import("./Pages/Settings/Settings"));
 
 const App: FC = () => {
   return (
+    <div className="overflow-hidden">
     <BrowserRouter>
       <Suspense
         fallback={
@@ -46,6 +47,7 @@ const App: FC = () => {
         </Routes>
       </Suspense>
     </BrowserRouter>
+    </div>
   );
 };
 

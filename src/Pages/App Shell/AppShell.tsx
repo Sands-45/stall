@@ -17,6 +17,7 @@ import {
 } from "react-icons/md";
 import {AiFillSetting} from "react-icons/ai"
 import {HiUserGroup} from "react-icons/hi"
+import {setCurrency} from "../../Redux/Slices/SettingsSlice"
 
 type Props = {};
 
@@ -28,6 +29,8 @@ const AppShell: FC<Props> = () => {
     (state: RootState) => state.UserInfo.current_workspace
   );
   const user = useSelector((state: RootState) => state.UserInfo.user);
+  const currencies = useSelector((state:RootState)=>state.SettingsData.currencies)
+  const selectedCurrency = useSelector((state:RootState)=>state.SettingsData.selectedCurrency)
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch:AppDispatch = useDispatch();
@@ -64,8 +67,25 @@ const AppShell: FC<Props> = () => {
            <MdTv className="text-xl"/><span>Portal</span> 
           </div>
         </Link>
-        <div className="flex items-center justify-between space-x-3">
-          <div className="h-7 w-7 rounded border border-slate-400 flex items-center justify-center text-lg text-slate-600">
+        <div className="flex items-center space-x-3 w-fit">
+        <select
+              onChange={(e: any) => {
+                dispatch(setCurrency(JSON.parse(e.target.value)));
+                window.localStorage.setItem("selectedCurrency", e.target.value);
+              }}
+              className="h-8 w-[8rem] bg-inherit text-gray-700 focus:outline-none
+              uppercase text-xs rounded border-slate-400 focus:ring-0 focus:border-cyan-750"
+            >
+              <option value={selectedCurrency}>{selectedCurrency.name}</option>
+              {currencies?.map((cur: any) => {
+                return (
+                  <option key={cur.name} value={JSON.stringify(cur)}>
+                    {cur.name}
+                  </option>
+                );
+              })}
+            </select>
+          <div className="h-8 w-8 rounded border border-slate-400 flex items-center justify-center text-lg text-slate-600">
             <TbBell />
           </div>
           <div className="h-10 2 w-10 group cursor-pointer rounded-full border border-slate-400 flex items-center justify-center text-xl text-slate-600 relative">

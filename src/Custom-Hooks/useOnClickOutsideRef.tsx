@@ -1,7 +1,9 @@
 import { useEffect, useRef } from "react";
 
 let useClickOutside = (handler: any, restrict?: string) => {
-  let dropDownRef = useRef<HTMLDivElement | null>(null);
+  let dropDownRef = useRef<HTMLDivElement | null>(
+    null
+  );
 
   useEffect(() => {
     let closeHandler = (event: any) => {
