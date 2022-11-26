@@ -34,7 +34,7 @@ const ZoomedMed: FC<Props> = ({ zoomMed, setZoomed, type }) => {
             setValue(1);
             document.body.style.overflow = "";
           }}
-          className="absolute  -top-2 -right-2 h-6 w-6 pt-[0.1rem] rounded flex items-center justify-center dark:bg-slate-500  bg-slate-750 transition-all outline-none focus:outline-none dark:text-white text-slate-100 text-lg"
+          className="absolute  -top-2 -right-2 h-6 w-6 pt-[0.1rem] rounded flex items-center justify-center bg-red-600 transition-all outline-none focus:outline-none dark:text-white text-slate-100 text-lg"
         >
           <span>&times;</span>
         </button>

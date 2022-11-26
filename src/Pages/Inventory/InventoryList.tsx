@@ -21,58 +21,12 @@ const InventoryList: FC<Props> = ({
   const selectedCurrency = useSelector(
     (state: RootState) => state.SettingsData.selectedCurrency
   );
-  const sampleTestData = [
-    {
-      id: "randomidhereekk",
-      name: "ear buds GH-45",
-      product_id: "67299HSS",
-      category: "earphones",
-      price_in_usd: 45.9,
-      in_stock: 20,
-      customization_option: [
-        {
-          name: "color",
-          type: "color",
-          options: [
-            { name: "blue", quantity: 12 },
-            { name: "white", quantity: 8 },
-          ],
-        },
-      ],
-      gallery: [
-        {
-          id: 0,
-          url: "https://images.unsplash.com/photo-1598900863662-da1c3e6dd9d9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1160&q=80",
-        },
-      ],
-    },
-    {
-      id: "randomidheree4k",
-      name: "Lenovo Idea Pad 330",
-      product_id: "54GHT980KL",
-      category: "laptops",
-      price_in_usd: 876.5,
-      in_stock: 10,
-      customization_option: [
-        {
-          name: "color",
-          type: "color",
-          options: [
-            { name: "silver", quantity: 5 },
-            { name: "black", quantity: 5 },
-          ],
-        },
-      ],
-      gallery: [],
-      best_before: 1679436000000,
-    },
-  ];
 
   //Component
   return (
     <>
-      {sampleTestData?.length >= 1 &&
-        sampleTestData?.map((inven: any) => {
+      {inventory_data?.length >= 1 &&
+        inventory_data?.map((inven: any) => {
           return (
             <tr
               key={inven?.id}

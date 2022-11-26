@@ -16,13 +16,13 @@ interface InitialStateType {
 }
 
 const initialState: InitialStateType = {
-  inventory_data: localInventory_data ? JSON.parse(localInventory_data) : null,
+  inventory_data: localInventory_data ? JSON.parse(localInventory_data) : [],
   inventory_changes_data: localInventory_changes_data
     ? JSON.parse(localInventory_changes_data)
-    : null,
+    : [],
   inventory_changelog_data: local_changelog_inventory_data
     ? JSON.parse(local_changelog_inventory_data)
-    : null,
+    : [],
 };
 
 export const InventorySlice = createSlice({

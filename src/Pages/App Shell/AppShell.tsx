@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 //import logo from "../../Assets/Full Logo Tranparent Short.png";
 import userImg from "../../Assets/portal images/user.png";
 import { TbBell } from "react-icons/tb";
@@ -13,15 +13,17 @@ import {
   MdLoyalty,
   MdAnalytics,
   MdAssignment,
-  MdLocalMall,MdTv
+  MdLocalMall,
+  MdTv,
 } from "react-icons/md";
-import {AiFillSetting} from "react-icons/ai"
-import {HiUserGroup} from "react-icons/hi"
-import {setCurrency} from "../../Redux/Slices/SettingsSlice"
+import { AiFillSetting } from "react-icons/ai";
+import { HiUserGroup } from "react-icons/hi";
+import { setCurrency } from "../../Redux/Slices/SettingsSlice";
 
 type Props = {};
 
 const AppShell: FC<Props> = () => {
+  const [onlineStatus, isOnline] = useState<boolean>(navigator.onLine);
   const routeLocation = useSelector(
     (state: RootState) => state.UserInfo.routeLocation
   );
@@ -29,11 +31,15 @@ const AppShell: FC<Props> = () => {
     (state: RootState) => state.UserInfo.current_workspace
   );
   const user = useSelector((state: RootState) => state.UserInfo.user);
-  const currencies = useSelector((state:RootState)=>state.SettingsData.currencies)
-  const selectedCurrency = useSelector((state:RootState)=>state.SettingsData.selectedCurrency)
+  const currencies = useSelector(
+    (state: RootState) => state.SettingsData.currencies
+  );
+  const selectedCurrency = useSelector(
+    (state: RootState) => state.SettingsData.selectedCurrency
+  );
   const location = useLocation();
   const navigate = useNavigate();
-  const dispatch:AppDispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   //Update Title On route change
   useEffect(() => {
@@ -47,6 +53,23 @@ const AppShell: FC<Props> = () => {
     //dispatch(changeLocation(location.pathname));
   }, [routeLocation, dispatch, location, company]);
 
+  //Listen For Offline and Online Changes
+  useEffect(() => {
+  const setOnline = () => {
+    isOnline(true);
+  };
+  const setOffline = () => {
+    isOnline(false);
+  };
+    window.addEventListener('offline', setOffline);
+    window.addEventListener('online', setOnline);
+
+    // cleanup if we unmount
+    return () => {
+      window.removeEventListener('offline', setOffline);
+      window.removeEventListener('online', setOnline);
+    }
+  }, []);
 
   //Check If User Is Logged
   useEffect(() => {
@@ -59,41 +82,52 @@ const AppShell: FC<Props> = () => {
   return (
     <div className="w-screen h-screen overflow-hidden no-scrollbar no-scrollbar::-webkit-scrollbar bg-slate-200">
       <div className="w-full h-14 bg-white flex items-center justify-between px-[2.5%]">
-        <Link
-          to="/portal"
-          className="focus:outline-none outline-none w-fit h-fit"
-        >
-          <div className="h-9 px-3 rounded border-2 border-cyan-750 bg-slate-100 text-sm text-cyan-750 font-semibold flex items-center justify-center space-x-2">
-           <MdTv className="text-xl"/><span>Portal</span> 
-          </div>
-        </Link>
+        <div className="w-fit h-fit">
+          <Link
+            to="/portal"
+            className="focus:outline-none outline-none w-fit h-fit"
+          >
+            <div className="h-9 px-3 rounded border-2 border-cyan-750 bg-slate-100 text-sm text-cyan-750 font-semibold flex items-center justify-center space-x-2">
+              <MdTv className="text-xl" />
+              <span>Portal</span>
+            </div>
+          </Link>
+        </div>
         <div className="flex items-center space-x-3 w-fit">
-        <select
-              onChange={(e: any) => {
-                dispatch(setCurrency(JSON.parse(e.target.value)));
-                window.localStorage.setItem("selectedCurrency", e.target.value);
-              }}
-              className="h-8 w-[8rem] bg-inherit text-gray-700 focus:outline-none
+          <select
+            onChange={(e: any) => {
+              dispatch(setCurrency(JSON.parse(e.target.value)));
+              window.localStorage.setItem("selectedCurrency", e.target.value);
+            }}
+            className="h-8 w-[8rem] bg-inherit text-gray-700 focus:outline-none
               uppercase text-xs rounded border-slate-400 focus:ring-0 focus:border-cyan-750"
-            >
-              <option value={selectedCurrency}>{selectedCurrency.name}</option>
-              {currencies?.map((cur: any) => {
-                return (
-                  <option key={cur.name} value={JSON.stringify(cur)}>
-                    {cur.name}
-                  </option>
-                );
-              })}
-            </select>
+          >
+            <option value={selectedCurrency}>{selectedCurrency.name}</option>
+            {currencies?.map((cur: any) => {
+              return (
+                <option key={cur.name} value={JSON.stringify(cur)}>
+                  {cur.name}
+                </option>
+              );
+            })}
+          </select>
           <div className="h-8 w-8 rounded border border-slate-400 flex items-center justify-center text-lg text-slate-600">
             <TbBell />
           </div>
-          <div className="h-10 2 w-10 group cursor-pointer rounded-full border border-slate-400 flex items-center justify-center text-xl text-slate-600 relative">
+          <div
+            className="h-10 2 w-10 group cursor-pointer rounded-full border border-slate-400
+           flex items-center justify-center text-xl text-slate-600 relative"
+          >
             <img
               src={userImg}
               alt="user"
               className="h-9 object-fit object-center object-cover"
             />
+            <div
+              className={`h-2.5 w-2.5 rounded-full absolute top-0.5 -right-0.5 border border-white ${
+                onlineStatus ? "bg-green-600" : "bg-red-500"
+              }`}
+            ></div>
             <Tooltip position="top-14 right-0" />
           </div>
         </div>
@@ -110,7 +144,10 @@ const AppShell: FC<Props> = () => {
                 : ""
             }`}
         >
-          <MdPointOfSale className="text-xl" /> <span className="hidden ml:flex whitespace-nowrap max-w-[60%] overflow-hidden text-ellipsis">Point of Sale</span>
+          <MdPointOfSale className="text-xl" />{" "}
+          <span className="hidden ml:flex whitespace-nowrap max-w-[60%] overflow-hidden text-ellipsis">
+            Point of Sale
+          </span>
         </NavLink>
         <NavLink
           to="/app/orders"
@@ -121,7 +158,10 @@ const AppShell: FC<Props> = () => {
                 : ""
             }`}
         >
-          <MdReceipt className="text-xl" /> <span className="hidden ml:flex whitespace-nowrap max-w-[60%] overflow-hidden text-ellipsis">Orders</span>
+          <MdReceipt className="text-xl" />{" "}
+          <span className="hidden ml:flex whitespace-nowrap max-w-[60%] overflow-hidden text-ellipsis">
+            Orders
+          </span>
         </NavLink>
         <NavLink
           to="/app/campaigns"
@@ -132,7 +172,10 @@ const AppShell: FC<Props> = () => {
                 : ""
             }`}
         >
-          <MdLoyalty className="text-xl" /> <span className="hidden ml:flex whitespace-nowrap max-w-[60%] overflow-hidden text-ellipsis">Campaigns</span>
+          <MdLoyalty className="text-xl" />{" "}
+          <span className="hidden ml:flex whitespace-nowrap max-w-[60%] overflow-hidden text-ellipsis">
+            Campaigns
+          </span>
         </NavLink>
         <NavLink
           to="/app/reports"
@@ -143,7 +186,10 @@ const AppShell: FC<Props> = () => {
                 : ""
             }`}
         >
-          <MdAnalytics className="text-xl" /> <span className="hidden ml:flex whitespace-nowrap max-w-[60%] overflow-hidden text-ellipsis">Reports</span>
+          <MdAnalytics className="text-xl" />{" "}
+          <span className="hidden ml:flex whitespace-nowrap max-w-[60%] overflow-hidden text-ellipsis">
+            Reports
+          </span>
         </NavLink>
         <NavLink
           to="/app/customers"
@@ -154,7 +200,10 @@ const AppShell: FC<Props> = () => {
                 : ""
             }`}
         >
-          <HiUserGroup className="text-xl" /> <span className="hidden ml:flex whitespace-nowrap max-w-[60%] overflow-hidden text-ellipsis">Customers</span>
+          <HiUserGroup className="text-xl" />{" "}
+          <span className="hidden ml:flex whitespace-nowrap max-w-[60%] overflow-hidden text-ellipsis">
+            Customers
+          </span>
         </NavLink>
         <NavLink
           to="/app/inventory"
@@ -165,7 +214,10 @@ const AppShell: FC<Props> = () => {
                 : ""
             }`}
         >
-          <MdAssignment className="text-xl" /> <span className="hidden ml:flex whitespace-nowrap max-w-[60%] overflow-hidden text-ellipsis">Inventory</span>
+          <MdAssignment className="text-xl" />{" "}
+          <span className="hidden ml:flex whitespace-nowrap max-w-[60%] overflow-hidden text-ellipsis">
+            Inventory
+          </span>
         </NavLink>
         <NavLink
           to="/app/online-store"
@@ -176,7 +228,10 @@ const AppShell: FC<Props> = () => {
                 : ""
             }`}
         >
-          <MdLocalMall className="text-xl" /> <span className="hidden ml:flex whitespace-nowrap max-w-[60%] overflow-hidden text-ellipsis">Online Store</span>
+          <MdLocalMall className="text-xl" />{" "}
+          <span className="hidden ml:flex whitespace-nowrap max-w-[60%] overflow-hidden text-ellipsis">
+            Online Store
+          </span>
         </NavLink>
         <NavLink
           to="/app/settings"
@@ -187,7 +242,10 @@ const AppShell: FC<Props> = () => {
                 : ""
             }`}
         >
-          <AiFillSetting className="text-xl" /> <span className="hidden ml:flex whitespace-nowrap max-w-[60%] overflow-hidden text-ellipsis">Setings</span>
+          <AiFillSetting className="text-xl" />{" "}
+          <span className="hidden ml:flex whitespace-nowrap max-w-[60%] overflow-hidden text-ellipsis">
+            Setings
+          </span>
         </NavLink>
       </nav>
 

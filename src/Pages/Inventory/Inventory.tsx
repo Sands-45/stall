@@ -1,5 +1,5 @@
-import { FC, useState } from "react";
-import { TbDatabaseExport, TbDatabaseImport, TbFilter } from "react-icons/tb";
+import { FC, useState,useEffect } from "react";
+import { TbDatabaseExport, TbDatabaseImport, TbFilter ,TbQrcode} from "react-icons/tb";
 import { useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
 import CrudInventory from "./CrudInventory";
@@ -8,22 +8,43 @@ import InventoryList from "./InventoryList";
 type Props = {};
 
 const Inventory: FC<Props> = () => {
+  const [onlineStatus, isOnline] = useState<boolean>(navigator.onLine);
   const inventory_data = useSelector(
     (state: RootState) => state.Inventory.inventory_data
   );
   const [crudOpen, setCrud] = useState<boolean>(false);
   const [editAction, setEdit] = useState<boolean>(false);
-  const [stockObj,setStockObj] = useState<any>({
+  const [stockObj, setStockObj] = useState<any>({
     id: "",
     name: "",
     product_id: "",
     category: "",
+    description: "",
     price_in_usd: 0,
     in_stock: 0,
     customization_option: [],
     gallery: [],
     best_before: "",
-  })
+  });
+
+
+  //Listen For Offline and Online Changes
+  useEffect(() => {
+    const setOnline = () => {
+      isOnline(true);
+    };
+    const setOffline = () => {
+      isOnline(false);
+    };
+      window.addEventListener('offline', setOffline);
+      window.addEventListener('online', setOnline);
+  
+      // cleanup if we unmount
+      return () => {
+        window.removeEventListener('offline', setOffline);
+        window.removeEventListener('online', setOnline);
+      }
+    }, []);
 
   //Component
   return (
@@ -72,17 +93,29 @@ const Inventory: FC<Props> = () => {
               <span>import</span>
               <TbDatabaseImport className="text-lg" />
             </button>
+            <div className="w-fit h-fit overflow-hidden flex items-center">
             <button
               onClick={() => {
                 setCrud(true);
                 setEdit(false);
               }}
               className="h-10 w-28 flex items-center justify-center 
-          space-x-2 rounded bg-cyan-750 font-semibold uppercase text-xs text-white outline-none focus:outline-none 
+          space-x-2 rounded rounded-r-none bg-cyan-750 font-semibold uppercase text-xs text-white outline-none focus:outline-none 
           hover:opacity-80 hover:bg-cyan-700 transition-all"
             >
               <span>Add stock</span>
             </button>
+            <button
+              onClick={() => {
+                setCrud(true);
+                setEdit(false);
+              }}
+              className="h-10 w-24 flex items-center justify-center 
+          space-x-2 rounded rounded-l-none bg-cyan-750 font-semibold uppercase text-xs text-white outline-none focus:outline-none 
+          hover:opacity-80 hover:bg-cyan-700 transition-all border-l border-white/50"
+            >
+              <span>scan</span><TbQrcode className="text-lg"/>
+            </button></div>
           </div>
         </div>
 
@@ -142,14 +175,28 @@ const Inventory: FC<Props> = () => {
               className="h-[90%] w-full text-sm text-slate-700
          overflow-hidden"
             >
-              <InventoryList inventory_data={inventory_data}  setEdit={setEdit} setCrud={setCrud} setStockObj={setStockObj}/>
+              <InventoryList
+                inventory_data={inventory_data}
+                setEdit={setEdit}
+                setCrud={setCrud}
+                setStockObj={setStockObj}
+              />
             </tbody>
           </table>
         </div>
       </div>
 
       {/*CRUD Modal*/}
-      <CrudInventory crudOpen={crudOpen} setCrud={setCrud} editAction={editAction} setEdit={setEdit}  setStockObj={setStockObj} stockObj={stockObj}/>
+      <CrudInventory
+      inventory_data={inventory_data}
+        crudOpen={crudOpen}
+        setCrud={setCrud}
+        editAction={editAction}
+        setEdit={setEdit}
+        setStockObj={setStockObj}
+        stockObj={stockObj}
+        onlineStatus={onlineStatus}
+      />
     </>
   );
 };

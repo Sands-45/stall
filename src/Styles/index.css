@@ -32,7 +32,9 @@
   }
 
   .inventory_input {
-    @apply w-full h-12 rounded border-2 border-slate-300  focus:outline-none focus:border-cyan-750 focus:ring-0 text-xs text-slate-600 placeholder:text-slate-400;
+    @apply w-full h-12 rounded border border-slate-300  
+    focus:outline-none focus:border-cyan-750 focus:ring-0 text-xs text-slate-600
+     placeholder:text-slate-400;
   }
 
   /* Zoom Range Control Styles =======================*/
