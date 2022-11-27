@@ -103,6 +103,86 @@ const CrudInventory: FC<Props> = ({
     };
 
     if (editAction) {
+        //Save Local
+      window.localStorage.setItem(
+        "inventory_data",
+        JSON.stringify([
+          ...inventory_data?.filter((data:any)=>data?.id !== stockObj?.id),
+          {
+            ...stockObj,
+            price_in_usd:
+              amountCurrency?.name?.toLowerCase() !== "usd"
+                ? (
+                    Number(stockObj?.price_in_usd) /
+                    currencies?.filter(
+                      (currrency: any) =>
+                        currrency?.name?.toLowerCase() ===
+                        amountCurrency?.name?.toLowerCase()
+                    )[0]?.rate_multiplier
+                  )?.toFixed(2)
+                : stockObj?.price_in_usd,
+          },
+        ])
+      );
+      window.localStorage.setItem(
+        "inventory_changes_data",
+        JSON.stringify([
+          ...inventory_data_queue?.filter((data:any)=>data?.id !== stockObj?.id),
+          {
+            ...stockObj,
+            price_in_usd:
+              amountCurrency?.name?.toLowerCase() !== "usd"
+                ? (
+                    Number(stockObj?.price_in_usd) /
+                    currencies?.filter(
+                      (currrency: any) =>
+                        currrency?.name?.toLowerCase() ===
+                        amountCurrency?.name?.toLowerCase()
+                    )[0]?.rate_multiplier
+                  )?.toFixed(2)
+                : stockObj?.price_in_usd,
+          },
+        ])
+      );
+      //Update Redux
+      dispatch(
+        loadInventoryData([
+          ...inventory_data?.filter((data:any)=>data?.id !== stockObj?.id),
+          {
+            ...stockObj,
+            price_in_usd:
+              amountCurrency?.name?.toLowerCase() !== "usd"
+                ? (
+                    Number(stockObj?.price_in_usd) /
+                    currencies?.filter(
+                      (currrency: any) =>
+                        currrency?.name?.toLowerCase() ===
+                        amountCurrency?.name?.toLowerCase()
+                    )[0]?.rate_multiplier
+                  )?.toFixed(2)
+                : stockObj?.price_in_usd,
+          },
+        ])
+      );
+      dispatch(
+        updateLocalInventory_Changes([
+          ...inventory_data_queue?.filter((data:any)=>data?.id !== stockObj?.id),
+          {
+            ...stockObj,
+            price_in_usd:
+              amountCurrency?.name?.toLowerCase() !== "usd"
+                ? (
+                    Number(stockObj?.price_in_usd) /
+                    currencies?.filter(
+                      (currrency: any) =>
+                        currrency?.name?.toLowerCase() ===
+                        amountCurrency?.name?.toLowerCase()
+                    )[0]?.rate_multiplier
+                  )?.toFixed(2)
+                : stockObj?.price_in_usd,
+          },
+        ])
+      );
     } else {
       //Save Local
       window.localStorage.setItem(
@@ -189,7 +269,7 @@ const CrudInventory: FC<Props> = ({
         ])
       );
     }
-    closeNClear()
+    closeNClear();
   };
 
   //Component
@@ -205,6 +285,7 @@ const CrudInventory: FC<Props> = ({
       <form
         onSubmit={(e) => handleSubmit(e)}
         ref={formRef}
+        autoComplete="off"
         className="h-full w-[28rem] bg-white relative"
       >
         <div className="h-full w-full flex flex-col justify-between">
@@ -417,7 +498,13 @@ const CrudInventory: FC<Props> = ({
                             new Date().getTime(),
                           name: "",
                           type: "",
-                          options: [{ id: 0, name: "", quantity: "" }],
+                          options: [
+                            {
+                              id: 8000 + new Date().getTime(),
+                              name: "",
+                              quantity: "",
+                            },
+                          ],
                         },
                       ],
                     }));
@@ -433,10 +520,10 @@ const CrudInventory: FC<Props> = ({
             </div>
             <div className="w-full h-fit m-auto space-y-4">
               {stockObj?.customization_option?.length >= 1 &&
-                stockObj?.customization_option?.map((data: any,index:any) => {
+                [...stockObj?.customization_option]?.sort((a: any, b: any) => a.id - b.id)?.map((data: any, index: any) => {
                   return (
                     <details
-                      key={index+"opt"}
+                      key={index + "opt"}
                       className="open:bg-slate-50 border border-slate-300 hover:border-cyan-750
                      hover:shadow-lg open:p-6 transition-all rounded w-full"
                       open
@@ -589,6 +676,7 @@ const CrudInventory: FC<Props> = ({
                                     },
                                   ],
                                 }));
+                                console.log(stockObj);
                               }}
                               type="button"
                               className="h-7 w-12 border-cyan-750  border rounded
@@ -599,44 +687,36 @@ const CrudInventory: FC<Props> = ({
                           </div>
                         </div>
                         {data?.options.length >= 1 &&
-                          data?.options?.map((option: any, index: any) => {
-                            return (
-                              <div
-                                key={"mini" + index}
-                                className="flex items-center justify-between w-full h-fit"
-                              >
-                                <input
-                                  type="text"
-                                  className="h-8 w-[40%] bg-white border border-slate-300
+                          [...data?.options]
+                            ?.sort((a: any, b: any) => a.id - b.id)
+                            ?.map((option: any, index: any) => {
+                              return (
+                                <div
+                                  key={index}
+                                  className="flex items-center justify-between w-full h-fit"
+                                >
+                                  <input
+                                    type="text"
+                                    className="h-8 w-[40%] bg-white border border-slate-300
                                      text-[0.65rem] placeholder:text-slate-400 text-slate-500 
                                      focus:outline-none focus:border-cyan-750 focus:ring-0 rounded p-2 capitalize"
-                                  placeholder="Name e.g 1-10 ..."
-                                  required
-                                  value={option.name}
-                                  onChange={(e) => {
-                                    setStockObj((prev: any) => ({
-                                      ...prev,
-                                      customization_option: [
-                                        ...prev?.customization_option?.filter(
-                                          (custom: any) =>
-                                            custom?.id !== data?.id
-                                        ),
-                                        {
+                                    placeholder="Name e.g 1-10 ..."
+                                    required
+                                    value={option.name}
+                                    onChange={(e) => {
+                                      setStockObj((prev: any) => ({
+                                        ...prev,
+                                        customization_option: [
                                           ...prev?.customization_option?.filter(
                                             (custom: any) =>
-                                              custom?.id === data?.id
-                                          )[0],
-                                          options: [
-                                            ...prev?.customization_option
-                                              ?.filter(
-                                                (custom: any) =>
-                                                  custom?.id === data?.id
-                                              )[0]
-                                              ?.options?.filter(
-                                                (opt: any) =>
-                                                  opt?.id !== option?.id
-                                              ),
-                                            {
+                                              custom?.id !== data?.id
+                                          ),
+                                          {
+                                            ...prev?.customization_option?.filter(
+                                              (custom: any) =>
+                                                custom?.id === data?.id
+                                            )[0],
+                                            options: [
                                               ...prev?.customization_option
                                                 ?.filter(
                                                   (custom: any) =>
@@ -644,48 +724,48 @@ const CrudInventory: FC<Props> = ({
                                                 )[0]
                                                 ?.options?.filter(
                                                   (opt: any) =>
-                                                    opt?.id === option?.id
+                                                    opt?.id !== option?.id
                                                 ),
-                                              name: e.target.value,
-                                            },
-                                          ],
-                                        },
-                                      ],
-                                    }));
-                                  }}
-                                />
-                                <input
-                                  type="text"
-                                  className="h-8 w-[40%] bg-white border border-slate-300
+                                              {
+                                                ...prev?.customization_option
+                                                  ?.filter(
+                                                    (custom: any) =>
+                                                      custom?.id === data?.id
+                                                  )[0]
+                                                  ?.options?.filter(
+                                                    (opt: any) =>
+                                                      opt?.id === option?.id
+                                                  )[0],
+                                                name: e.target.value,
+                                              },
+                                            ],
+                                          },
+                                        ],
+                                      }));
+                                    }}
+                                  />
+                                  <input
+                                    type="text"
+                                    className="h-8 w-[40%] bg-white border border-slate-300
                                      text-[0.65rem] placeholder:text-slate-400 text-slate-500 
                                      focus:outline-none focus:border-cyan-750 focus:ring-0 rounded p-2 capitalize"
-                                  placeholder="Quantity ..."
-                                  required
-                                  value={option.quantity}
-                                  onChange={(e) => {
-                                    setStockObj((prev: any) => ({
-                                      ...prev,
-                                      customization_option: [
-                                        ...prev?.customization_option?.filter(
-                                          (custom: any) =>
-                                            custom?.id !== data?.id
-                                        ),
-                                        {
+                                    placeholder="Quantity ..."
+                                    required
+                                    value={option.quantity}
+                                    onChange={(e) => {
+                                      setStockObj((prev: any) => ({
+                                        ...prev,
+                                        customization_option: [
                                           ...prev?.customization_option?.filter(
                                             (custom: any) =>
-                                              custom?.id === data?.id
-                                          )[0],
-                                          options: [
-                                            ...prev?.customization_option
-                                              ?.filter(
-                                                (custom: any) =>
-                                                  custom?.id === data?.id
-                                              )[0]
-                                              ?.options?.filter(
-                                                (opt: any) =>
-                                                  opt?.id !== option?.id
-                                              ),
-                                            {
+                                              custom?.id !== data?.id
+                                          ),
+                                          {
+                                            ...prev?.customization_option?.filter(
+                                              (custom: any) =>
+                                                custom?.id === data?.id
+                                            )[0],
+                                            options: [
                                               ...prev?.customization_option
                                                 ?.filter(
                                                   (custom: any) =>
@@ -693,57 +773,67 @@ const CrudInventory: FC<Props> = ({
                                                 )[0]
                                                 ?.options?.filter(
                                                   (opt: any) =>
-                                                    opt?.id === option?.id
+                                                    opt?.id !== option?.id
                                                 ),
-                                              quantity: Number(e.target.value),
-                                            },
-                                          ],
-                                        },
-                                      ],
-                                    }));
-                                  }}
-                                />
-                                <button
-                                  onClick={() => {
-                                    setStockObj((prev: any) => ({
-                                      ...prev,
-                                      customization_option: [
-                                        ...prev?.customization_option?.filter(
-                                          (custom: any) =>
-                                            custom?.id !== data?.id
-                                        ),
-                                        {
+                                              {
+                                                ...prev?.customization_option
+                                                  ?.filter(
+                                                    (custom: any) =>
+                                                      custom?.id === data?.id
+                                                  )[0]
+                                                  ?.options?.filter(
+                                                    (opt: any) =>
+                                                      opt?.id === option?.id
+                                                  )[0],
+                                                quantity: e.target.value,
+                                              },
+                                            ],
+                                          },
+                                        ],
+                                      }));
+                                    }}
+                                  />
+                                  <button
+                                    onClick={() => {
+                                      setStockObj((prev: any) => ({
+                                        ...prev,
+                                        customization_option: [
                                           ...prev?.customization_option?.filter(
                                             (custom: any) =>
-                                              custom?.id === data?.id
-                                          )[0],
-                                          options: [
-                                            ...prev?.customization_option
-                                              ?.filter(
-                                                (custom: any) =>
-                                                  custom?.id === data?.id
-                                              )[0]
-                                              ?.options?.filter(
-                                                (opt: any) =>
-                                                  opt?.id !== option?.id
-                                              ),
-                                          ],
-                                        },
-                                      ],
-                                    }));
-                                  }}
-                                  className={`h-7 w-7 rounded border border-red-600 text-sm text-red-600
+                                              custom?.id !== data?.id
+                                          ),
+                                          {
+                                            ...prev?.customization_option?.filter(
+                                              (custom: any) =>
+                                                custom?.id === data?.id
+                                            )[0],
+                                            options: [
+                                              ...prev?.customization_option
+                                                ?.filter(
+                                                  (custom: any) =>
+                                                    custom?.id === data?.id
+                                                )[0]
+                                                ?.options?.filter(
+                                                  (opt: any) =>
+                                                    opt?.id !== option?.id
+                                                ),
+                                            ],
+                                          },
+                                        ],
+                                      }));
+                                    }}
+                                    className={`h-7 w-7 rounded border border-red-600 text-sm text-red-600
                                    ${
                                      data?.options?.length >= 2
                                        ? "flex"
                                        : "hidden"
                                    } items-center justify-center bg-red-50 hover:bg-red-100 transition-all`}
-                                >
-                                  <TbTrash />
-                                </button>
-                              </div>
-                            );
-                          })}
+                                  >
+                                    <TbTrash />
+                                  </button>
+                                </div>
+                              );
+                            })}
                       </div>
                     </details>
                   );

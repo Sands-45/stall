@@ -1,9 +1,13 @@
 import { FC } from "react";
 import { TbEdit, TbTrash } from "react-icons/tb";
 import no_gallery from "../../Assets/no_gallery.png";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
 import { numberWithSpaces } from "../../Reusable Functions/Functions";
+import {
+  loadInventoryData,
+  updateLocalInventory_Changes,
+} from "../../Redux/Slices/InventorySlice";
 
 type Props = {
   inventory_data: any[];
@@ -21,6 +25,10 @@ const InventoryList: FC<Props> = ({
   const selectedCurrency = useSelector(
     (state: RootState) => state.SettingsData.selectedCurrency
   );
+  const inventory_data_queue = useSelector(
+    (state: RootState) => state.Inventory.inventory_changes_data
+  );
+  const dispatch = useDispatch()
 
   //Component
   return (
@@ -129,6 +137,41 @@ const InventoryList: FC<Props> = ({
                     <TbEdit />
                   </button>
                   <button
+                
+                onClick={() => {
+                    //Save Local
+                    window.localStorage.setItem(
+                      "inventory_data",
+                      JSON.stringify([
+                        ...inventory_data?.filter(
+                          (data: any) => data?.id !== inven?.id
+                        ),
+                      ])
+                    );
+                    window.localStorage.setItem(
+                      "inventory_changes_data",
+                      JSON.stringify([
+                        ...inventory_data_queue?.filter(
+                          (data: any) => data?.id !== inven?.id
+                        ),
+                      ])
+                    );
+                    //Update Redux
+                    dispatch(
+                      loadInventoryData([
+                        ...inventory_data?.filter(
+                          (data: any) => data?.id !== inven?.id
+                        ),
+                      ])
+                    );
+                    dispatch(
+                      updateLocalInventory_Changes([
+                        ...inventory_data_queue?.filter(
+                          (data: any) => data?.id !== inven?.id
+                        ),
+                      ])
+                    );
+                  }}
                     className="flex justify-center items-center text-lg
                    text-slate-600 h-8 w-8 rounded border
                     border-slate-200 bg-slate-50 hover:bg-red-50 transition-all"

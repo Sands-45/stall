@@ -15,7 +15,7 @@ const initialState: InitialStateType = {
       ? JSON.parse(currenciesInitialState)
       : [
           { name: "usd", symbol: "$", rate_multiplier: 1 },
-          { name: "zar", symbol: "ZAR", rate_multiplier: 18.2 },
+          { name: "zar", symbol: "ZAR", rate_multiplier: 17.09 },
         ],
     selectedCurrency: selectedCurrrenyInitialState
       ? JSON.parse(selectedCurrrenyInitialState)
