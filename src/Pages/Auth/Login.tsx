@@ -313,6 +313,7 @@ const Login: FC<Props> = () => {
                             })
                           );
 
+                          window.location.reload();
                           setOverlay(false);
                           navigate("/portal");
                         }}

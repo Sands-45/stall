@@ -55,20 +55,20 @@ const AppShell: FC<Props> = () => {
 
   //Listen For Offline and Online Changes
   useEffect(() => {
-  const setOnline = () => {
-    isOnline(true);
-  };
-  const setOffline = () => {
-    isOnline(false);
-  };
-    window.addEventListener('offline', setOffline);
-    window.addEventListener('online', setOnline);
+    const setOnline = () => {
+      isOnline(true);
+    };
+    const setOffline = () => {
+      isOnline(false);
+    };
+    window.addEventListener("offline", setOffline);
+    window.addEventListener("online", setOnline);
 
     // cleanup if we unmount
     return () => {
-      window.removeEventListener('offline', setOffline);
-      window.removeEventListener('online', setOnline);
-    }
+      window.removeEventListener("offline", setOffline);
+      window.removeEventListener("online", setOnline);
+    };
   }, []);
 
   //Check If User Is Logged
@@ -150,17 +150,17 @@ const AppShell: FC<Props> = () => {
           </span>
         </NavLink>
         <NavLink
-          to="/app/orders"
+          to="/app/sales"
           className={`navLinks
             px-2 ${
-              location.pathname === "/app/orders"
+              location.pathname === "/app/sales"
                 ? "border-b-4 border-b-cyan-750 bg-cyan-50"
                 : ""
             }`}
         >
           <MdReceipt className="text-xl" />{" "}
           <span className="hidden ml:flex whitespace-nowrap max-w-[60%] overflow-hidden text-ellipsis">
-            Orders
+            Sales
           </span>
         </NavLink>
         <NavLink

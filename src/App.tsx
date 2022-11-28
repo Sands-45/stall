@@ -7,7 +7,7 @@ import Login from "./Pages/Auth/Login";
 const Portal = lazy(() => import("./Pages/Portal/Portal"));
 const AppShell = lazy(() => import("./Pages/App Shell/AppShell"));
 const PointOfSell = lazy(() => import("./Pages/POS/PointOfSell"));
-const Orders = lazy(() => import("./Pages/Orders/Orders"));
+const Sales = lazy(() => import("./Pages/Sales/Sales"));
 const Campaigns = lazy(() => import("./Pages/Campaigns/Campaigns"));
 const Reports = lazy(() => import("./Pages/Reports/Reports"));
 const Customers = lazy(() => import("./Pages/Customers/Customers"));
@@ -36,7 +36,7 @@ const App: FC = () => {
           <Route path="/portal" element={<Portal />} />
           <Route path="/app" element={<AppShell />}>
             <Route path="" element={<PointOfSell/>} />
-            <Route path="orders" element={<Orders/>} />
+            <Route path="sales" element={<Sales/>} />
             <Route path="campaigns" element={<Campaigns/>} />
             <Route path="reports" element={<Reports/>} />
             <Route path="customers" element={<Customers/>} />

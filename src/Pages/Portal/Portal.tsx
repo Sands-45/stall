@@ -80,15 +80,15 @@ const Portal: FC<Props> = () => {
             </div>
           </Link>{" "}
         </div>
-        {/**Orders */}
+        {/**Sales */}
         <div className="col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all saturate-200 bg-cyan-50/60 overflow-hidden">
-          <Link to="/app/orders" className="h-fit w-full outline-none focus:outline-none">
+          <Link to="/app/sales" className="h-fit w-full outline-none focus:outline-none">
             <div className="w-full h-full flex flex-col items-center justify-center space-y-4">
               <div className="h-10 w-10 flex items-center justify-center rounded bg-cyan-700 text-white text-xl">
                 <MdReceipt />
               </div>
               <p className="text-base font-medium text-cyan-800 whitespace-nowrap">
-                Orders
+                Sales
               </p>
             </div>
           </Link>{" "}

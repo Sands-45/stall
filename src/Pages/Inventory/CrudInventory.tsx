@@ -83,7 +83,7 @@ const CrudInventory: FC<Props> = ({
   };
 
   //Add Or Edit Inventory Func ========================
-  const handleSubmit = (e: React.BaseSyntheticEvent) => {
+  const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     //Generate Unique ID
     let uniqueID = () => {
@@ -103,11 +103,11 @@ const CrudInventory: FC<Props> = ({
     };
 
     if (editAction) {
-        //Save Local
+      //Save Local
       window.localStorage.setItem(
         "inventory_data",
         JSON.stringify([
-          ...inventory_data?.filter((data:any)=>data?.id !== stockObj?.id),
+          ...inventory_data?.filter((data: any) => data?.id !== stockObj?.id),
           {
             ...stockObj,
             price_in_usd:
@@ -127,7 +127,9 @@ const CrudInventory: FC<Props> = ({
       window.localStorage.setItem(
         "inventory_changes_data",
         JSON.stringify([
-          ...inventory_data_queue?.filter((data:any)=>data?.id !== stockObj?.id),
+          ...inventory_data_queue?.filter(
+            (data: any) => data?.id !== stockObj?.id
+          ),
           {
             ...stockObj,
             price_in_usd:
@@ -147,7 +149,7 @@ const CrudInventory: FC<Props> = ({
       //Update Redux
       dispatch(
         loadInventoryData([
-          ...inventory_data?.filter((data:any)=>data?.id !== stockObj?.id),
+          ...inventory_data?.filter((data: any) => data?.id !== stockObj?.id),
           {
             ...stockObj,
             price_in_usd:
@@ -166,7 +168,9 @@ const CrudInventory: FC<Props> = ({
       );
       dispatch(
         updateLocalInventory_Changes([
-          ...inventory_data_queue?.filter((data:any)=>data?.id !== stockObj?.id),
+          ...inventory_data_queue?.filter(
+            (data: any) => data?.id !== stockObj?.id
+          ),
           {
             ...stockObj,
             price_in_usd:
@@ -520,213 +524,206 @@ const CrudInventory: FC<Props> = ({
             </div>
             <div className="w-full h-fit m-auto space-y-4">
               {stockObj?.customization_option?.length >= 1 &&
-                [...stockObj?.customization_option]?.sort((a: any, b: any) => a.id - b.id)?.map((data: any, index: any) => {
-                  return (
-                    <details
-                      key={index + "opt"}
-                      className="open:bg-slate-50 border border-slate-300 hover:border-cyan-750
+                [...stockObj?.customization_option]
+                  ?.sort((a: any, b: any) => a.id - b.id)
+                  ?.map((data: any, index: any) => {
+                    return (
+                      <details
+                        key={index + "opt"}
+                        className="open:bg-slate-50 border border-slate-300 hover:border-cyan-750
                      hover:shadow-lg open:p-6 transition-all rounded w-full"
-                      open
-                    >
-                      <summary
-                        className="text-xs capitalize leading-6 text-slate-600
+                        open
+                      >
+                        <summary
+                          className="text-xs capitalize leading-6 text-slate-600
                      font-medium select-none w-full cursor-pointer 
                      flex items-center justify-between border border-slate-200
                       rounded bg-slate-100 p-2"
-                      >
-                        <div className="flex items-center space-x-2">
-                          <span>{data?.name}</span>
-                          <small className="text-[0.65rem] text-slate-500 italic font-light">
-                            ( Click here to close and open )
-                          </small>
-                        </div>{" "}
-                        <button
-                          onClick={() => {
-                            setStockObj((prev: any) => ({
-                              ...prev,
-                              customization_option: [
-                                ...prev?.customization_option?.filter(
-                                  (custom: any) => custom?.id !== data?.id
-                                ),
-                              ],
-                            }));
-                          }}
-                          className="h-7 w-7 rounded border border-red-600
-                         text-sm text-red-600 flex items-center justify-center bg-red-50 hover:bg-red-100 transition-all"
                         >
-                          <TbTrash />
-                        </button>
-                      </summary>
-                      <div
-                        className="mt-1 text-sm capitalize leading-6 text-slate-600
-                       dark:text-slate-400 flex flex-col space-y-2"
-                      >
-                        <span className="text-xs text-slate-500 font-medium uppercase">
-                          Name
-                        </span>
-                        <input
-                          required
-                          type="text"
-                          placeholder="Name..."
-                          className="inventory_input capitalize"
-                          value={data?.name}
-                          onChange={(e) => {
-                            setStockObj((prev: any) => ({
-                              ...prev,
-                              customization_option: [
-                                ...prev?.customization_option?.filter(
-                                  (custom: any) => custom?.id !== data?.id
-                                ),
-                                {
+                          <div className="flex items-center space-x-2">
+                            <span>{data?.name}</span>
+                            <small className="text-[0.65rem] text-slate-500 italic font-light">
+                              ( Click here to close and open )
+                            </small>
+                          </div>{" "}
+                          <button
+                            onClick={() => {
+                              setStockObj((prev: any) => ({
+                                ...prev,
+                                customization_option: [
                                   ...prev?.customization_option?.filter(
-                                    (custom: any) => custom?.id === data?.id
-                                  )[0],
-                                  name: e.target.value,
-                                },
-                              ],
-                            }));
-                          }}
-                        />
-                        <label>
-                          <span className="text-xs text-slate-500 font-medium uppercase">
-                            Type
-                          </span>
-                          <select
-                            onChange={(e) => {
-                              setStockObj((prev: any) =>
-                                prev?.customization_option?.filter(
-                                  (opt: any) => opt?.id === data?.id
-                                ).length >= 1
-                                  ? {
-                                      ...prev,
-                                      customization_option: [
-                                        ...prev?.customization_option?.filter(
-                                          (opt: any) => opt?.id !== data?.id
-                                        ),
-                                        {
-                                          ...prev?.customization_option?.filter(
-                                            (opt: any) => opt?.id === data?.id
-                                          )[0],
-                                          type: e.target.value,
-                                        },
-                                      ],
-                                    }
-                                  : prev?.customization_option?.filter(
-                                      (opt: any) => opt?.id === data?.id
-                                    ).length <= 0 &&
-                                    prev?.customization_option.length >= 1
-                                  ? {
-                                      ...prev,
-                                      customization_option: [
-                                        ...prev?.customization_option,
-                                        {
-                                          ...prev?.customization_option?.filter(
-                                            (opt: any) => opt?.id === data?.id
-                                          )[0],
-                                          type: e.target.value,
-                                        },
-                                      ],
-                                    }
-                                  : []
-                              );
+                                    (custom: any) => custom?.id !== data?.id
+                                  ),
+                                ],
+                              }));
                             }}
-                            required
-                            name="type"
-                            className="w-full h-12 bg-white text-xs text-slate-600 rounded border
-                            focus:ring-0 focus:border-cyan-750 border-slate-300"
+                            className="h-7 w-7 rounded border border-red-600
+                         text-sm text-red-600 flex items-center justify-center bg-red-50 hover:bg-red-100 transition-all"
                           >
-                            <option value="">Type ...</option>
-                            <option value="color">Color</option>
-                            <option value="dropdown">Dropdown</option>
-                          </select>
-                        </label>
-                        <div className="w-full h-fit flex items-center justify-between py-2">
+                            <TbTrash />
+                          </button>
+                        </summary>
+                        <div
+                          className="mt-1 text-sm capitalize leading-6 text-slate-600
+                       dark:text-slate-400 flex flex-col space-y-2"
+                        >
                           <span className="text-xs text-slate-500 font-medium uppercase">
-                            Options
+                            Name
                           </span>
-                          <div className="w-fit h-fit flex space-x-4 items-center">
-                            <button
-                              onClick={() => {
-                                setStockObj((prev: any) => ({
-                                  ...prev,
-                                  customization_option: [
+                          <input
+                            required
+                            type="text"
+                            placeholder="Name..."
+                            className="inventory_input capitalize"
+                            value={data?.name}
+                            onChange={(e) => {
+                              setStockObj((prev: any) => ({
+                                ...prev,
+                                customization_option: [
+                                  ...prev?.customization_option?.filter(
+                                    (custom: any) => custom?.id !== data?.id
+                                  ),
+                                  {
                                     ...prev?.customization_option?.filter(
-                                      (custom: any) => custom?.id !== data?.id
-                                    ),
-                                    {
+                                      (custom: any) => custom?.id === data?.id
+                                    )[0],
+                                    name: e.target.value,
+                                  },
+                                ],
+                              }));
+                            }}
+                          />
+                          <label>
+                            <span className="text-xs text-slate-500 font-medium uppercase">
+                              Type
+                            </span>
+                            <select
+                              onChange={(e) => {
+                                setStockObj((prev: any) =>
+                                  prev?.customization_option?.filter(
+                                    (opt: any) => opt?.id === data?.id
+                                  ).length >= 1
+                                    ? {
+                                        ...prev,
+                                        customization_option: [
+                                          ...prev?.customization_option?.filter(
+                                            (opt: any) => opt?.id !== data?.id
+                                          ),
+                                          {
+                                            ...prev?.customization_option?.filter(
+                                              (opt: any) => opt?.id === data?.id
+                                            )[0],
+                                            type: e.target.value,
+                                          },
+                                        ],
+                                      }
+                                    : prev?.customization_option?.filter(
+                                        (opt: any) => opt?.id === data?.id
+                                      ).length <= 0 &&
+                                      prev?.customization_option.length >= 1
+                                    ? {
+                                        ...prev,
+                                        customization_option: [
+                                          ...prev?.customization_option,
+                                          {
+                                            ...prev?.customization_option?.filter(
+                                              (opt: any) => opt?.id === data?.id
+                                            )[0],
+                                            type: e.target.value,
+                                          },
+                                        ],
+                                      }
+                                    : []
+                                );
+                              }}
+                              required
+                              name="type"
+                              className="w-full h-12 bg-white text-xs text-slate-600 rounded border
+                            focus:ring-0 focus:border-cyan-750 border-slate-300"
+                            >
+                              <option value="">Type ...</option>
+                              <option value="color">Color</option>
+                              <option value="dropdown">Dropdown</option>
+                            </select>
+                          </label>
+                          <div className="w-full h-fit flex items-center justify-between py-2">
+                            <span className="text-xs text-slate-500 font-medium uppercase">
+                              Options
+                            </span>
+                            <div className="w-fit h-fit flex space-x-4 items-center">
+                              <button
+                                onClick={() => {
+                                  setStockObj((prev: any) => ({
+                                    ...prev,
+                                    customization_option: [
                                       ...prev?.customization_option?.filter(
-                                        (custom: any) => custom?.id === data?.id
-                                      )[0],
-                                      options: [
+                                        (custom: any) => custom?.id !== data?.id
+                                      ),
+                                      {
                                         ...prev?.customization_option?.filter(
                                           (custom: any) =>
                                             custom?.id === data?.id
-                                        )[0]?.options,
-                                        {
-                                          id:
-                                            prev?.customization_option?.filter(
-                                              (custom: any) =>
-                                                custom?.id === data?.id
-                                            )[0]?.options?.length +
-                                            new Date().getTime(),
-                                          name: "",
-                                          quantity: "",
-                                        },
-                                      ],
-                                    },
-                                  ],
-                                }));
-                                console.log(stockObj);
-                              }}
-                              type="button"
-                              className="h-7 w-12 border-cyan-750  border rounded
+                                        )[0],
+                                        options: [
+                                          ...prev?.customization_option?.filter(
+                                            (custom: any) =>
+                                              custom?.id === data?.id
+                                          )[0]?.options,
+                                          {
+                                            id:
+                                              prev?.customization_option?.filter(
+                                                (custom: any) =>
+                                                  custom?.id === data?.id
+                                              )[0]?.options?.length +
+                                              new Date().getTime(),
+                                            name: "",
+                                            quantity: "",
+                                          },
+                                        ],
+                                      },
+                                    ],
+                                  }));
+                                  console.log(stockObj);
+                                }}
+                                type="button"
+                                className="h-7 w-12 border-cyan-750  border rounded
                                text-sm text-cyan-750 font-medium uppercase"
-                            >
-                              +
-                            </button>
+                              >
+                                +
+                              </button>
+                            </div>
                           </div>
-                        </div>
-                        {data?.options.length >= 1 &&
-                          [...data?.options]
-                            ?.sort((a: any, b: any) => a.id - b.id)
-                            ?.map((option: any, index: any) => {
-                              return (
-                                <div
-                                  key={index}
-                                  className="flex items-center justify-between w-full h-fit"
-                                >
-                                  <input
-                                    type="text"
-                                    className="h-8 w-[40%] bg-white border border-slate-300
+                          {data?.options.length >= 1 &&
+                            [...data?.options]
+                              ?.sort((a: any, b: any) => a.id - b.id)
+                              ?.map((option: any, index: any) => {
+                                return (
+                                  <div
+                                    key={index}
+                                    className="flex items-center justify-between w-full h-fit"
+                                  >
+                                    <input
+                                      type="text"
+                                      className="h-8 w-[40%] bg-white border border-slate-300
                                      text-[0.65rem] placeholder:text-slate-400 text-slate-500 
                                      focus:outline-none focus:border-cyan-750 focus:ring-0 rounded p-2 capitalize"
-                                    placeholder="Name e.g 1-10 ..."
-                                    required
-                                    value={option.name}
-                                    onChange={(e) => {
-                                      setStockObj((prev: any) => ({
-                                        ...prev,
-                                        customization_option: [
-                                          ...prev?.customization_option?.filter(
-                                            (custom: any) =>
-                                              custom?.id !== data?.id
-                                          ),
-                                          {
+                                      placeholder="Name e.g 1-10 ..."
+                                      required
+                                      value={option.name}
+                                      onChange={(e) => {
+                                        setStockObj((prev: any) => ({
+                                          ...prev,
+                                          customization_option: [
                                             ...prev?.customization_option?.filter(
                                               (custom: any) =>
-                                                custom?.id === data?.id
-                                            )[0],
-                                            options: [
-                                              ...prev?.customization_option
-                                                ?.filter(
-                                                  (custom: any) =>
-                                                    custom?.id === data?.id
-                                                )[0]
-                                                ?.options?.filter(
-                                                  (opt: any) =>
-                                                    opt?.id !== option?.id
-                                                ),
-                                              {
+                                                custom?.id !== data?.id
+                                            ),
+                                            {
+                                              ...prev?.customization_option?.filter(
+                                                (custom: any) =>
+                                                  custom?.id === data?.id
+                                              )[0],
+                                              options: [
                                                 ...prev?.customization_option
                                                   ?.filter(
                                                     (custom: any) =>
@@ -734,48 +731,48 @@ const CrudInventory: FC<Props> = ({
                                                   )[0]
                                                   ?.options?.filter(
                                                     (opt: any) =>
-                                                      opt?.id === option?.id
-                                                  )[0],
-                                                name: e.target.value,
-                                              },
-                                            ],
-                                          },
-                                        ],
-                                      }));
-                                    }}
-                                  />
-                                  <input
-                                    type="text"
-                                    className="h-8 w-[40%] bg-white border border-slate-300
+                                                      opt?.id !== option?.id
+                                                  ),
+                                                {
+                                                  ...prev?.customization_option
+                                                    ?.filter(
+                                                      (custom: any) =>
+                                                        custom?.id === data?.id
+                                                    )[0]
+                                                    ?.options?.filter(
+                                                      (opt: any) =>
+                                                        opt?.id === option?.id
+                                                    )[0],
+                                                  name: e.target.value,
+                                                },
+                                              ],
+                                            },
+                                          ],
+                                        }));
+                                      }}
+                                    />
+                                    <input
+                                      type="text"
+                                      className="h-8 w-[40%] bg-white border border-slate-300
                                      text-[0.65rem] placeholder:text-slate-400 text-slate-500 
                                      focus:outline-none focus:border-cyan-750 focus:ring-0 rounded p-2 capitalize"
-                                    placeholder="Quantity ..."
-                                    required
-                                    value={option.quantity}
-                                    onChange={(e) => {
-                                      setStockObj((prev: any) => ({
-                                        ...prev,
-                                        customization_option: [
-                                          ...prev?.customization_option?.filter(
-                                            (custom: any) =>
-                                              custom?.id !== data?.id
-                                          ),
-                                          {
+                                      placeholder="Quantity ..."
+                                      required
+                                      value={option.quantity}
+                                      onChange={(e) => {
+                                        setStockObj((prev: any) => ({
+                                          ...prev,
+                                          customization_option: [
                                             ...prev?.customization_option?.filter(
                                               (custom: any) =>
-                                                custom?.id === data?.id
-                                            )[0],
-                                            options: [
-                                              ...prev?.customization_option
-                                                ?.filter(
-                                                  (custom: any) =>
-                                                    custom?.id === data?.id
-                                                )[0]
-                                                ?.options?.filter(
-                                                  (opt: any) =>
-                                                    opt?.id !== option?.id
-                                                ),
-                                              {
+                                                custom?.id !== data?.id
+                                            ),
+                                            {
+                                              ...prev?.customization_option?.filter(
+                                                (custom: any) =>
+                                                  custom?.id === data?.id
+                                              )[0],
+                                              options: [
                                                 ...prev?.customization_option
                                                   ?.filter(
                                                     (custom: any) =>
@@ -783,61 +780,71 @@ const CrudInventory: FC<Props> = ({
                                                   )[0]
                                                   ?.options?.filter(
                                                     (opt: any) =>
-                                                      opt?.id === option?.id
-                                                  )[0],
-                                                quantity: e.target.value,
-                                              },
-                                            ],
-                                          },
-                                        ],
-                                      }));
-                                    }}
-                                  />
-                                  <button
-                                    onClick={() => {
-                                      setStockObj((prev: any) => ({
-                                        ...prev,
-                                        customization_option: [
-                                          ...prev?.customization_option?.filter(
-                                            (custom: any) =>
-                                              custom?.id !== data?.id
-                                          ),
-                                          {
+                                                      opt?.id !== option?.id
+                                                  ),
+                                                {
+                                                  ...prev?.customization_option
+                                                    ?.filter(
+                                                      (custom: any) =>
+                                                        custom?.id === data?.id
+                                                    )[0]
+                                                    ?.options?.filter(
+                                                      (opt: any) =>
+                                                        opt?.id === option?.id
+                                                    )[0],
+                                                  quantity: e.target.value,
+                                                },
+                                              ],
+                                            },
+                                          ],
+                                        }));
+                                      }}
+                                    />
+                                    <button
+                                      onClick={() => {
+                                        setStockObj((prev: any) => ({
+                                          ...prev,
+                                          customization_option: [
                                             ...prev?.customization_option?.filter(
                                               (custom: any) =>
-                                                custom?.id === data?.id
-                                            )[0],
-                                            options: [
-                                              ...prev?.customization_option
-                                                ?.filter(
-                                                  (custom: any) =>
-                                                    custom?.id === data?.id
-                                                )[0]
-                                                ?.options?.filter(
-                                                  (opt: any) =>
-                                                    opt?.id !== option?.id
-                                                ),
-                                            ],
-                                          },
-                                        ],
-                                      }));
-                                    }}
-                                    className={`h-7 w-7 rounded border border-red-600 text-sm text-red-600
+                                                custom?.id !== data?.id
+                                            ),
+                                            {
+                                              ...prev?.customization_option?.filter(
+                                                (custom: any) =>
+                                                  custom?.id === data?.id
+                                              )[0],
+                                              options: [
+                                                ...prev?.customization_option
+                                                  ?.filter(
+                                                    (custom: any) =>
+                                                      custom?.id === data?.id
+                                                  )[0]
+                                                  ?.options?.filter(
+                                                    (opt: any) =>
+                                                      opt?.id !== option?.id
+                                                  ),
+                                              ],
+                                            },
+                                          ],
+                                        }));
+                                      }}
+                                      className={`h-7 w-7 rounded border border-red-600 text-sm text-red-600
                                    ${
                                      data?.options?.length >= 2
                                        ? "flex"
                                        : "hidden"
                                    } items-center justify-center bg-red-50 hover:bg-red-100 transition-all`}
-                                  >
-                                    <TbTrash />
-                                  </button>
-                                </div>
-                              );
-                            })}
-                      </div>
-                    </details>
-                  );
-                })}
+                                    >
+                                      <TbTrash />
+                                    </button>
+                                  </div>
+                                );
+                              })}
+                        </div>
+                      </details>
+                    );
+                  })}
             </div>
 
             {/**Gallery */}
