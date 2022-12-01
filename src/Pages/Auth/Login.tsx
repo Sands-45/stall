@@ -33,7 +33,7 @@ initializeApp(firebaseConfig);
 //Initialize Services ======
 const auth = getAuth();
 // init services for firestore =========================
-const db = getFirestore();
+const db = getFirestore(initializeApp(firebaseConfig))
 
 type Props = {};
 

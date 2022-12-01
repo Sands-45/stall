@@ -19,6 +19,8 @@ import {
 import { AiFillSetting } from "react-icons/ai";
 import { HiUserGroup } from "react-icons/hi";
 import { setCurrency } from "../../Redux/Slices/SettingsSlice";
+import FirestoreFunc from "../../Firebase/Firestore_Func";
+import AlertsWrapper from "../../Components/Toast Notifications/AlertsWrapper";
 
 type Props = {};
 
@@ -81,6 +83,12 @@ const AppShell: FC<Props> = () => {
   //Component
   return (
     <div className="w-screen h-screen overflow-hidden no-scrollbar no-scrollbar::-webkit-scrollbar bg-slate-200">
+      {/**FireStore */}
+      <FirestoreFunc />
+      {/**FireStore */}
+      {/**Alert */}
+      <AlertsWrapper />
+      {/**Alert */}
       <div className="w-full h-14 bg-white flex items-center justify-between px-[2.5%]">
         <div className="w-fit h-fit">
           <Link

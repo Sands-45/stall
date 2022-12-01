@@ -54,13 +54,13 @@ const CrudInventory: FC<Props> = ({
     setCrud(false);
     setEdit(false);
     setStockObj({
-      id: "",
+      id_two: "",
       name: "",
       product_id: "",
       category: "",
       description: "",
-      price_in_usd: 0,
-      in_stock: 0,
+      price_in_usd: "",
+      in_stock: "",
       customization_option: [],
       gallery: [],
       best_before: "",
@@ -107,7 +107,9 @@ const CrudInventory: FC<Props> = ({
       window.localStorage.setItem(
         "inventory_data",
         JSON.stringify([
-          ...inventory_data?.filter((data: any) => data?.id !== stockObj?.id),
+          ...inventory_data?.filter(
+            (data: any) => data?.id_two !== stockObj?.id_two
+          ),
           {
             ...stockObj,
             price_in_usd:
@@ -121,6 +123,7 @@ const CrudInventory: FC<Props> = ({
                     )[0]?.rate_multiplier
                   )?.toFixed(2)
                 : stockObj?.price_in_usd,
+            last_editedAt: new Date().getTime(),
           },
         ])
       );
@@ -128,10 +131,11 @@ const CrudInventory: FC<Props> = ({
         "inventory_changes_data",
         JSON.stringify([
           ...inventory_data_queue?.filter(
-            (data: any) => data?.id !== stockObj?.id
+            (data: any) => data?.id_two !== stockObj?.id_two
           ),
           {
             ...stockObj,
+            edit: true,
             price_in_usd:
               amountCurrency?.name?.toLowerCase() !== "usd"
                 ? (
@@ -143,33 +147,15 @@ const CrudInventory: FC<Props> = ({
                     )[0]?.rate_multiplier
                   )?.toFixed(2)
                 : stockObj?.price_in_usd,
+            last_editedAt: new Date().getTime(),
           },
         ])
       );
       //Update Redux
       dispatch(
         loadInventoryData([
-          ...inventory_data?.filter((data: any) => data?.id !== stockObj?.id),
-          {
-            ...stockObj,
-            price_in_usd:
-              amountCurrency?.name?.toLowerCase() !== "usd"
-                ? (
-                    Number(stockObj?.price_in_usd) /
-                    currencies?.filter(
-                      (currrency: any) =>
-                        currrency?.name?.toLowerCase() ===
-                        amountCurrency?.name?.toLowerCase()
-                    )[0]?.rate_multiplier
-                  )?.toFixed(2)
-                : stockObj?.price_in_usd,
-          },
-        ])
-      );
-      dispatch(
-        updateLocalInventory_Changes([
-          ...inventory_data_queue?.filter(
-            (data: any) => data?.id !== stockObj?.id
+          ...inventory_data?.filter(
+            (data: any) => data?.id_two !== stockObj?.id_two
           ),
           {
             ...stockObj,
@@ -184,6 +170,30 @@ const CrudInventory: FC<Props> = ({
                     )[0]?.rate_multiplier
                   )?.toFixed(2)
                 : stockObj?.price_in_usd,
+            last_editedAt: new Date().getTime(),
+          },
+        ])
+      );
+      dispatch(
+        updateLocalInventory_Changes([
+          ...inventory_data_queue?.filter(
+            (data: any) => data?.id_two !== stockObj?.id_two
+          ),
+          {
+            ...stockObj,
+            edit: true,
+            price_in_usd:
+              amountCurrency?.name?.toLowerCase() !== "usd"
+                ? (
+                    Number(stockObj?.price_in_usd) /
+                    currencies?.filter(
+                      (currrency: any) =>
+                        currrency?.name?.toLowerCase() ===
+                        amountCurrency?.name?.toLowerCase()
+                    )[0]?.rate_multiplier
+                  )?.toFixed(2)
+                : stockObj?.price_in_usd,
+            last_editedAt: new Date().getTime(),
           },
         ])
       );
@@ -206,7 +216,8 @@ const CrudInventory: FC<Props> = ({
                     )[0]?.rate_multiplier
                   )?.toFixed(2)
                 : stockObj?.price_in_usd,
-            id: uniqueID(),
+            id_two: uniqueID(),
+            last_editedAt: new Date().getTime(),
           },
         ])
       );
@@ -227,7 +238,8 @@ const CrudInventory: FC<Props> = ({
                     )[0]?.rate_multiplier
                   )?.toFixed(2)
                 : stockObj?.price_in_usd,
-            id: uniqueID(),
+            id_two: uniqueID(),
+            last_editedAt: new Date().getTime(),
           },
         ])
       );
@@ -248,7 +260,8 @@ const CrudInventory: FC<Props> = ({
                     )[0]?.rate_multiplier
                   )?.toFixed(2)
                 : stockObj?.price_in_usd,
-            id: uniqueID(),
+            id_two: uniqueID(),
+            last_editedAt: new Date().getTime(),
           },
         ])
       );
@@ -268,7 +281,8 @@ const CrudInventory: FC<Props> = ({
                     )[0]?.rate_multiplier
                   )?.toFixed(2)
                 : stockObj?.price_in_usd,
-            id: uniqueID(),
+            id_two: uniqueID(),
+            last_editedAt: new Date().getTime(),
           },
         ])
       );
@@ -280,9 +294,7 @@ const CrudInventory: FC<Props> = ({
   return (
     <div
       className={`fixed top-0 bottom-0 ${
-        crudOpen
-          ? "left-0 right-0 scale-x-100"
-          : "left-[200%] -right-[200%] scale-x-0"
+        crudOpen ? "left-0 right-0" : "left-[200%] -right-[200%]"
       }
      transition-all duration-1500 w-screen h-screen z-[999] bg-cyan-750/50 overflow-hidden flex justify-end`}
     >
@@ -402,7 +414,7 @@ const CrudInventory: FC<Props> = ({
               </span>
               <input
                 required
-                type="text"
+                type="number"
                 name="In-Stock"
                 id="In-Stock"
                 placeholder="In-Stock ..."
@@ -443,7 +455,7 @@ const CrudInventory: FC<Props> = ({
                   </span>
                   <input
                     required
-                    type="text"
+                    type="number"
                     name="Price"
                     id="Price"
                     placeholder="Price ..."
@@ -683,7 +695,6 @@ const CrudInventory: FC<Props> = ({
                                       },
                                     ],
                                   }));
-                                  console.log(stockObj);
                                 }}
                                 type="button"
                                 className="h-7 w-12 border-cyan-750  border rounded

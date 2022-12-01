@@ -1,101 +1,385 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../Redux/store";
-import { getAuth } from "firebase/auth";
-import { initializeApp } from "firebase/app";
 //Firestore ===================
 import {
-  initializeFirestore,
   collection,
   onSnapshot,
-  getDocs,
   addDoc,
   doc,
   deleteDoc,
-  runTransaction,
   updateDoc,
-  arrayUnion,
-  arrayRemove,
   enableIndexedDbPersistence,
-  CACHE_SIZE_UNLIMITED,
-  where,
-  query,
+  getFirestore,
 } from "firebase/firestore";
-
-//Config Firebase ==================================
-export const firebaseConfig = {
-  apiKey: process.env.REACT_APP_API_KEY,
-  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-  projectId: "stall-d635a",
-  storageBucket: "stall-d635a.appspot.com",
-  messagingSenderId: process.env.REACT_APP_MS_ID,
-  appId: process.env.REACT_APP_APP_ID,
-  measurementId: "G-4PJ9S2MJP4",
-};
-
-// Initialize Firebase for auth======================
-initializeApp(firebaseConfig);
+import {
+  loadInventoryData,
+  updateLocalInventory_Changes,
+} from "../Redux/Slices/InventorySlice";
+import { updateAlert } from "../Redux/Slices/NotificationsSlice";
 
 // init services for firestore =========================
-export const db = initializeFirestore(initializeApp(firebaseConfig), {
-  cacheSizeBytes: CACHE_SIZE_UNLIMITED,
-});
+export const db = getFirestore();
 
 // Subsequent queries will use persistence, if it was enabled successfully
 enableIndexedDbPersistence(db);
-export let org = localStorage
-  .getItem("current_workspace")
-  ?.replace(/\s/gim, "")
-  ?.toLocaleLowerCase();
+let workspace = localStorage.getItem("current_workspace");
+export let org = workspace
+  ? JSON.parse(workspace?.replace(/\s/gim, ""))
+  : ""?.toLocaleLowerCase();
 
 // collection ref
-let usersRef: any = org && collection(db, `companies/${org}/users`);
+//let usersRef: any = org && collection(db, `companies/${org}/users`);
 let inventoryRef: any =
   org && collection(db, `companies/${org}/inventory_data`);
-let queueRef: any = org && collection(db, `companies/${org}/queue`);
-let contactsRef: any = org && collection(db, `companies/${org}/contacts`);
-let settingsRef: any = org && collection(db, `companies/${org}/settings`);
-let publicCannedResRef: any =
-  org && collection(db, `companies/${org}/cannedResponses`);
-let emailAccountsRef: any =
-  org && collection(db, `companies/${org}/email_accounts`);
-// let email_TemplatesRef: any =
-//   org &&
-//   collection(db, `companies/${org}/settings/all_settings/email_templates`);
-let categoriesRef: any =
-  org && collection(db, `companies/${org}/settings/all_settings/categories`);
-let customFieldsRef: any =
-  org && collection(db, `companies/${org}/settings/all_settings/custom_fields`);
-let companyDetailsRef: any =
-  org &&
-  collection(db, `companies/${org}/settings/all_settings/company_details`);
 //Custom categories
 
 //=================================== Update and to Invetory ===========================================
-export const addStock = (obj:any) => {
-  addDoc(contactsRef, {
-    id: obj?.id,
+export const addStock = async (obj: any) => {
+  return await addDoc(inventoryRef, {
+    id_two: obj?.id_two,
     name: obj?.name,
-    product_id: "",
-    category: "",
-    description: "",
-    price_in_usd: 0,
-    in_stock: 0,
-    customization_option: [],
-    gallery: [],
-    best_before: "",
+    product_id: obj?.product_id,
+    category: obj?.category,
+    description: obj?.description,
+    price_in_usd: obj?.price_in_usd,
+    in_stock: obj?.in_stock,
+    customization_option: obj?.customization_option,
+    gallery: obj?.gallery,
+    best_before: obj?.best_before,
   });
 };
 
+//Edit Stock
+export const updateStock = async (obj: any) => {
+  let docRef = doc(db, `companies/${org}/inventory_data`, obj?.id);
+  return await updateDoc(docRef, {
+    id_two: obj?.id_two,
+    name: obj?.name,
+    product_id: obj?.product_id,
+    category: obj?.category,
+    description: obj?.description,
+    price_in_usd: obj?.price_in_usd,
+    in_stock: obj?.in_stock,
+    customization_option: obj?.customization_option,
+    gallery: obj?.gallery,
+    best_before: obj?.best_before,
+  });
+};
+
+// deleting Inventory
+export const deleteStock = async (id: string) => {
+  const docRef = doc(db, `companies/${org}/inventory_data`, id);
+  return await deleteDoc(docRef);
+};
+
 //Component ==================================
-const TicketsnUserData: FC = () => {
+const FirestoreFunc: FC = () => {
+  const [onlineStatus, isOnline] = useState<boolean>(navigator.onLine);
   const dispatch: AppDispatch = useDispatch();
-  const currentUser: any | null = getAuth().currentUser;
+  const inventory_data_queue = useSelector(
+    (state: RootState) => state.Inventory.inventory_changes_data
+  );
+  const inventory_data = useSelector(
+    (state: RootState) => state.Inventory.inventory_data
+  );
   const alerts = useSelector(
     (state: RootState) => state.NotificationsData.alerts
   );
 
+  //Listen For Offline and Online Changes
+  useEffect(() => {
+    const setOnline = () => {
+      isOnline(true);
+    };
+    const setOffline = () => {
+      isOnline(false);
+    };
+    window.addEventListener("offline", setOffline);
+    window.addEventListener("online", setOnline);
+
+    // cleanup if we unmount
+    return () => {
+      window.removeEventListener("offline", setOffline);
+      window.removeEventListener("online", setOnline);
+    };
+  }, []);
+
+  //Add | Update | Delete Data To Inventory if online
+  useEffect(() => {
+    if (onlineStatus && inventory_data_queue.length >= 1) {
+      inventory_data_queue?.forEach((stock: any) => {
+        if (stock.edit && !stock.deleted && stock.id) {
+          updateStock(stock)
+            .then(() => {
+              window.localStorage.setItem(
+                "inventory_changes_data",
+                JSON.stringify([
+                  ...inventory_data_queue?.filter(
+                    (data: any) => data?.id_two !== stock?.id_two
+                  ),
+                ])
+              );
+              dispatch(
+                updateLocalInventory_Changes([
+                  ...inventory_data_queue?.filter(
+                    (data: any) => data?.id_two !== stock?.id_two
+                  ),
+                ])
+              );
+              dispatch(
+                updateAlert([
+                  ...alerts,
+                  {
+                    message: "Successfull synced data to cloud",
+                    id: new Date().getTime(),
+                    color: "bg-green-200",
+                  },
+                ])
+              );
+            })
+            .catch(() => {
+              dispatch(
+                updateAlert([
+                  ...alerts,
+                  {
+                    message: "Failed to sync data to cloud, a try will be made",
+                    id: new Date().getTime(),
+                    color: "bg-yellow-200",
+                  },
+                ])
+              );
+            });
+        } else if (
+          stock.edit &&
+          !stock.deleted &&
+          !stock.id &&
+          inventory_data?.filter(
+            (data: any) => data?.id_two === stock?.id_two && data.id
+          ).length <= 0
+        ) {
+          addStock(stock)
+            .then(() => {
+              window.localStorage.setItem(
+                "inventory_changes_data",
+                JSON.stringify([
+                  ...inventory_data_queue?.filter(
+                    (data: any) => data?.id_two !== stock?.id_two
+                  ),
+                ])
+              );
+              dispatch(
+                updateLocalInventory_Changes([
+                  ...inventory_data_queue?.filter(
+                    (data: any) => data?.id_two !== stock?.id_two
+                  ),
+                ])
+              );
+              dispatch(
+                updateAlert([
+                  ...alerts,
+                  {
+                    message: "Successfull synced data to cloud",
+                    id: new Date().getTime(),
+                    color: "bg-green-200",
+                  },
+                ])
+              );
+            })
+            .catch(() => {
+              dispatch(
+                updateAlert([
+                  ...alerts,
+                  {
+                    message: "Failed to sync data to cloud, a try will be made",
+                    id: new Date().getTime(),
+                    color: "bg-yellow-200",
+                  },
+                ])
+              );
+            });
+        } else if (!stock.id && stock.deleted) {
+          window.localStorage.setItem(
+            "inventory_changes_data",
+            JSON.stringify([
+              ...inventory_data_queue?.filter(
+                (data: any) => data?.id_two !== stock?.id_two
+              ),
+            ])
+          );
+          dispatch(
+            updateLocalInventory_Changes([
+              ...inventory_data_queue?.filter(
+                (data: any) => data?.id_two !== stock?.id_two
+              ),
+            ])
+          );
+          dispatch(
+            updateAlert([
+              ...alerts,
+              {
+                message: "Successfull synced data to cloud",
+                id: new Date().getTime(),
+                color: "bg-green-200",
+              },
+            ])
+          );
+        } else if (stock?.deleted && stock?.id) {
+          deleteStock(stock?.id)
+            .then(() => {
+              window.localStorage.setItem(
+                "inventory_changes_data",
+                JSON.stringify([
+                  ...inventory_data_queue?.filter(
+                    (data: any) => data?.id_two !== stock?.id_two
+                  ),
+                ])
+              );
+              dispatch(
+                updateLocalInventory_Changes([
+                  ...inventory_data_queue?.filter(
+                    (data: any) => data?.id_two !== stock?.id_two
+                  ),
+                ])
+              );
+              dispatch(
+                updateAlert([
+                  ...alerts,
+                  {
+                    message: "Successfull synced data to cloud",
+                    id: new Date().getTime(),
+                    color: "bg-green-200",
+                  },
+                ])
+              );
+            })
+            .catch(() => {
+              dispatch(
+                updateAlert([
+                  ...alerts,
+                  {
+                    message: "Failed to sync data to cloud, a try will be made",
+                    id: new Date().getTime(),
+                    color: "bg-yellow-200",
+                  },
+                ])
+              );
+            });
+        } else if (
+          (!stock.edit &&
+            !stock.id &&
+            inventory_data?.filter(
+              (data: any) => data?.id_two === stock?.id_two && data.id
+            ).length <= 0) ||
+          (!stock.deleted &&
+            !stock.id &&
+            inventory_data?.filter(
+              (data: any) => data?.id_two === stock?.id_two && data.id
+            ).length <= 0)
+        ) {
+          addStock(stock)
+            .then(() => {
+              window.localStorage.setItem(
+                "inventory_changes_data",
+                JSON.stringify([
+                  ...inventory_data_queue?.filter(
+                    (data: any) => data?.id_two !== stock?.id_two
+                  ),
+                ])
+              );
+              dispatch(
+                updateLocalInventory_Changes([
+                  ...inventory_data_queue?.filter(
+                    (data: any) => data?.id_two !== stock?.id_two
+                  ),
+                ])
+              );
+              dispatch(
+                updateAlert([
+                  ...alerts,
+                  {
+                    message: "Successfull synced data to cloud",
+                    id: new Date().getTime(),
+                    color: "bg-green-200",
+                  },
+                ])
+              );
+            })
+            .catch(() => {
+              dispatch(
+                updateAlert([
+                  ...alerts,
+                  {
+                    message: "Failed to sync data to cloud, a try will be made",
+                    id: new Date().getTime(),
+                    color: "bg-yellow-200",
+                  },
+                ])
+              );
+            });
+        } else if (
+          inventory_data?.filter(
+            (data: any) => data?.id_two === stock?.id_two && data.id
+          ).length === 1
+        ) {
+          window.localStorage.setItem(
+            "inventory_changes_data",
+            JSON.stringify([
+              ...inventory_data_queue?.filter(
+                (data: any) => data?.id_two !== stock?.id_two
+              ),
+            ])
+          );
+          dispatch(
+            updateLocalInventory_Changes([
+              ...inventory_data_queue?.filter(
+                (data: any) => data?.id_two !== stock?.id_two
+              ),
+            ])
+          );
+        }
+      });
+    }
+  }, [alerts, dispatch, inventory_data_queue, inventory_data, onlineStatus]);
+
+  //Fetch Inventory Data
+  useEffect((): any => {
+    return onSnapshot(inventoryRef, (snapshot: { docs: any[] }) => {
+      dispatch(
+        loadInventoryData(
+          [
+            ...snapshot.docs.map((doc: { data: () => any; id: any }) => ({
+              ...doc.data(),
+              id: doc.id,
+            })),
+          ]?.filter(
+            (data: any) =>
+              !inventory_data_queue?.find(
+                (inven: any) => inven?.id_two === data?.id_two && inven.deleted
+              )
+          )
+        )
+      );
+      window.localStorage.setItem(
+        "inventory_data",
+        JSON.stringify(
+          [
+            ...snapshot.docs.map((doc: { data: () => any; id: any }) => ({
+              ...doc.data(),
+              id: doc.id,
+            })),
+          ]?.filter(
+            (data: any) =>
+              !inventory_data_queue?.find(
+                (inven: any) => inven?.id_two === data?.id_two && inven.deleted
+              )
+          )
+        )
+      );
+    });
+  }, [dispatch,inventory_data_queue]);
+
   return <></>;
 };
 
-export default TicketsnUserData;
+export default FirestoreFunc;

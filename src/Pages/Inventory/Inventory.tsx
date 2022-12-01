@@ -1,9 +1,19 @@
-import { FC, useState,useEffect } from "react";
-import { TbDatabaseExport, TbDatabaseImport, TbFilter ,TbQrcode} from "react-icons/tb";
-import { useSelector } from "react-redux";
+import { FC, useState, useEffect } from "react";
+import {
+  TbDatabaseExport,
+  TbDatabaseImport,
+  TbFilter,
+  TbQrcode,
+  TbTrash,
+} from "react-icons/tb";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
 import CrudInventory from "./CrudInventory";
 import InventoryList from "./InventoryList";
+import {
+  loadInventoryData,
+  updateLocalInventory_Changes,
+} from "../../Redux/Slices/InventorySlice";
 
 type Props = {};
 
@@ -12,21 +22,25 @@ const Inventory: FC<Props> = () => {
   const inventory_data = useSelector(
     (state: RootState) => state.Inventory.inventory_data
   );
+  const inventory_data_queue = useSelector(
+    (state: RootState) => state.Inventory.inventory_changes_data
+  );
   const [crudOpen, setCrud] = useState<boolean>(false);
   const [editAction, setEdit] = useState<boolean>(false);
+  const [markedArray, markItem] = useState<any[]>([]);
   const [stockObj, setStockObj] = useState<any>({
-    id: "",
+    id_two: "",
     name: "",
     product_id: "",
     category: "",
     description: "",
-    price_in_usd: 0,
-    in_stock: 0,
+    price_in_usd: "",
+    in_stock: "",
     customization_option: [],
     gallery: [],
     best_before: "",
   });
-
+  const dispatch = useDispatch();
 
   //Listen For Offline and Online Changes
   useEffect(() => {
@@ -36,15 +50,15 @@ const Inventory: FC<Props> = () => {
     const setOffline = () => {
       isOnline(false);
     };
-      window.addEventListener('offline', setOffline);
-      window.addEventListener('online', setOnline);
-  
-      // cleanup if we unmount
-      return () => {
-        window.removeEventListener('offline', setOffline);
-        window.removeEventListener('online', setOnline);
-      }
-    }, []);
+    window.addEventListener("offline", setOffline);
+    window.addEventListener("online", setOnline);
+
+    // cleanup if we unmount
+    return () => {
+      window.removeEventListener("offline", setOffline);
+      window.removeEventListener("online", setOnline);
+    };
+  }, []);
 
   //Component
   return (
@@ -53,6 +67,69 @@ const Inventory: FC<Props> = () => {
         <div className="h-[10%] w-full flex justify-between items-center">
           {/**Search and Filters Option */}
           <div className="flex items-center space-x-3">
+            {markedArray?.length >= 1 && (
+              <button
+                onClick={() => {
+                  markedArray.forEach((inven: any) => {
+                    //Save Local
+                    window.localStorage.setItem(
+                      "inventory_data",
+                      JSON.stringify([
+                        ...inventory_data?.filter(
+                          (data: any) => data?.id_two !== inven?.id_two
+                        ),
+                      ])
+                    );
+                    window.localStorage.setItem(
+                      "inventory_changes_data",
+                      JSON.stringify([
+                        ...inventory_data_queue?.filter(
+                          (data: any) => data?.id_two !== inven?.id_two
+                        ),
+                        {
+                          ...inventory_data?.filter(
+                            (data: any) => data?.id_two === inven?.id_two
+                          )[0],
+                          deleted: true,
+                        },
+                      ])
+                    );
+                    //Update Redux
+                    dispatch(
+                      updateLocalInventory_Changes([
+                        ...inventory_data_queue?.filter(
+                          (data: any) => data?.id_two !== inven?.id_two
+                        ),
+                        {
+                          ...inventory_data?.filter(
+                            (data: any) => data?.id_two === inven?.id_two
+                          )[0],
+                          deleted: true,
+                        },
+                      ])
+                    );
+                    dispatch(
+                      loadInventoryData([
+                        ...inventory_data?.filter(
+                          (data: any) => data?.id_two !== inven?.id_two
+                        ),
+                      ])
+                    );
+                    markItem((prev: any) => [
+                      ...prev?.filter(
+                        (data: any) => data?.id_two !== inven?.id_two
+                      ),
+                    ]);
+                  });
+                }}
+                className="h-10 w-11 flex items-center justify-center 
+          space-x-2 rounded border border-slate-300 hover:border-red-750 bg-white font-semibold uppercase 
+          text-xs text-slate-600 hover:text-red-750 outline-none 
+          focus:outline-none hover:opacity-80 hover:bg-red-50 transition-all"
+              >
+                <TbTrash className="text-xl" />
+              </button>
+            )}
             <button
               className="h-10 w-11 flex items-center justify-center 
           space-x-2 rounded border border-slate-300 hover:border-cyan-750 bg-white font-semibold uppercase 
@@ -94,28 +171,30 @@ const Inventory: FC<Props> = () => {
               <TbDatabaseImport className="text-lg" />
             </button>
             <div className="w-fit h-fit overflow-hidden flex items-center">
-            <button
-              onClick={() => {
-                setCrud(true);
-                setEdit(false);
-              }}
-              className="h-10 w-28 flex items-center justify-center 
+              <button
+                onClick={() => {
+                  setCrud(true);
+                  setEdit(false);
+                }}
+                className="h-10 w-28 flex items-center justify-center 
           space-x-2 rounded rounded-r-none bg-cyan-750 font-semibold uppercase text-xs text-white outline-none focus:outline-none 
           hover:opacity-80 hover:bg-cyan-700 transition-all"
-            >
-              <span>Add stock</span>
-            </button>
-            <button
-              onClick={() => {
-                setCrud(true);
-                setEdit(false);
-              }}
-              className="h-10 w-24 flex items-center justify-center 
+              >
+                <span>Add stock</span>
+              </button>
+              <button
+                onClick={() => {
+                  setCrud(true);
+                  setEdit(false);
+                }}
+                className="h-10 w-24 flex items-center justify-center 
           space-x-2 rounded rounded-l-none bg-cyan-750 font-semibold uppercase text-xs text-white outline-none focus:outline-none 
           hover:opacity-80 hover:bg-cyan-700 transition-all border-l border-white/50"
-            >
-              <span>scan</span><TbQrcode className="text-lg"/>
-            </button></div>
+              >
+                <span>scan</span>
+                <TbQrcode className="text-lg" />
+              </button>
+            </div>
           </div>
         </div>
 
@@ -141,6 +220,18 @@ const Inventory: FC<Props> = () => {
                       name="select_all"
                       id="select_all"
                       className="rounded h-4 w-4 border-slate-400"
+                      checked={
+                        markedArray?.length === inventory_data.length
+                          ? true
+                          : false
+                      }
+                      onChange={(e: any) => {
+                        if (e.target.checked === true) {
+                          markItem(inventory_data);
+                        } else {
+                          markItem([]);
+                        }
+                      }}
                     />
                   </div>
                 </th>
@@ -180,6 +271,8 @@ const Inventory: FC<Props> = () => {
                 setEdit={setEdit}
                 setCrud={setCrud}
                 setStockObj={setStockObj}
+                markItem={markItem}
+                markedArray={markedArray}
               />
             </tbody>
           </table>
@@ -188,7 +281,7 @@ const Inventory: FC<Props> = () => {
 
       {/*CRUD Modal*/}
       <CrudInventory
-      inventory_data={inventory_data}
+        inventory_data={inventory_data}
         crudOpen={crudOpen}
         setCrud={setCrud}
         editAction={editAction}
