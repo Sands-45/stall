@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useMemo } from "react";
 import {
   TbDatabaseExport,
   TbDatabaseImport,
@@ -19,12 +19,13 @@ type Props = {};
 
 const Inventory: FC<Props> = () => {
   const [onlineStatus, isOnline] = useState<boolean>(navigator.onLine);
-  const inventory_data = useSelector(
+  const fetched_inventory_data = useSelector(
     (state: RootState) => state.Inventory.inventory_data
   );
   const inventory_data_queue = useSelector(
     (state: RootState) => state.Inventory.inventory_changes_data
   );
+  const dispatch = useDispatch();
   const [crudOpen, setCrud] = useState<boolean>(false);
   const [editAction, setEdit] = useState<boolean>(false);
   const [markedArray, markItem] = useState<any[]>([]);
@@ -40,7 +41,32 @@ const Inventory: FC<Props> = () => {
     gallery: [],
     best_before: "",
   });
-  const dispatch = useDispatch();
+  const [search, setSearch] = useState<string>("");
+  const inventory_data = useMemo(() => {
+    return [...fetched_inventory_data].filter(
+      (data: any) =>
+        data?.name
+          ?.toLowerCase()
+          ?.replace(/\s/gim, "")
+          ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
+        data?.product_id
+          ?.toLowerCase()
+          ?.replace(/\s/gim, "")
+          ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
+        data?.category
+          ?.toLowerCase()
+          ?.replace(/\s/gim, "")
+          ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
+        data?.description
+          ?.toLowerCase()
+          ?.replace(/\s/gim, "")
+          ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
+        data?.price_in_usd
+          ?.toLowerCase()
+          ?.replace(/\s/gim, "")
+          ?.includes(search?.toLowerCase()?.replace(/\s/gim, ""))
+    );
+  }, [search,fetched_inventory_data]);
 
   //Listen For Offline and Online Changes
   useEffect(() => {
@@ -147,6 +173,10 @@ const Inventory: FC<Props> = () => {
                 className="h-10 w-[15rem] rounded
              border-slate-300 p-2 px-3
              focus:border-cyan-750 focus:ring-0 text-xs text-slate-700 placeholder:text-slatee-400"
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                }}
+                value={search}
               />
             </label>
           </div>
@@ -221,7 +251,8 @@ const Inventory: FC<Props> = () => {
                       id="select_all"
                       className="rounded h-4 w-4 border-slate-400"
                       checked={
-                        markedArray?.length === inventory_data.length
+                        markedArray?.length === inventory_data.length &&
+                        markedArray?.length >= 1
                           ? true
                           : false
                       }

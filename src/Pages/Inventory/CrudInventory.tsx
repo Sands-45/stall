@@ -8,6 +8,13 @@ import {
   loadInventoryData,
   updateLocalInventory_Changes,
 } from "../../Redux/Slices/InventorySlice";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+import { org } from "../../Firebase/Firestore_Func";
 
 type Props = {
   onlineStatus: boolean;
@@ -885,6 +892,48 @@ const CrudInventory: FC<Props> = ({
                     id="change_image_one"
                     className="hidden"
                     accept="image/*"
+                    onChange={(e) => {
+                      let target: any = e.target; //<-- This (any) will tell compiler to shut up!
+                      let content: any = target.files[0];
+                      //Upload File if there is one
+                      const storage = getStorage();
+                      const storageRef = ref(
+                        storage,
+                        `/${org}/${content.name}`
+                      );
+                      const uploadTask = uploadBytesResumable(
+                        storageRef,
+                        content
+                      );
+                      uploadTask.on(
+                        "state_changed",
+                        (snapshot) => {
+                          // const progress =
+                          //   (snapshot.bytesTransferred / snapshot.totalBytes) *
+                          //   100;
+                        },
+                        (error) => {
+                          console.log(error);
+                        },
+                        () => {
+                          // Upload completed successfully, now we can get the download URL
+                          getDownloadURL(uploadTask.snapshot.ref).then(
+                            (downloadURL) => {
+                              setStockObj((prev: any) => ({
+                                ...prev,
+                                gallery: [
+                                  ...prev?.gallery,
+                                  {
+                                    id: new Date().getTime(),
+                                    url: downloadURL,
+                                  },
+                                ],
+                              }));
+                            }
+                          );
+                        }
+                      );
+                    }}
                   />
                   <div
                     className="w-full h-7 flex items-center justify-center p-1 
@@ -914,6 +963,48 @@ const CrudInventory: FC<Props> = ({
                     id="change_image_two"
                     className="hidden"
                     accept="image/*"
+                    onChange={(e) => {
+                      let target: any = e.target; //<-- This (any) will tell compiler to shut up!
+                      let content: any = target.files[0];
+                      //Upload File if there is one
+                      const storage = getStorage();
+                      const storageRef = ref(
+                        storage,
+                        `/${org}/${content.name}`
+                      );
+                      const uploadTask = uploadBytesResumable(
+                        storageRef,
+                        content
+                      );
+                      uploadTask.on(
+                        "state_changed",
+                        (snapshot) => {
+                          // const progress =
+                          //   (snapshot.bytesTransferred / snapshot.totalBytes) *
+                          //   100;
+                        },
+                        (error) => {
+                          console.log(error);
+                        },
+                        () => {
+                          // Upload completed successfully, now we can get the download URL
+                          getDownloadURL(uploadTask.snapshot.ref).then(
+                            (downloadURL) => {
+                              setStockObj((prev: any) => ({
+                                ...prev,
+                                gallery: [
+                                  ...prev?.gallery,
+                                  {
+                                    id: new Date().getTime(),
+                                    url: downloadURL,
+                                  },
+                                ],
+                              }));
+                            }
+                          );
+                        }
+                      );
+                    }}
                   />
                   <div
                     className="w-full h-7 flex items-center justify-center p-1 disabled:opacity-80 disabled:cursor-not-allowed
@@ -941,6 +1032,48 @@ const CrudInventory: FC<Props> = ({
                     id="change_image_three"
                     className="hidden"
                     accept="image/*"
+                    onChange={(e) => {
+                      let target: any = e.target; //<-- This (any) will tell compiler to shut up!
+                      let content: any = target.files[0];
+                      //Upload File if there is one
+                      const storage = getStorage();
+                      const storageRef = ref(
+                        storage,
+                        `/${org}/${content.name}`
+                      );
+                      const uploadTask = uploadBytesResumable(
+                        storageRef,
+                        content
+                      );
+                      uploadTask.on(
+                        "state_changed",
+                        (snapshot) => {
+                          // const progress =
+                          //   (snapshot.bytesTransferred / snapshot.totalBytes) *
+                          //   100;
+                        },
+                        (error) => {
+                          console.log(error);
+                        },
+                        () => {
+                          // Upload completed successfully, now we can get the download URL
+                          getDownloadURL(uploadTask.snapshot.ref).then(
+                            (downloadURL) => {
+                              setStockObj((prev: any) => ({
+                                ...prev,
+                                gallery: [
+                                  ...prev?.gallery,
+                                  {
+                                    id: new Date().getTime(),
+                                    url: downloadURL,
+                                  },
+                                ],
+                              }));
+                            }
+                          );
+                        }
+                      );
+                    }}
                   />
                   <div
                     className="w-full h-7 flex items-center justify-center p-1 disabled:opacity-80 disabled:cursor-not-allowed
@@ -968,6 +1101,48 @@ const CrudInventory: FC<Props> = ({
                     id="change_image_four"
                     className="hidden"
                     accept="image/*"
+                    onChange={(e) => {
+                      let target: any = e.target; //<-- This (any) will tell compiler to shut up!
+                      let content: any = target.files[0];
+                      //Upload File if there is one
+                      const storage = getStorage();
+                      const storageRef = ref(
+                        storage,
+                        `/${org}/${content.name}`
+                      );
+                      const uploadTask = uploadBytesResumable(
+                        storageRef,
+                        content
+                      );
+                      uploadTask.on(
+                        "state_changed",
+                        (snapshot) => {
+                          // const progress =
+                          //   (snapshot.bytesTransferred / snapshot.totalBytes) *
+                          //   100;
+                        },
+                        (error) => {
+                          console.log(error);
+                        },
+                        () => {
+                          // Upload completed successfully, now we can get the download URL
+                          getDownloadURL(uploadTask.snapshot.ref).then(
+                            (downloadURL) => {
+                              setStockObj((prev: any) => ({
+                                ...prev,
+                                gallery: [
+                                  ...prev?.gallery,
+                                  {
+                                    id: new Date().getTime(),
+                                    url: downloadURL,
+                                  },
+                                ],
+                              }));
+                            }
+                          );
+                        }
+                      );
+                    }}
                   />
                   <div
                     className="w-full h-7 flex items-center justify-center p-1 disabled:opacity-80 disabled:cursor-not-allowed
