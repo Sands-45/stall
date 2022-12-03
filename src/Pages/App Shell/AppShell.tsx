@@ -82,7 +82,8 @@ const AppShell: FC<Props> = () => {
 
   //Component
   return (
-    <div className="w-screen h-screen overflow-hidden no-scrollbar no-scrollbar::-webkit-scrollbar bg-slate-200">
+    <div className="w-screen h-screen overflow-hidden no-scrollbar
+     no-scrollbar::-webkit-scrollbar bg-slate-200">
       {/**FireStore */}
       <FirestoreFunc />
       {/**FireStore */}
@@ -107,7 +108,7 @@ const AppShell: FC<Props> = () => {
               dispatch(setCurrency(JSON.parse(e.target.value)));
               window.localStorage.setItem("selectedCurrency", e.target.value);
             }}
-            className="h-8 w-[8rem] bg-inherit text-gray-700 focus:outline-none
+            className="h-8 w-[7rem] bg-inherit text-gray-700 focus:outline-none
               uppercase text-xs rounded border-slate-400 focus:ring-0 focus:border-cyan-750"
           >
             <option value={selectedCurrency}>{selectedCurrency.name}</option>
