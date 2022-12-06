@@ -13,6 +13,7 @@ import Product from "./Product";
 import pos_empty from "../../Assets/pos_empty.png";
 import ProductPreview from "./ProductPreview";
 import Cart from "./Cart";
+import CheckOut from "./CheckOut";
 
 type Props = {};
 
@@ -68,6 +69,7 @@ const PointOfSell: FC<Props> = () => {
   });
   const [quantity, setQuantity] = useState<number>(1);
   const [customization, setCustomization] = useState<any>([]);
+  const [isCheckout, openCheckout] = useState<boolean>(false);
 
   //Save Cart Changes Locally
   useEffect(() => {
@@ -118,12 +120,15 @@ const PointOfSell: FC<Props> = () => {
             {/** Categories */}
             <div
               className="w-full h-9 flex items-center justify-between space-x-2 py-1
-             bg-inherit"
+             relative"
             >
-              <span className="min-w-[10%] w-fit overflow-hidden whitespace-nowrap text-xs uppercase font-semibold text-slate-500">
-                Categories
-              </span>
-              <div className="flex items-center space-x-1 h-full w-[88%]">
+              <div
+                className="flex items-center space-x-1 h-full w-full overflow-hidden overflow-x-scroll
+              no-scrollbar no-scrollbar::-webkit-scrollbar"
+              >
+                <span className="w-fit pr-2 overflow-hidden whitespace-nowrap text-xs uppercase font-semibold text-slate-500">
+                  Categories :
+                </span>
                 {Array.from(
                   new Set(
                     fetched_inventory_data?.map((data: any) =>
@@ -176,7 +181,10 @@ const PointOfSell: FC<Props> = () => {
                     );
                   })}
               </div>
-              <div className="h-full w-[10%] flex items-center space-x-1 justify-end">
+              <div
+                className="h-full w-fit pl-2 flex items-center space-x-1 justify-end
+               absolute right-0 bg-slate-200"
+              >
                 <button
                   className="h-6 w-8 text-sm text-slate-500 bg-slate-50 rounded
                  border border-slate-300 flex items-center justify-center"
@@ -244,6 +252,7 @@ const PointOfSell: FC<Props> = () => {
           setProObj={setProObj}
           setCustomization={setCustomization}
           setQuantity={setQuantity}
+          openCheckout={openCheckout}
         />
       </div>
       {/** ============= Product Preview================ */}
@@ -261,6 +270,14 @@ const PointOfSell: FC<Props> = () => {
         customization={customization}
         setQuantity={setQuantity}
         quantity={quantity}
+      />
+
+      {/**Check Out */}
+      <CheckOut
+        setCart={setCart}
+        cart={cart}
+        isCheckout={isCheckout}
+        openCheckout={openCheckout}
       />
     </>
   );
