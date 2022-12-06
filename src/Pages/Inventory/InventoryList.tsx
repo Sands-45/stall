@@ -103,6 +103,9 @@ const InventoryList: FC<Props> = ({
                 <td className="w-[28.57%] h-full overflow-hidden">
                   <div className="h-full w-full flex items-center p-2 space-x-2">
                     <img
+                    onError={(e) => {
+                      e.currentTarget.src = no_gallery;
+                    }}
                       src={inven?.gallery[0]?.url ?? no_gallery}
                       alt="product_image"
                       className="h-11 w-11 rounded object-cover object-center

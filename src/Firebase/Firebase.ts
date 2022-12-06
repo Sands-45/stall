@@ -7,4 +7,4 @@ export const firebaseConfig = {
     messagingSenderId: process.env.REACT_APP_MS_ID,
     appId: process.env.REACT_APP_APP_ID,
     measurementId: "G-4PJ9S2MJP4",
-  };
+  };  

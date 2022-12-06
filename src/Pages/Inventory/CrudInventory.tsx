@@ -612,59 +612,6 @@ const CrudInventory: FC<Props> = ({
                               }));
                             }}
                           />
-                          <label>
-                            <span className="text-xs text-slate-500 font-medium uppercase">
-                              Type
-                            </span>
-                            <select
-                              onChange={(e) => {
-                                setStockObj((prev: any) =>
-                                  prev?.customization_option?.filter(
-                                    (opt: any) => opt?.id === data?.id
-                                  ).length >= 1
-                                    ? {
-                                        ...prev,
-                                        customization_option: [
-                                          ...prev?.customization_option?.filter(
-                                            (opt: any) => opt?.id !== data?.id
-                                          ),
-                                          {
-                                            ...prev?.customization_option?.filter(
-                                              (opt: any) => opt?.id === data?.id
-                                            )[0],
-                                            type: e.target.value,
-                                          },
-                                        ],
-                                      }
-                                    : prev?.customization_option?.filter(
-                                        (opt: any) => opt?.id === data?.id
-                                      ).length <= 0 &&
-                                      prev?.customization_option.length >= 1
-                                    ? {
-                                        ...prev,
-                                        customization_option: [
-                                          ...prev?.customization_option,
-                                          {
-                                            ...prev?.customization_option?.filter(
-                                              (opt: any) => opt?.id === data?.id
-                                            )[0],
-                                            type: e.target.value,
-                                          },
-                                        ],
-                                      }
-                                    : []
-                                );
-                              }}
-                              required
-                              name="type"
-                              className="w-full h-12 bg-white text-xs text-slate-600 rounded border
-                            focus:ring-0 focus:border-cyan-750 border-slate-300"
-                            >
-                              <option value="">Type ...</option>
-                              <option value="color">Color</option>
-                              <option value="dropdown">Dropdown</option>
-                            </select>
-                          </label>
                           <div className="w-full h-fit flex items-center justify-between py-2">
                             <span className="text-xs text-slate-500 font-medium uppercase">
                               Options
