@@ -22,6 +22,10 @@ type Props = {
   setCart: any;
   prod_cart: any;
   setProduct: any;
+  customization: any;
+  setCustomization: any;
+  quantity: any;
+  setQuantity: any;
 };
 
 const ProductPreview: FC<Props> = ({
@@ -34,6 +38,10 @@ const ProductPreview: FC<Props> = ({
   setCart,
   prod_cart,
   setProduct,
+  customization,
+  setCustomization,
+  quantity,
+  setQuantity,
 }) => {
   const [zoomMed, setZoomed] = useState({
     open: false,
@@ -51,8 +59,6 @@ const ProductPreview: FC<Props> = ({
   const selectedCurrency = useSelector(
     (state: RootState) => state.SettingsData.selectedCurrency
   );
-  const [quantity, setQuantity] = useState<number>(1);
-  const [customization, setCustomization] = useState<any>([]);
 
   //Component
   return (
@@ -145,7 +151,15 @@ const ProductPreview: FC<Props> = ({
                  hover:border-cyan-750 flex items-center justify-between
             relative p-2 text-xs text-slate-500 cursor-pointer transition-all group capitalize"
                     >
-                      <span>{cust?.name} </span>
+                      <span>
+                        {customization?.filter(
+                          (data: any) => data?.name === cust?.name
+                        )?.length >= 1
+                          ? customization?.filter(
+                              (data: any) => data?.name === cust?.name
+                            )[0]?.option
+                          : cust?.name}{" "}
+                      </span>
                       <TbCaretDown className="text-base group-hover:-rotate-180 transition-all" />
 
                       {/**Drop Down Elements */}
@@ -312,7 +326,7 @@ const ProductPreview: FC<Props> = ({
            bg-cyan-750 text-white text-xs font-medium capitalize"
           >
             <TbShoppingCartPlus className="text-base" />
-            <span>Add to cart</span>
+            <span>{prod_cart?.edit ? "Update Cart" : "Add to cart"}</span>
           </button>
         </div>
       </div>

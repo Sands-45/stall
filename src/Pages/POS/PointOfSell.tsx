@@ -59,15 +59,15 @@ const PointOfSell: FC<Props> = () => {
       ?.sort((a: any, b: any) => (a?.name < b?.name ? -1 : 1));
   }, [selectedCategory, productSearch, fetched_inventory_data]);
   const localCart = window.localStorage.getItem("cart");
-  const [cart, setCart] = useState<any>(
-    localCart ? JSON.parse(localCart) : {}
-  );
+  const [cart, setCart] = useState<any>(localCart ? JSON.parse(localCart) : {});
   const [prod_cart, setProduct] = useState<any>({
     prod_cart_uid: new Date()?.getTime(),
     prod_obj: "",
     quantity: 1,
     customization: "",
   });
+  const [quantity, setQuantity] = useState<number>(1);
+  const [customization, setCustomization] = useState<any>([]);
 
   //Save Cart Changes Locally
   useEffect(() => {
@@ -120,7 +120,7 @@ const PointOfSell: FC<Props> = () => {
               className="w-full h-9 flex items-center justify-between space-x-2 py-1
              bg-inherit"
             >
-              <span className="w-[12%] overflow-hidden whitespace-nowrap text-xs uppercase font-semibold text-slate-500">
+              <span className="min-w-[10%] w-fit overflow-hidden whitespace-nowrap text-xs uppercase font-semibold text-slate-500">
                 Categories
               </span>
               <div className="flex items-center space-x-1 h-full w-[88%]">
@@ -235,7 +235,16 @@ const PointOfSell: FC<Props> = () => {
         </div>
 
         {/** ============= Cart ================ */}
-        <Cart/>
+        <Cart
+          cart={cart}
+          setCart={setCart}
+          setProduct={setProduct}
+          setPreview={setPreview}
+          setImg={setImg}
+          setProObj={setProObj}
+          setCustomization={setCustomization}
+          setQuantity={setQuantity}
+        />
       </div>
       {/** ============= Product Preview================ */}
       <ProductPreview
@@ -248,6 +257,10 @@ const PointOfSell: FC<Props> = () => {
         setCart={setCart}
         prod_cart={prod_cart}
         setProduct={setProduct}
+        setCustomization={setCustomization}
+        customization={customization}
+        setQuantity={setQuantity}
+        quantity={quantity}
       />
     </>
   );
