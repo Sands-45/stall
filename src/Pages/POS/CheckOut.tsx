@@ -16,7 +16,7 @@ type Props = {
 };
 
 const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
-  const dispatch = useDispatch();
+  const dispatch:AppDispatch = useDispatch();
   const completed_sales = useSelector(
     (state: RootState) => state.Sales.completed_sales
   );
