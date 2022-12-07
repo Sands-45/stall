@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../Redux/store";
 import { numberWithSpaces } from "../../Reusable Functions/Functions";
 import { addSales } from "../../Redux/Slices/SalesSlice";
+import { HiCheckCircle } from "react-icons/hi";
 
 type Props = {
   cart: any;
@@ -16,7 +17,7 @@ type Props = {
 };
 
 const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
-  const dispatch:AppDispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const completed_sales = useSelector(
     (state: RootState) => state.Sales.completed_sales
   );
@@ -33,6 +34,10 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
     customers_details: { name: "", email: "", address: "" },
     note: "",
   });
+  const [invoiceOptions, setInvoiceOptions] = useState<any[]>([
+    "print",
+    "email",
+  ]);
 
   //Component ========
   return (
@@ -58,7 +63,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
        rounded-md m-auto lg:m-0 p-6 overflow-hidden flex flex-col space-y-4"
       >
         {/**Payment Methods */}
-        <div className="w-full h-[4.5rem] flex justify-between items-center">
+        <div className="w-full h-[4.5rem] flex justify-between items-center select-none">
           {paymentMethods?.map((method: any) => {
             return (
               <div
@@ -231,7 +236,58 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
        flex flex-col justify-between p-6 space-y-4"
       >
         <div className="w-full h-fit">
-          <ul className="w-full h-28 grid grid-rows-5 p-2 border-y border-slate-200">
+          {/**PrintOptions */}
+          <div className="w-full h-8 flex items-center justify-end space-x-2 select-none">
+            <div
+              onClick={() => {
+                setInvoiceOptions((prev: any) =>
+                  invoiceOptions?.includes("print")
+                    ? [...prev?.filter((data: any) => data !== "print")]
+                    : [...prev, "print"]
+                );
+              }}
+              className={`px-6 h-full rounded-sm bg-slate-100 border ${
+                invoiceOptions?.includes("print")
+                  ? "border-cyan-750 text-cyan-750"
+                  : "border-slate-300 text-slate-500"
+              } 
+            text-[0.65rem] font-semibold
+            flex flex-col items-center justify-center space-y-0.5
+              relative cursor-pointer uppercase`}
+            >
+              {invoiceOptions?.includes("print") && (
+                <div className="absolute text-base -top-1.5 -right-1.5 w-fit h-fit rounded-full bg-white">
+                  <HiCheckCircle className="text-cyan-750 z-[99]" />
+                </div>
+              )}
+              <span>Print</span>
+            </div>
+            <div
+              onClick={() => {
+                setInvoiceOptions((prev: any) =>
+                  invoiceOptions?.includes("email")
+                    ? [...prev?.filter((data: any) => data !== "email")]
+                    : [...prev, "email"]
+                );
+              }}
+              className={`px-6 h-full rounded-sm bg-slate-100 border ${
+                invoiceOptions?.includes("email")
+                  ? "border-cyan-750 text-cyan-750"
+                  : "border-slate-300 text-slate-500"
+              } 
+            text-[0.65rem] font-semibold
+            flex flex-col items-center justify-center space-y-0.5
+              relative cursor-pointer uppercase`}
+            >
+              {invoiceOptions?.includes("email") && (
+                <div className="absolute text-base -top-1.5 -right-1.5 w-fit h-fit rounded-full bg-white">
+                  <HiCheckCircle className="text-cyan-750 z-[99]" />
+                </div>
+              )}
+              <span>email</span>
+            </div>
+          </div>
+          <ul className="mt-2 w-full h-28 grid grid-rows-5 p-2 border-y border-slate-200">
             <li className="row-span-1 w-full flex items-center justify-between">
               <span className="text-xs text-slate-400 font-semibold">Tip</span>
               <span className="text-xs text-slate-600 font-semibold">
