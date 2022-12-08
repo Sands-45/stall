@@ -150,8 +150,8 @@ const Cart: FC<Props> = ({
                               products: [
                                 ...prev?.products?.filter(
                                   (data: any) =>
-                                    data?.prod_obj?.name !==
-                                    prod?.prod_obj?.name
+                                    data?.prod_cart_uid !==
+                                    prod?.prod_cart_uid
                                 ),
                               ],
                             }));

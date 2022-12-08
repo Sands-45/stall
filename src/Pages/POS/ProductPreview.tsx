@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import no_gallery from "../../Assets/no_gallery.png";
 import no_customization from "../../Assets/no_customization.png";
 import ZoomedMed from "../../Components/Zoom Media/ZoomedMedia";
@@ -59,6 +59,24 @@ const ProductPreview: FC<Props> = ({
   const selectedCurrency = useSelector(
     (state: RootState) => state.SettingsData.selectedCurrency
   );
+  const inventory_data = useSelector(
+    (state: RootState) => state.Inventory.inventory_data
+  );
+  let currentProd = useMemo(() => {
+    return inventory_data?.filter(
+      (data: any) => data?.id_two === product_obj?.id_two
+    );
+  }, [product_obj, inventory_data]);
+
+  //Check If Quanity Is greater than stock
+  useEffect(()=>{
+    if (
+      currentProd?.length >= 1 &&
+      Number(currentProd[0]?.in_stock) < quantity
+    ) {
+      setQuantity(Number(currentProd[0]?.in_stock));
+    }
+  },[currentProd,quantity,setQuantity])
 
   //Component
   return (
@@ -228,12 +246,19 @@ const ProductPreview: FC<Props> = ({
            space-y-2 p-4
            rounded bg-slate-50 border border-slate-200"
           >
+            <div className="w-full flex items-center justify-between">
             <span
               className="text-xs font-semibold text-slate-600 
-                whitepsace-nowrap w-full overflow-hidden text-ellipsis uppercase"
+                whitepsace-nowrap overflow-hidden text-ellipsis uppercase w-[60%]"
             >
               {product_obj?.name}
             </span>
+            <small
+              className="text-[0.6rem] italic font-medium text-slate-500 
+                whitepsace-nowrap  w-[40%] text-end overflow-hidden text-ellipsis"
+            >
+              In Stock [{Number(currentProd[0]?.in_stock)}]
+            </small></div>
             <p
               className="text-xs font-normal text-slate-400 overflow-hidden
              text-ellipsis h-[6rem] w-full p-2 rounded border-dashed border-2 border-slate-200"
@@ -284,7 +309,12 @@ const ProductPreview: FC<Props> = ({
             />
             <button
               onClick={() => {
-                setQuantity((prev: number) => prev + 1);
+                if (
+                  currentProd?.length >= 1 &&
+                  Number(currentProd[0]?.in_stock) > quantity
+                ) {
+                  setQuantity((prev: number) => prev + 1);
+                }
               }}
               className="rounded rounded-l-none border border-cyan-750/40
              h-full w-9 flex items-center justify-center text-base text-cyan-750
