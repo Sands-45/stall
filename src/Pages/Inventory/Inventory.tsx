@@ -10,10 +10,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
 import CrudInventory from "./CrudInventory";
 import InventoryList from "./InventoryList";
+import pos_empty from "../../Assets/pos_empty.png";
 import {
   loadInventoryData,
   updateLocalInventory_Changes,
 } from "../../Redux/Slices/InventorySlice";
+import { Link } from "react-router-dom";
 
 type Props = {};
 
@@ -66,7 +68,7 @@ const Inventory: FC<Props> = () => {
           ?.replace(/\s/gim, "")
           ?.includes(search?.toLowerCase()?.replace(/\s/gim, ""))
     );
-  }, [search,fetched_inventory_data]);
+  }, [search, fetched_inventory_data]);
 
   //Listen For Offline and Online Changes
   useEffect(() => {
@@ -233,80 +235,106 @@ const Inventory: FC<Props> = () => {
           className="w-full h-[87.5%] rounded overflow-hidden 
       overflow-y-scroll no-scrollbar no-scrollbar::-webkit-scrollbar bg-white border border-slate-300"
         >
-          <table
-            className="w-full h-full bg-inherit  rounded
+          {inventory_data?.length >= 1 ? (
+            <table
+              className="w-full h-full bg-inherit  rounded
         p-2 relative"
-          >
-            <thead className="w-full h-[10%] bg-slate-50 border-b border-slate-200 overflow-hidden sticky top-0 left-0 right-0">
-              <tr
-                className="w-full h-full flex items-center justify-between overflow-hidden 
+            >
+              <thead className="w-full h-[10%] bg-slate-50 border-b border-slate-200 overflow-hidden sticky top-0 left-0 right-0">
+                <tr
+                  className="w-full h-full flex items-center justify-between overflow-hidden 
            text-xs capitalize
            text-slate-500"
-              >
-                <th className="w-[4.76%] h-full overflow-hidden">
-                  <div className="h-full w-full flex items-center justify-center p-2">
-                    <input
-                      type="checkbox"
-                      name="select_all"
-                      id="select_all"
-                      className="rounded h-4 w-4 border-slate-400"
-                      checked={
-                        markedArray?.length === inventory_data.length &&
-                        markedArray?.length >= 1
-                          ? true
-                          : false
-                      }
-                      onChange={(e: any) => {
-                        if (e.target.checked === true) {
-                          markItem(inventory_data);
-                        } else {
-                          markItem([]);
+                >
+                  <th className="w-[4.76%] h-full overflow-hidden">
+                    <div className="h-full w-full flex items-center justify-center p-2">
+                      <input
+                        type="checkbox"
+                        name="select_all"
+                        id="select_all"
+                        className="rounded h-4 w-4 border-slate-400"
+                        checked={
+                          markedArray?.length === inventory_data.length &&
+                          markedArray?.length >= 1
+                            ? true
+                            : false
                         }
-                      }}
-                    />
-                  </div>
-                </th>
-                <th className="w-[28.57%] h-full overflow-hidden">
-                  <div className="h-full w-full flex items-center p-2 font-medium">
-                    Product
-                  </div>
-                </th>
-                <th className="w-[19.04%] h-full overflow-hidden">
-                  <div className="h-full w-full flex items-center p-2 font-medium">
-                    Category
-                  </div>
-                </th>
-                <th className="w-[19.04%] h-full overflow-hidden">
-                  <div className="h-full w-full flex items-center p-2 font-medium">
-                    Price
-                  </div>
-                </th>
-                <th className="w-[19.04%] h-full overflow-hidden">
-                  <div className="h-full w-full flex items-center p-2 font-medium">
-                    In-Stock
-                  </div>
-                </th>
-                <th className="w-[9.52%] h-full overflow-hidden">
-                  <div className="h-full w-full flex items-center p-2 font-medium">
-                    Actions
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody
-              className="h-[90%] w-full text-sm text-slate-700
+                        onChange={(e: any) => {
+                          if (e.target.checked === true) {
+                            markItem(inventory_data);
+                          } else {
+                            markItem([]);
+                          }
+                        }}
+                      />
+                    </div>
+                  </th>
+                  <th className="w-[28.57%] h-full overflow-hidden">
+                    <div className="h-full w-full flex items-center p-2 font-medium">
+                      Product
+                    </div>
+                  </th>
+                  <th className="w-[19.04%] h-full overflow-hidden">
+                    <div className="h-full w-full flex items-center p-2 font-medium">
+                      Category
+                    </div>
+                  </th>
+                  <th className="w-[19.04%] h-full overflow-hidden">
+                    <div className="h-full w-full flex items-center p-2 font-medium">
+                      Price
+                    </div>
+                  </th>
+                  <th className="w-[19.04%] h-full overflow-hidden">
+                    <div className="h-full w-full flex items-center p-2 font-medium">
+                      In-Stock
+                    </div>
+                  </th>
+                  <th className="w-[9.52%] h-full overflow-hidden">
+                    <div className="h-full w-full flex items-center p-2 font-medium">
+                      Actions
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody
+                className="h-[90%] w-full text-sm text-slate-700
          overflow-hidden"
+              >
+                <InventoryList
+                  inventory_data={inventory_data}
+                  setEdit={setEdit}
+                  setCrud={setCrud}
+                  setStockObj={setStockObj}
+                  markItem={markItem}
+                  markedArray={markedArray}
+                />
+              </tbody>
+            </table>
+          ) : (
+            <div
+              className="w-fill h-[calc(100%-5.5rem)] rounded bg-white p-4 
+            overflow-hidden flex flex-col items-center justify-center space-y-4"
             >
-              <InventoryList
-                inventory_data={inventory_data}
-                setEdit={setEdit}
-                setCrud={setCrud}
-                setStockObj={setStockObj}
-                markItem={markItem}
-                markedArray={markedArray}
+              <img
+                src={pos_empty}
+                alt="no_data"
+                className="h-[7rem] w-[6.5rem] opacity-40 overflow-hidden object-center objct-fit"
               />
-            </tbody>
-          </table>
+              <p className="text-sm font-medium text-slate-400 text-center">
+                There's no data to display, you either out of stock
+                <br /> or searched product doesn't exit
+              </p>
+              <Link to="/app/inventory">
+                <div
+                  className="h-9 px-6 whitespace-nowrap bg-cyan-750 hover:bg-cyan-800 transition-all 
+              text-white text-xs text-center font-medium
+               capitalize flex items-center justify-center rounded-sm"
+                >
+                  add stock
+                </div>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
 

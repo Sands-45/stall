@@ -27,7 +27,7 @@ const Landing: FC<Props> = () => {
             <img
               src={Logo}
               alt="logo"
-              className="h-12 w-fit object-fit object-center"
+              className="h-12 w-16 object-fit object-center"
             />
           </div>
           <div className="flex items-center space-x-8 hover:opacity-80 transition-all">

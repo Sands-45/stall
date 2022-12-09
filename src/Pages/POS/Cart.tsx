@@ -97,7 +97,7 @@ const Cart: FC<Props> = ({
                         : no_gallery
                     }
                     alt="img"
-                    className="h-full w-14 rounded p-0.5 overflow-hidden
+                    className="h-full w-14 rounded p-1 overflow-hidden
                    object-fit object-center object-cover border border-slate-200 bg-white"
                   />
                   <div className="h-full w-[calc(100%-3.5rem)] flex flex-col justify-center space-y-1">
@@ -179,7 +179,7 @@ const Cart: FC<Props> = ({
               <img
                 src={empty_cart}
                 alt="empty_cart"
-                className="h-14 w-fit overflow-hidden object-fit object-center
+                className="h-14 w-14 overflow-hidden object-fit object-center
                object-cover opacity-60"
               />
               <span className="text-sm text-center text-slate-400 font-medium capitalize">

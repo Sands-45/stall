@@ -29,7 +29,7 @@ const Product: FC<Props> = ({
     inventory_data?.map((prod: any) => {
       return (
         <div
-          className="col-span-1 h-[12rem] bg-slate-100 rounded border border-cyan-750/30
+          className="col-span-1 h-[12rem] bg-slate-100 rounded-md border border-cyan-750/30
             hover:border-cyan-750 transition-all shadow-md flex flex-col justify-between p-2 select-none"
         >
           <img
@@ -38,8 +38,8 @@ const Product: FC<Props> = ({
             }}
             src={prod?.gallery[0]?.url ?? no_gallery}
             alt="product-img"
-            className="h-[50%] w-full overflow-hidden object-center object-cover object-fit
-                border border-slate-200 bg-slate-50 rounded p-1"
+            className="h-[50%] w-full overflow-hidden object-center object-contain object-fit
+                border border-slate-300 bg-slate-200 rounded p-2"
           />
           <div className="h-[50%] w-full flex flex-col justify-between space-y-1">
             <div className="flex flex-col justify-between w-full h-[calc(100%-2.25rem)] pt-2.5 pb-1">
@@ -83,7 +83,7 @@ const Product: FC<Props> = ({
               </div> */}
               <div
                 className="flex items-center w-[calc(100%-2.5rem)] h-8 rounded
-               border border-slate-300/70 bg-slate-100 pl-1"
+                "
               >
                 <span
                   className="text-xs font-semibold text-slate-600 capitalize px-1 w-full

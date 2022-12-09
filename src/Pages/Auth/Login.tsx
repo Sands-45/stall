@@ -229,11 +229,11 @@ const Login: FC<Props> = () => {
 
           {/**Logo */}
           <Link to="/">
-            <div className="h-12 w-14 rounded-sm shadow-2xl drop-shadow-2xl bg-cyan-300 absolute top-4 left-4 p-1 flex items-center justify-center">
+            <div className="h-14 w-20 rounded-sm bg-transparent absolute top-4 left-4 p-1 flex items-center justify-center">
               <img
                 src={logo}
                 alt="logo"
-                className="w-full h-fit object-cover object-center"
+                className="h-12 w-16 object-cover object-center"
               />
             </div>
           </Link>

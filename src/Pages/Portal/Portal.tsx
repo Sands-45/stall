@@ -45,7 +45,7 @@ const Portal: FC<Props> = () => {
         <img
           src={logo}
           alt="logo"
-          className="-ml-2 h-14 object-fit object-center"
+          className="-ml-2 w-16 h-12 object-fit object-center"
         />
         <div className="flex items-center justify-between space-x-3">
           <div className="h-8 w-8 rounded border border-slate-400 flex items-center justify-center text-xl text-slate-600">

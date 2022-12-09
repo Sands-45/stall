@@ -109,7 +109,7 @@ const InventoryList: FC<Props> = ({
                       src={inven?.gallery[0]?.url ?? no_gallery}
                       alt="product_image"
                       className="h-11 w-11 rounded object-cover object-center
-                   border-2 border-slate-200 overflow-hidden p-0.5"
+                   border-2 border-slate-200 overflow-hidden p-1.5 bg-slate-100"
                     />
                     <div className="h-full w-[calc(100%-3rem)] flex flex-col space-y-0 justify-center">
                       <span

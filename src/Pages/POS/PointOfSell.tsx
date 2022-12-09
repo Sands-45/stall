@@ -30,7 +30,7 @@ const PointOfSell: FC<Props> = () => {
     return [...fetched_inventory_data]
       ?.filter((item: any) =>
         selectedCategory?.length >= 1
-          ? selectedCategory?.includes(item?.category)
+          ? selectedCategory?.includes(item?.category?.toLowerCase())
           : true
       )
       ?.filter(
@@ -126,13 +126,29 @@ const PointOfSell: FC<Props> = () => {
                 className="flex items-center space-x-1 h-full w-full overflow-hidden overflow-x-scroll
               no-scrollbar no-scrollbar::-webkit-scrollbar"
               >
-                <span className="w-fit pr-2 overflow-hidden whitespace-nowrap text-xs uppercase font-semibold text-slate-500">
-                  Categories :
-                </span>
                 {Array.from(
                   new Set(
                     fetched_inventory_data?.map((data: any) =>
-                      data?.category ? data?.category : ""
+                      data?.category
+                        ? data?.category?.toString()?.toLowerCase()?.trim()
+                        : ""
+                    )
+                  )
+                )?.length <= 0 && (
+                  <button
+                    className={`h-full w-fit px-3 bg-slate-50 rounded border text-[0.65rem]
+              uppercase font-medium border-slate-300 text-slate-400 hover:text-cyan-750 hover:border-cyan-750 flex 
+             items-center space-x-1 transition-all`}
+                  >
+                    <span className="whitespace-nowrap">no categories</span>{" "}
+                  </button>
+                )}
+                {Array.from(
+                  new Set(
+                    fetched_inventory_data?.map((data: any) =>
+                      data?.category
+                        ? data?.category?.toString()?.toLowerCase()?.trim()
+                        : ""
                     )
                   )
                 )
@@ -204,7 +220,7 @@ const PointOfSell: FC<Props> = () => {
               <div
                 className="w-fill h-[calc(100%-5.5rem)] rounded bg-white p-4 
           overflow-hidden overflow-y-scroll no-scrollbar no-scrollbar::-webkit-scrollbar grid
-           grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6  gap-4"
+           grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 gap-4 auto-rows-min"
               >
                 <Product
                   inventory_data={inventory_data}
@@ -222,7 +238,7 @@ const PointOfSell: FC<Props> = () => {
                 <img
                   src={pos_empty}
                   alt="no_data"
-                  className="h-[7rem] w-fit overflow-hidden object-center objct-fit"
+                  className="h-[7rem] w-[6.5rem] opacity-40 overflow-hidden object-center objct-fit"
                 />
                 <p className="text-sm font-medium text-slate-400 text-center">
                   There's no data to display, you either out of stock
@@ -230,7 +246,7 @@ const PointOfSell: FC<Props> = () => {
                 </p>
                 <Link to="/app/inventory">
                   <div
-                    className="h-9 px-6 whitespace-nowrap bg-cyan-750 hover:bg-cyan-800 transition-all 
+                    className="h-9 w-36 whitespace-nowrap bg-cyan-750 hover:bg-cyan-800 transition-all 
               text-white text-xs text-center font-medium
                capitalize flex items-center justify-center rounded-sm"
                   >
