@@ -65,7 +65,7 @@ const Portal: FC<Props> = () => {
       {/**Menu Options */}
       <div className="w-full lg:w-[56rem] h-fit grid grid-cols-1 sm:grid-cols-2 ml:grid-cols-4 gap-6">
         {/**Point Of Sale */}
-        <div className="col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all saturate-200 bg-cyan-50/60 overflow-hidden">
+        <div className="col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all duration-200 saturate-200 bg-cyan-50/60 overflow-hidden">
           <Link
             to="/app"
             className="h-fit w-full outline-none focus:outline-none"
@@ -81,7 +81,7 @@ const Portal: FC<Props> = () => {
           </Link>{" "}
         </div>
         {/**Sales */}
-        <div className="col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all saturate-200 bg-cyan-50/60 overflow-hidden">
+        <div className="col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all duration-200 saturate-200 bg-cyan-50/60 overflow-hidden">
           <Link to="/app/sales" className="h-fit w-full outline-none focus:outline-none">
             <div className="w-full h-full flex flex-col items-center justify-center space-y-4">
               <div className="h-10 w-10 flex items-center justify-center rounded bg-cyan-700 text-white text-xl">
@@ -94,7 +94,7 @@ const Portal: FC<Props> = () => {
           </Link>{" "}
         </div>
         {/**Campaigns */}
-        <div className="col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all saturate-200 bg-cyan-50/60 overflow-hidden">
+        <div className="col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all duration-200 saturate-200 bg-cyan-50/60 overflow-hidden">
           <Link to="/app/campaigns" className="h-fit w-full outline-none focus:outline-none">
             <div className="w-full h-full flex flex-col items-center justify-center space-y-4">
               <div className="h-10 w-10 flex items-center justify-center rounded bg-teal-600 text-white text-xl">
@@ -107,7 +107,7 @@ const Portal: FC<Props> = () => {
           </Link>{" "}
         </div>
         {/**Reports */}
-        <div className="col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all saturate-200 bg-cyan-50/60 overflow-hidden">
+        <div className="col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all duration-200 saturate-200 bg-cyan-50/60 overflow-hidden">
           <Link to="/app/reports" className="h-fit w-full outline-none focus:outline-none">
             <div className="w-full h-full flex flex-col items-center justify-center space-y-4">
               <div className="h-10 w-10 flex items-center justify-center rounded bg-blue-600 text-white text-xl">
@@ -121,7 +121,7 @@ const Portal: FC<Props> = () => {
         </div>
 
         {/**Customers */}
-        <div className="col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all saturate-200 bg-cyan-50/60 overflow-hidden">
+        <div className="col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all duration-200 saturate-200 bg-cyan-50/60 overflow-hidden">
           <Link to="/app/customers" className="h-fit w-full outline-none focus:outline-none">
             <div className="w-full h-full flex flex-col items-center justify-center space-y-4">
               <div className="h-10 w-10 flex items-center justify-center rounded bg-stone-900 text-white text-xl">
@@ -135,7 +135,7 @@ const Portal: FC<Props> = () => {
         </div>
 
         {/**Inventory */}
-        <div className="col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all saturate-200 bg-cyan-50/60 overflow-hidden">
+        <div className="col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all duration-200 saturate-200 bg-cyan-50/60 overflow-hidden">
           <Link to="/app/inventory" className="h-fit w-full outline-none focus:outline-none">
             <div className="w-full h-full flex flex-col items-center justify-center space-y-4">
               <div className="h-10 w-10 flex items-center justify-center rounded bg-red-600 text-white text-xl">
@@ -149,7 +149,7 @@ const Portal: FC<Props> = () => {
         </div>
 
         {/**Online Store */}
-        <div className="col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all saturate-200 bg-cyan-50/60 overflow-hidden">
+        <div className="col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all duration-200 saturate-200 bg-cyan-50/60 overflow-hidden">
           <Link to="/app/online-store" className="h-fit w-full outline-none focus:outline-none">
             <div className="w-full h-full flex flex-col items-center justify-center space-y-4">
               <div className="h-10 w-10 flex items-center justify-center rounded bg-indigo-600 text-white text-xl">
@@ -163,7 +163,7 @@ const Portal: FC<Props> = () => {
         </div>
 
         {/**Settings */}
-        <div className="col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all saturate-200 bg-cyan-50/60 overflow-hidden">
+        <div className="col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all duration-200 saturate-200 bg-cyan-50/60 overflow-hidden">
           <Link to="/app/settings" className="h-fit w-full outline-none focus:outline-none">
             <div className="w-full h-full flex flex-col items-center justify-center space-y-4">
               <div className="h-10 w-10 flex items-center justify-center rounded bg-amber-600 text-white text-xl">

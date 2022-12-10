@@ -1,11 +1,10 @@
 import { FC, useMemo, useState } from "react";
 import { TbListSearch, TbEdit, TbTrash } from "react-icons/tb";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../Redux/store";
+import { useSelector } from "react-redux";
+import { RootState } from "../../Redux/store";
 import { numberWithSpaces } from "../../Reusable Functions/Functions";
 import no_gallery from "../../Assets/no_gallery.png";
 import empty_cart from "../../Assets/empty_cart.png";
-import { parkSales } from "../../Redux/Slices/SalesSlice";
 
 type Props = {
   cart: any;
@@ -16,7 +15,7 @@ type Props = {
   setProObj: any;
   setCustomization: any;
   setQuantity: any;
-  openCheckout:any;
+  openCheckout: any;
 };
 
 const Cart: FC<Props> = ({
@@ -28,15 +27,11 @@ const Cart: FC<Props> = ({
   setProObj,
   setCustomization,
   setQuantity,
-  openCheckout
+  openCheckout,
 }) => {
   const selectedCurrency = useSelector(
     (state: RootState) => state.SettingsData.selectedCurrency
   );
-  const parked_sales = useSelector(
-    (state: RootState) => state.Sales.parked_sales
-  );
-  const dispatch: AppDispatch = useDispatch();
   const [searchValue, searchCart] = useState<string>("");
   const total = useMemo((): any => {
     return cart?.products?.length >= 1
@@ -91,6 +86,9 @@ const Cart: FC<Props> = ({
          } items-center justify-between space-x-2`}
                 >
                   <img
+                    onError={(e) => {
+                      e.currentTarget.src = no_gallery;
+                    }}
                     src={
                       prod?.prod_obj?.gallery?.length >= 1
                         ? prod?.prod_obj?.gallery[0]?.url
@@ -150,8 +148,7 @@ const Cart: FC<Props> = ({
                               products: [
                                 ...prev?.products?.filter(
                                   (data: any) =>
-                                    data?.prod_cart_uid !==
-                                    prod?.prod_cart_uid
+                                    data?.prod_cart_uid !== prod?.prod_cart_uid
                                 ),
                               ],
                             }));
@@ -252,7 +249,7 @@ const Cart: FC<Props> = ({
               </span>
             </li>
           </ul>
-          <div className="w-full h-fit flex items-center justify-between">
+          <div className="w-full h-fit flex items-center justify-center px-1">
             <button
               onClick={() => {
                 //Generate Unique ID
@@ -278,81 +275,15 @@ const Cart: FC<Props> = ({
                   tax_percentage: 15,
                   tax_in_usd: tax,
                   transact_id: uniqueID(),
-                  sale_channel:"counter"
+                  sale_channel: "counter",
                 }));
-                openCheckout(true)
+                openCheckout(true);
               }}
               disabled={cart?.products?.length <= 0 || !cart?.products}
-              className="h-10 w-[50%] bg-cyan-750 hover:bg-cyan-800 transition-all rounded rounded-r-none
+              className="h-10 w-full bg-cyan-750 hover:bg-cyan-800 transition-all rounded-sm
             text-white text-xs uppercase font-medium disabled:cursor-not-allowed disabled:opacity-70"
             >
               check-out
-            </button>
-            <button
-              disabled={cart?.products?.length <= 0 || !cart?.products}
-              onClick={() => {
-                //Generate Unique ID
-                let uniqueID = () => {
-                  let name = "trans".replace(/[^a-zA-Z]|\s/gi, "");
-                  let combined = `#${
-                    name?.split("")?.slice(0, 4)?.join("")?.toUpperCase() +
-                    new Date().getFullYear().toString().slice(2, 4) +
-                    new Date().toISOString().slice(5, 7) +
-                    new Date().toISOString().slice(8, 10) +
-                    "-" +
-                    new Date().getMilliseconds()?.toString()?.charAt(0) +
-                    new Date().toISOString().slice(11, 13) +
-                    new Date().toISOString().slice(14, 16) +
-                    new Date().toISOString().slice(17, 19)
-                  }`;
-                  return combined?.replace(/\s/g, "");
-                };
-                //Update State
-                dispatch(
-                  parkSales([
-                    ...(parked_sales?.length >= 1
-                      ? parked_sales?.filter(
-                          (record: any) =>
-                            record?.transact_id !== cart?.transact_id
-                        )
-                      : []),
-                    {
-                      ...cart,
-                      total: total,
-                      tax_percentage: 15,
-                      tax_in_usd: tax,
-                      transact_id: uniqueID(),
-                    },
-                  ])
-                );
-                //Save Data Locally
-                window.localStorage.setItem(
-                  "parked_sales",
-                  JSON.stringify([
-                    ...(parked_sales?.length >= 1
-                      ? parked_sales?.filter(
-                          (record: any) =>
-                            record?.transact_id !== cart?.transact_id
-                        )
-                      : []),
-                    {
-                      ...cart,
-                      total: total,
-                      tax_percentage: 15,
-                      tax_in_usd: tax,
-                      transact_id: uniqueID(),
-                    },
-                  ])
-                );
-                //Clear Cart
-                setCart({});
-                window.localStorage.setItem("cart", "");
-              }}
-              className="h-10 w-[50%] bg-cyan-750 hover:bg-cyan-800 transition-all rounded rounded-l-none
-            text-white text-xs uppercase font-medium
-             border-l border-slate-100 disabled:cursor-not-allowed disabled:opacity-70"
-            >
-              park cart
             </button>
           </div>
         </div>

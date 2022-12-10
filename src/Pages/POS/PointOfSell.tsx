@@ -119,7 +119,7 @@ const PointOfSell: FC<Props> = () => {
             </div>
             {/** Categories */}
             <div
-              className="w-full h-9 flex items-center justify-between space-x-2 py-1
+              className="w-full h-7 flex items-center justify-between space-x-2
              relative"
             >
               <div

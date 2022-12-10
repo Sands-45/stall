@@ -119,7 +119,7 @@ const ProductPreview: FC<Props> = ({
             src={selectedImg ? selectedImg : no_gallery}
             alt="prod_preview"
             className="w-full row-span-5 h-full object-center object-fit object-contain 
-          p-2 bg-slate-50 border border-slate-200 overflow-hidden cursor-zoom-in"
+          p-2 bg-slate-50 border border-slate-200 rounded overflow-hidden cursor-zoom-in"
           />
           <div
             className="w-full row-span-1 grid grid-cols-4 gap-1
@@ -149,9 +149,9 @@ const ProductPreview: FC<Props> = ({
         <div className="col-span-2 w-full h-full flex flex-col justify-between">
           <div
             className="w-full h-full overflow-hidden flex flex-col 
-           space-y-4 pt-8"
+           space-y-4 pt-6"
           >
-            <div className="w-full h-hit flex items-center ">
+            <div className="w-full h-hit flex items-center pb-2 border-b-2 border-slate-200">
               <span
                 className="text-xs font-semibold text-slate-600 
                 whitespace-nowrap overflow-hidden text-ellipsis uppercase w-[60%]"
@@ -181,12 +181,12 @@ const ProductPreview: FC<Props> = ({
             >
               <div
                 className="text-xs h-7 w-full font-semibold text-slate-500 
-                whitepsace-nowrap overflow-hidden text-ellipsis uppercase"
+                whitepsace-nowrap overflow-hidden text-ellipsis uppercase border-b-2 border-slate-200"
               >
                 Customazation
               </div>
                 <div
-                  className="w-full h-[7.5rem] flex flex-col space-y-2"
+                  className="w-full h-[7.5rem] flex flex-col space-y-2 pt-2"
                 >
                   {product_obj?.customization_option?.length >= 1 &&product_obj?.customization_option?.map((cust: any) => {
                     return (

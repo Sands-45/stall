@@ -16,6 +16,7 @@ import {
   updateLocalInventory_Changes,
 } from "../../Redux/Slices/InventorySlice";
 import { Link } from "react-router-dom";
+import ActionPanel from "../../Components/Misc/ActionPanel";
 
 type Props = {};
 
@@ -43,6 +44,7 @@ const Inventory: FC<Props> = () => {
     gallery: [],
     best_before: "",
   });
+  const [openPanel, setActionPanel] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
   const inventory_data = useMemo(() => {
     return [...fetched_inventory_data].filter(
@@ -88,6 +90,59 @@ const Inventory: FC<Props> = () => {
     };
   }, []);
 
+  //Delete Inventory
+  const deleteStock = () => {
+    markedArray.forEach((inven: any) => {
+      //Save Local
+      window.localStorage.setItem(
+        "inventory_data",
+        JSON.stringify([
+          ...inventory_data?.filter(
+            (data: any) => data?.id_two !== inven?.id_two
+          ),
+        ])
+      );
+      window.localStorage.setItem(
+        "inventory_changes_data",
+        JSON.stringify([
+          ...inventory_data_queue?.filter(
+            (data: any) => data?.id_two !== inven?.id_two
+          ),
+          {
+            ...inventory_data?.filter(
+              (data: any) => data?.id_two === inven?.id_two
+            )[0],
+            deleted: true,
+          },
+        ])
+      );
+      //Update Redux
+      dispatch(
+        updateLocalInventory_Changes([
+          ...inventory_data_queue?.filter(
+            (data: any) => data?.id_two !== inven?.id_two
+          ),
+          {
+            ...inventory_data?.filter(
+              (data: any) => data?.id_two === inven?.id_two
+            )[0],
+            deleted: true,
+          },
+        ])
+      );
+      dispatch(
+        loadInventoryData([
+          ...inventory_data?.filter(
+            (data: any) => data?.id_two !== inven?.id_two
+          ),
+        ])
+      );
+      markItem((prev: any) => [
+        ...prev?.filter((data: any) => data?.id_two !== inven?.id_two),
+      ]);
+    });
+  };
+
   //Component
   return (
     <>
@@ -98,57 +153,7 @@ const Inventory: FC<Props> = () => {
             {markedArray?.length >= 1 && (
               <button
                 onClick={() => {
-                  markedArray.forEach((inven: any) => {
-                    //Save Local
-                    window.localStorage.setItem(
-                      "inventory_data",
-                      JSON.stringify([
-                        ...inventory_data?.filter(
-                          (data: any) => data?.id_two !== inven?.id_two
-                        ),
-                      ])
-                    );
-                    window.localStorage.setItem(
-                      "inventory_changes_data",
-                      JSON.stringify([
-                        ...inventory_data_queue?.filter(
-                          (data: any) => data?.id_two !== inven?.id_two
-                        ),
-                        {
-                          ...inventory_data?.filter(
-                            (data: any) => data?.id_two === inven?.id_two
-                          )[0],
-                          deleted: true,
-                        },
-                      ])
-                    );
-                    //Update Redux
-                    dispatch(
-                      updateLocalInventory_Changes([
-                        ...inventory_data_queue?.filter(
-                          (data: any) => data?.id_two !== inven?.id_two
-                        ),
-                        {
-                          ...inventory_data?.filter(
-                            (data: any) => data?.id_two === inven?.id_two
-                          )[0],
-                          deleted: true,
-                        },
-                      ])
-                    );
-                    dispatch(
-                      loadInventoryData([
-                        ...inventory_data?.filter(
-                          (data: any) => data?.id_two !== inven?.id_two
-                        ),
-                      ])
-                    );
-                    markItem((prev: any) => [
-                      ...prev?.filter(
-                        (data: any) => data?.id_two !== inven?.id_two
-                      ),
-                    ]);
-                  });
+                  setActionPanel(true);
                 }}
                 className="h-10 w-11 flex items-center justify-center 
           space-x-2 rounded border border-slate-300 hover:border-red-750 bg-white font-semibold uppercase 
@@ -348,6 +353,14 @@ const Inventory: FC<Props> = () => {
         setStockObj={setStockObj}
         stockObj={stockObj}
         onlineStatus={onlineStatus}
+      />
+
+      {/*Action Panel*/}
+      <ActionPanel
+        openPanel={openPanel}
+        setActionPanel={setActionPanel}
+        deleteSelected={deleteStock}
+        option="Stock"
       />
     </>
   );

@@ -6,7 +6,7 @@ import cash_logo from "../../Assets/cash.png";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../Redux/store";
 import { numberWithSpaces } from "../../Reusable Functions/Functions";
-import { addSales } from "../../Redux/Slices/SalesSlice";
+import { addSales, parkSales } from "../../Redux/Slices/SalesSlice";
 import { HiCheckCircle } from "react-icons/hi";
 import { TbChecks, TbWifi } from "react-icons/tb";
 import { Link } from "react-router-dom";
@@ -37,6 +37,9 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
   const inventory_data_queue = useSelector(
     (state: RootState) => state.Inventory.inventory_changes_data
   );
+  const parked_sales = useSelector(
+    (state: RootState) => state.Sales.parked_sales
+  );
   const [paymentMethods, setMethod] = useState<any>([
     { method: "card", selected: true },
     { method: "cash", selected: false },
@@ -61,6 +64,50 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
     startTransact(true);
 
     setTimeout(() => {
+      //Update State
+      dispatch(
+        addSales([
+          ...(completed_sales?.length >= 1
+            ? completed_sales?.filter(
+                (record: any) => record?.transact_id !== cart?.transact_id
+              )
+            : []),
+          {
+            ...cart,
+            service: "collection",
+            status: "completed",
+            date: new Date().getTime(),
+            customers_details: additional_details?.customers_details,
+            note: additional_details?.note,
+            payment_method: paymentMethods?.filter(
+              (methods: any) => methods?.selectedƒ
+            ),
+          },
+        ])
+      );
+      //Save Data Locally
+      window.localStorage.setItem(
+        "completed_sales",
+        JSON.stringify([
+          ...(completed_sales?.length >= 1
+            ? completed_sales?.filter(
+                (record: any) => record?.transact_id !== cart?.transact_id
+              )
+            : []),
+          {
+            ...cart,
+            service: "collection",
+            status: "completed",
+            date: new Date().getTime(),
+            customers_details: additional_details?.customers_details,
+            note: additional_details?.note,
+            payment_method: paymentMethods?.filter(
+              (methods: any) => methods?.selected
+            ),
+          },
+        ])
+      );
+
       //Deduct Stock From Inventory
       cart?.products?.forEach((prod: any) => {
         window.localStorage.setItem(
@@ -138,45 +185,6 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
         );
       });
 
-      //Update State
-      dispatch(
-        addSales([
-          ...(completed_sales?.length >= 1
-            ? completed_sales?.filter(
-                (record: any) => record?.transact_id !== cart?.transact_id
-              )
-            : []),
-          {
-            ...cart,
-            date: new Date().getTime(),
-            customers_details: additional_details?.customers_details,
-            note: additional_details?.note,
-            payment_method: paymentMethods?.filter(
-              (methods: any) => methods?.selectedƒ
-            ),
-          },
-        ])
-      );
-      //Save Data Locally
-      window.localStorage.setItem(
-        "completed_sales",
-        JSON.stringify([
-          ...(completed_sales?.length >= 1
-            ? completed_sales?.filter(
-                (record: any) => record?.transact_id !== cart?.transact_id
-              )
-            : []),
-          {
-            ...cart,
-            date: new Date().getTime(),
-            customers_details: additional_details?.customers_details,
-            note: additional_details?.note,
-            payment_method: paymentMethods?.filter(
-              (methods: any) => methods?.selected
-            ),
-          },
-        ])
-      );
       //Clear Cart
       setCart({});
       window.localStorage.setItem("cart", "");
@@ -633,7 +641,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
             </div>
 
             {/**Transact Btn */}
-            <div className="w-full h-fit flex justify-center">
+            <div className="w-full h-fit flex justify-between px-2">
               <button
                 onClick={() => createTransaction()}
                 disabled={
@@ -641,7 +649,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
                     (methods: any) => methods.method === "cash"
                   )[0]?.selected || transactProcess
                 }
-                className="w-[95%] h-10 rounded bg-cyan-750 hover:bg-cyan-800
+                className="w-[45%] h-10 rounded bg-cyan-750 hover:bg-cyan-800
              transition-all font-medium text-xs text-white uppercase 
              disabled:cursor-not-allowed disabled:opacity-80 flex items-center justify-center"
               >
@@ -649,6 +657,63 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
                 {transactProcess && (
                   <div className="h-5 w-5 rounded-full border-4 border-cyan-50 border-l-cyan-300 animate-spin"></div>
                 )}
+              </button>
+
+              <button
+                onClick={() => {
+                  //Update State
+                  dispatch(
+                    parkSales([
+                      ...(parked_sales?.length >= 1
+                        ? parked_sales?.filter(
+                            (record: any) =>
+                              record?.transact_id !== cart?.transact_id
+                          )
+                        : []),
+                      {
+                        ...cart,
+                        status: "pending",
+                        date: new Date().getTime(),
+                        customers_details:
+                          additional_details?.customers_details,
+                        note: additional_details?.note,
+                      },
+                    ])
+                  );
+                  //Save Data Locally
+                  window.localStorage.setItem(
+                    "parked_sales",
+                    JSON.stringify([
+                      ...(parked_sales?.length >= 1
+                        ? parked_sales?.filter(
+                            (record: any) =>
+                              record?.transact_id !== cart?.transact_id
+                          )
+                        : []),
+                      {
+                        ...cart,
+                        status: "pending",
+                        date: new Date().getTime(),
+                        customers_details:
+                          additional_details?.customers_details,
+                        note: additional_details?.note,
+                      },
+                    ])
+                  );
+                  //Clear Cart
+                  setCart({});
+                  window.localStorage.setItem("cart", "");
+                  setDetails({
+                    customers_details: { name: "", email: "", address: "" },
+                    note: "",
+                  });
+                  openCheckout(false);
+                }}
+                className="w-[45%] h-10 rounded bg-cyan-750 hover:bg-cyan-800
+                transition-all font-medium text-xs text-white uppercase 
+                disabled:cursor-not-allowed disabled:opacity-80 flex items-center justify-center"
+              >
+                park cart
               </button>
             </div>
           </>

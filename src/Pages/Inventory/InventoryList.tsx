@@ -30,11 +30,11 @@ const InventoryList: FC<Props> = ({
   const selectedCurrency = useSelector(
     (state: RootState) => state.SettingsData.selectedCurrency
   );
-  const alerts = useSelector(
-    (state: RootState) => state.NotificationsData.alerts
-  );
   const inventory_data_queue = useSelector(
     (state: RootState) => state.Inventory.inventory_changes_data
+  );
+  const alerts = useSelector(
+    (state: RootState) => state.NotificationsData.alerts
   );
   const dispatch = useDispatch();
 
