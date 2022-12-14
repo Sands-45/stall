@@ -48,22 +48,34 @@ const Cart: FC<Props> = ({
   return (
     <>
       <div className="h-full w-[23rem] bg-white p-4 pt-4 flex flex-col justify-between items-center">
-        <label htmlFor="search_cart" className="w-full h-fit pt-0.5 relative">
-          <TbListSearch className="absolute right-4 top-3.5 text-slate-500 text-lg" />
-          <input
-            onChange={(e) => {
-              searchCart(e.target.value?.toString());
-            }}
-            value={searchValue}
-            type="search"
-            name="search_cart"
-            id="search_cart"
-            placeholder="Search Cart ..."
-            className="w-full h-10 rounded-full border border-slate-200 px-4 pr-10
+        <div className="w-full flex justify-between items-center space-x-2">
+          <label
+            htmlFor="search_cart"
+            className="w-[calc(100%-3rem)] h-fit pt-0.5 relative"
+          >
+            <TbListSearch className="absolute right-4 top-3.5 text-slate-500 text-lg" />
+            <input
+              onChange={(e) => {
+                searchCart(e.target.value?.toString());
+              }}
+              value={searchValue}
+              type="search"
+              name="search_cart"
+              id="search_cart"
+              placeholder="Search Cart ..."
+              className="w-full h-10 rounded border border-slate-200 px-4 pr-10
            text-xs text-slate-600 placeholder:text-slate-400 bg-slate-50
            focus:ring-0 focus:border-cyan-750 transition-all"
-          />
-        </label>
+            />
+          </label>
+          <button
+            onClick={() => setCart({})}
+            className="h-10 w-10 rounded bg-red-50 hover:bg-red-100 transition-all border border-red-100 
+         hover:border-red-300 flex items-center justify-center text-lg text-red-600"
+          >
+            <TbTrash />
+          </button>
+        </div>
 
         {/**Cart List */}
         <ul
@@ -255,7 +267,7 @@ const Cart: FC<Props> = ({
                 //Generate Unique ID
                 let uniqueID = () => {
                   let name = "trans".replace(/[^a-zA-Z]|\s/gi, "");
-                  let combined = `#${
+                  let combined = `${
                     name?.split("")?.slice(0, 4)?.join("")?.toUpperCase() +
                     new Date().getFullYear().toString().slice(2, 4) +
                     new Date().toISOString().slice(5, 7) +

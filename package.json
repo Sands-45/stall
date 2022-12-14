@@ -11,7 +11,9 @@
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.8",
     "react": "^18.2.0",
+    "react-barcode": "^1.4.6",
     "react-dom": "^18.2.0",
+    "react-qrcode-logo": "^2.8.0",
     "react-scripts": "5.0.1",
     "typescript": "^4.8.4",
     "web-vitals": "^2.1.4"
@@ -60,5 +62,6 @@
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
-    }}
+    }
+  }
 }

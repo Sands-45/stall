@@ -14,10 +14,9 @@ import {
   MdAnalytics,
   MdAssignment,
   MdLocalMall,
-  MdTv,
+  MdTv,MdSupervisorAccount
 } from "react-icons/md";
 import { AiFillSetting } from "react-icons/ai";
-import { HiUserGroup } from "react-icons/hi";
 import { setCurrency } from "../../Redux/Slices/SettingsSlice";
 import FirestoreFunc from "../../Firebase/Firestore_Func";
 import AlertsWrapper from "../../Components/Toast Notifications/AlertsWrapper";
@@ -143,7 +142,8 @@ const AppShell: FC<Props> = () => {
       </div>
 
       {/**Nav list */}
-      <nav className="w-full h-12 border-y border-slate-200 bg-white grid grid-cols-8 px-[2.5%]">
+      <nav className="w-full min-w-[50rem] h-12 border-y border-slate-200 bg-white hidden md:grid grid-cols-8 px-[2.5%] overflow-hidden
+      overflow-x-scroll no-scrollbar no-scrollbar::-webkit-scrollbar">
         <NavLink
           to="/app"
           className={`navLinks border-l border-slate-200
@@ -154,7 +154,7 @@ const AppShell: FC<Props> = () => {
             }`}
         >
           <MdPointOfSale className="text-xl" />{" "}
-          <span className="hidden ml:flex whitespace-nowrap max-w-[60%] overflow-hidden text-ellipsis">
+          <span className="hidden lg:flex whitespace-nowrap max-w-[70%] overflow-hidden text-ellipsis">
             Point of Sale
           </span>
         </NavLink>
@@ -168,7 +168,7 @@ const AppShell: FC<Props> = () => {
             }`}
         >
           <MdReceipt className="text-xl" />{" "}
-          <span className="hidden ml:flex whitespace-nowrap max-w-[60%] overflow-hidden text-ellipsis">
+          <span className="hidden lg:flex whitespace-nowrap max-w-[70%] overflow-hidden text-ellipsis">
             Sales
           </span>
         </NavLink>
@@ -182,7 +182,7 @@ const AppShell: FC<Props> = () => {
             }`}
         >
           <MdLoyalty className="text-xl" />{" "}
-          <span className="hidden ml:flex whitespace-nowrap max-w-[60%] overflow-hidden text-ellipsis">
+          <span className="hidden lg:flex whitespace-nowrap max-w-[70%] overflow-hidden text-ellipsis">
             Campaigns
           </span>
         </NavLink>
@@ -196,7 +196,7 @@ const AppShell: FC<Props> = () => {
             }`}
         >
           <MdAnalytics className="text-xl" />{" "}
-          <span className="hidden ml:flex whitespace-nowrap max-w-[60%] overflow-hidden text-ellipsis">
+          <span className="hidden lg:flex whitespace-nowrap max-w-[70%] overflow-hidden text-ellipsis">
             Reports
           </span>
         </NavLink>
@@ -209,8 +209,8 @@ const AppShell: FC<Props> = () => {
                 : ""
             }`}
         >
-          <HiUserGroup className="text-xl" />{" "}
-          <span className="hidden ml:flex whitespace-nowrap max-w-[60%] overflow-hidden text-ellipsis">
+          <MdSupervisorAccount className="text-2xl" />{" "}
+          <span className="hidden lg:flex whitespace-nowrap max-w-[70%] overflow-hidden text-ellipsis">
             Customers
           </span>
         </NavLink>
@@ -224,7 +224,7 @@ const AppShell: FC<Props> = () => {
             }`}
         >
           <MdAssignment className="text-xl" />{" "}
-          <span className="hidden ml:flex whitespace-nowrap max-w-[60%] overflow-hidden text-ellipsis">
+          <span className="hidden lg:flex whitespace-nowrap max-w-[70%] overflow-hidden text-ellipsis">
             Inventory
           </span>
         </NavLink>
@@ -238,7 +238,7 @@ const AppShell: FC<Props> = () => {
             }`}
         >
           <MdLocalMall className="text-xl" />{" "}
-          <span className="hidden ml:flex whitespace-nowrap max-w-[60%] overflow-hidden text-ellipsis">
+          <span className="hidden lg:flex whitespace-nowrap max-w-[70%] overflow-hidden text-ellipsis">
             Online Store
           </span>
         </NavLink>
@@ -252,14 +252,14 @@ const AppShell: FC<Props> = () => {
             }`}
         >
           <AiFillSetting className="text-xl" />{" "}
-          <span className="hidden ml:flex whitespace-nowrap max-w-[60%] overflow-hidden text-ellipsis">
+          <span className="hidden lg:flex whitespace-nowrap max-w-[70%] overflow-hidden text-ellipsis">
             Setings
           </span>
         </NavLink>
       </nav>
 
       {/**Main */}
-      <main className="w-full h-[calc(100%-6.55rem)]  overflow-hidden">
+      <main className="w-full h-full md:h-[calc(100%-6.55rem)]  overflow-hidden">
         <Outlet />
       </main>
     </div>

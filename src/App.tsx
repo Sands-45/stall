@@ -16,6 +16,8 @@ const OnlineStore = lazy(() => import("./Pages/Online Store/OnlineStore"));
 const Settings = lazy(() => import("./Pages/Settings/Settings"));
 
 const App: FC = () => {
+
+  //Component || App
   return (
     <div className="overflow-hidden">
     <BrowserRouter>

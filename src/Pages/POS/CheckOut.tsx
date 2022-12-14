@@ -25,20 +25,20 @@ type Props = {
 
 const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
   const dispatch: AppDispatch = useDispatch();
-  const completed_sales = useSelector(
-    (state: RootState) => state.Sales.completed_sales
-  );
-  const selectedCurrency = useSelector(
-    (state: RootState) => state.SettingsData.selectedCurrency
-  );
   const inventory_data = useSelector(
     (state: RootState) => state.Inventory.inventory_data
   );
   const inventory_data_queue = useSelector(
     (state: RootState) => state.Inventory.inventory_changes_data
   );
+  const completed_sales = useSelector(
+    (state: RootState) => state.Sales.completed_sales
+  );
   const parked_sales = useSelector(
     (state: RootState) => state.Sales.parked_sales
+  );
+  const selectedCurrency = useSelector(
+    (state: RootState) => state.SettingsData.selectedCurrency
   );
   const [paymentMethods, setMethod] = useState<any>([
     { method: "card", selected: true },
@@ -47,8 +47,12 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
     { method: "account", selected: false },
   ]);
   const [additional_details, setDetails] = useState<any>({
-    customers_details: { name: "", email: "", address: "" },
-    note: "",
+    customers_details: {
+      name: cart?.customers_details?.name,
+      email: cart?.customers_details?.email,
+      address: cart?.customers_details?.address,
+    },
+    note: cart?.note,
   });
   const [invoiceOptions, setInvoiceOptions] = useState<any[]>([
     "print",
@@ -80,8 +84,8 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
             customers_details: additional_details?.customers_details,
             note: additional_details?.note,
             payment_method: paymentMethods?.filter(
-              (methods: any) => methods?.selectedƒ
-            ),
+              (methods: any) => methods?.selected
+            )[0]?.method,
           },
         ])
       );
@@ -103,7 +107,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
             note: additional_details?.note,
             payment_method: paymentMethods?.filter(
               (methods: any) => methods?.selected
-            ),
+            )[0]?.method,
           },
         ])
       );
@@ -123,7 +127,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
                   [...inventory_data]?.filter(
                     (data: any) => data?.id_two === prod?.prod_obj?.id_two
                   )[0]?.in_stock
-                ) - prod?.quantity,
+                ) - Number(prod?.quantity) ?? 0,
               last_editedAt: new Date().getTime(),
             },
           ])
@@ -139,11 +143,12 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
               ...prod?.prod_obj,
               in_stock:
                 Number(
-                  [...inventory_data_queue]?.filter(
+                  [...inventory_data]?.filter(
                     (data: any) => data?.id_two === prod?.prod_obj?.id_two
                   )[0]?.in_stock
-                ) - prod?.quantity,
+                ) - Number(prod?.quantity) ?? 0,
               last_editedAt: new Date().getTime(),
+              edit: true,
             },
           ])
         );
@@ -160,7 +165,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
                   [...inventory_data]?.filter(
                     (data: any) => data?.id_two === prod?.prod_obj?.id_two
                   )[0]?.in_stock
-                ) - prod?.quantity,
+                ) - Number(prod?.quantity) ?? 0,
               last_editedAt: new Date().getTime(),
             },
           ])
@@ -175,11 +180,12 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
               ...prod?.prod_obj,
               in_stock:
                 Number(
-                  [...inventory_data_queue]?.filter(
+                  [...inventory_data]?.filter(
                     (data: any) => data?.id_two === prod?.prod_obj?.id_two
                   )[0]?.in_stock
-                ) - prod?.quantity,
+                ) - Number(prod?.quantity) ?? 0,
               last_editedAt: new Date().getTime(),
+              edit: true,
             },
           ])
         );
@@ -200,10 +206,10 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
   //Component ========
   return (
     <div
-      className={`fixed top-0 right-0 left-0 bottom-0
+      className={`fixed right-0 left-0
        h-screen min-w-screen bg-cyan-750/40 z-[9999] ${
-         isCheckout ? "lg:flex" : "hidden"
-       } lg:justify-center
+         isCheckout ? "top-0 bottom-0" : "top-[200%]"
+       } lg:flex lg:justify-center
       space-y-4 lg:space-y-0 lg:space-x-4 pt-24 p-4 overflow-hidden overflow-y-scroll transition-all`}
     >
       {/**Close Button */}
@@ -534,6 +540,16 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
                             Number(e.target.value) -
                               selectedCurrency?.rate_multiplier * cart?.total
                           );
+                          setCart((prev: any) => ({
+                            ...prev,
+                            cash:
+                              selectedCurrency?.symbol +
+                              " " +
+                              Number(e.target.value),
+                            change:
+                              Number(e.target.value) -
+                              selectedCurrency?.rate_multiplier * cart?.total,
+                          }));
                         }}
                         autoComplete="off"
                         type="text"
@@ -649,7 +665,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
                     (methods: any) => methods.method === "cash"
                   )[0]?.selected || transactProcess
                 }
-                className="w-[45%] h-10 rounded bg-cyan-750 hover:bg-cyan-800
+                className="w-[45%] h-10 rounded-sm bg-cyan-750 hover:bg-cyan-800
              transition-all font-medium text-xs text-white uppercase 
              disabled:cursor-not-allowed disabled:opacity-80 flex items-center justify-center"
               >
@@ -709,7 +725,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
                   });
                   openCheckout(false);
                 }}
-                className="w-[45%] h-10 rounded bg-cyan-750 hover:bg-cyan-800
+                className="w-[45%] h-10 rounded-sm bg-cyan-750 hover:bg-cyan-800
                 transition-all font-medium text-xs text-white uppercase 
                 disabled:cursor-not-allowed disabled:opacity-80 flex items-center justify-center"
               >

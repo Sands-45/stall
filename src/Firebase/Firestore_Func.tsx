@@ -345,39 +345,43 @@ const FirestoreFunc: FC = () => {
   //Fetch Inventory Data
   useEffect((): any => {
     return onSnapshot(inventoryRef, (snapshot: { docs: any[] }) => {
-      dispatch(
-        loadInventoryData(
-          [
-            ...snapshot.docs.map((doc: { data: () => any; id: any }) => ({
-              ...doc.data(),
-              id: doc.id,
-            })),
-          ]?.filter(
-            (data: any) =>
-              !inventory_data_queue?.find(
-                (inven: any) => inven?.id_two === data?.id_two && inven.deleted
-              )
+      if (onlineStatus) {
+        dispatch(
+          loadInventoryData(
+            [
+              ...snapshot.docs.map((doc: { data: () => any; id: any }) => ({
+                ...doc.data(),
+                id: doc.id,
+              })),
+            ]?.filter(
+              (data: any) =>
+                !inventory_data_queue?.find(
+                  (inven: any) =>
+                    inven?.id_two === data?.id_two && inven.deleted
+                )
+            )
           )
-        )
-      );
-      window.localStorage.setItem(
-        "inventory_data",
-        JSON.stringify(
-          [
-            ...snapshot.docs.map((doc: { data: () => any; id: any }) => ({
-              ...doc.data(),
-              id: doc.id,
-            })),
-          ]?.filter(
-            (data: any) =>
-              !inventory_data_queue?.find(
-                (inven: any) => inven?.id_two === data?.id_two && inven.deleted
-              )
+        );
+        window.localStorage.setItem(
+          "inventory_data",
+          JSON.stringify(
+            [
+              ...snapshot.docs.map((doc: { data: () => any; id: any }) => ({
+                ...doc.data(),
+                id: doc.id,
+              })),
+            ]?.filter(
+              (data: any) =>
+                !inventory_data_queue?.find(
+                  (inven: any) =>
+                    inven?.id_two === data?.id_two && inven.deleted
+                )
+            )
           )
-        )
-      );
+        );
+      }
     });
-  }, [dispatch,inventory_data_queue]);
+  }, [dispatch, inventory_data_queue]);
 
   return <></>;
 };

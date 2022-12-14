@@ -20,7 +20,7 @@
   select:-webkit-autofill:hover,
   select:-webkit-autofill:focus {
     border: inherit inherit inherit;
-    -webkit-text-fill-color: #ffffff;
+    -webkit-text-fill-color: #475569;
     color: inherit;
     -webkit-box-shadow: 0 0 0px 1000px inherit inset;
     transition: background-color 5000s ease-in-out 0s;

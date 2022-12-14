@@ -10,10 +10,9 @@ import {
   MdLoyalty,
   MdOutlineStackedBarChart,
   MdAssignment,
-  MdLocalMall,
+  MdLocalMall,MdSupervisorAccount
 } from "react-icons/md";
 import {AiFillSetting} from "react-icons/ai"
-import {HiUserGroup} from "react-icons/hi"
 import { Link } from "react-router-dom";
 import { changeLocation } from "../../Redux/Slices/UserSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -71,7 +70,7 @@ const Portal: FC<Props> = () => {
             className="h-fit w-full outline-none focus:outline-none"
           >
             <div className="w-full h-full flex flex-col items-center justify-center space-y-4">
-              <div className="h-10 w-10 flex items-center justify-center rounded bg-orange-600 text-white text-xl">
+              <div className="h-10 w-10 flex items-center justify-center rounded bg-slate-600 text-white text-xl">
                 <MdPointOfSale />
               </div>
               <p className="text-base font-medium text-cyan-800 whitespace-nowrap">
@@ -124,8 +123,8 @@ const Portal: FC<Props> = () => {
         <div className="col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all duration-200 saturate-200 bg-cyan-50/60 overflow-hidden">
           <Link to="/app/customers" className="h-fit w-full outline-none focus:outline-none">
             <div className="w-full h-full flex flex-col items-center justify-center space-y-4">
-              <div className="h-10 w-10 flex items-center justify-center rounded bg-stone-900 text-white text-xl">
-                <HiUserGroup />
+              <div className="h-10 w-10 flex items-center justify-center rounded bg-teal-800 text-white text-xl">
+                <MdSupervisorAccount className="text-2xl" />
               </div>
               <p className="text-base font-medium text-cyan-800 whitespace-nowrap">
                 Customers
@@ -138,7 +137,7 @@ const Portal: FC<Props> = () => {
         <div className="col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all duration-200 saturate-200 bg-cyan-50/60 overflow-hidden">
           <Link to="/app/inventory" className="h-fit w-full outline-none focus:outline-none">
             <div className="w-full h-full flex flex-col items-center justify-center space-y-4">
-              <div className="h-10 w-10 flex items-center justify-center rounded bg-red-600 text-white text-xl">
+              <div className="h-10 w-10 flex items-center justify-center rounded bg-blue-600 text-white text-xl">
                 <MdAssignment />
               </div>
               <p className="text-base font-medium text-cyan-800 whitespace-nowrap">
@@ -152,7 +151,7 @@ const Portal: FC<Props> = () => {
         <div className="col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all duration-200 saturate-200 bg-cyan-50/60 overflow-hidden">
           <Link to="/app/online-store" className="h-fit w-full outline-none focus:outline-none">
             <div className="w-full h-full flex flex-col items-center justify-center space-y-4">
-              <div className="h-10 w-10 flex items-center justify-center rounded bg-indigo-600 text-white text-xl">
+              <div className="h-10 w-10 flex items-center justify-center rounded bg-slate-600 text-white text-xl">
                 <MdLocalMall />
               </div>
               <p className="text-base font-medium text-cyan-800 whitespace-nowrap">
@@ -166,7 +165,7 @@ const Portal: FC<Props> = () => {
         <div className="col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all duration-200 saturate-200 bg-cyan-50/60 overflow-hidden">
           <Link to="/app/settings" className="h-fit w-full outline-none focus:outline-none">
             <div className="w-full h-full flex flex-col items-center justify-center space-y-4">
-              <div className="h-10 w-10 flex items-center justify-center rounded bg-amber-600 text-white text-xl">
+              <div className="h-10 w-10 flex items-center justify-center rounded bg-cyan-800 text-white text-xl">
                 <AiFillSetting />
               </div>
               <p className="text-base font-medium text-cyan-800 whitespace-nowrap">

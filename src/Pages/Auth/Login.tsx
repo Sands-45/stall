@@ -178,6 +178,7 @@ const Login: FC<Props> = () => {
             </label>
             <label htmlFor="password">
               <input
+              autoComplete="off"
                 type="password"
                 name="password"
                 id="password"

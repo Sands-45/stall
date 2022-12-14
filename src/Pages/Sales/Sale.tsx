@@ -1,6 +1,6 @@
 import { FC } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
 import { numberWithSpaces } from "../../Reusable Functions/Functions";
 import { parkSales } from "../../Redux/Slices/SalesSlice";
@@ -11,9 +11,20 @@ type Props = {
   currentView: string;
   markedArray: any;
   markItem: any;
+  setActions: any;
+  setCurrentSale: any;
+  currentSale: any;
 };
 
-const Sale: FC<Props> = ({ sales, currentView, markedArray, markItem }) => {
+const Sale: FC<Props> = ({
+  sales,
+  currentView,
+  markedArray,
+  markItem,
+  setActions,
+  setCurrentSale,
+  currentSale,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const selectedCurrency = useSelector(
@@ -26,6 +37,37 @@ const Sale: FC<Props> = ({ sales, currentView, markedArray, markItem }) => {
     (state: RootState) => state.NotificationsData.alerts
   );
 
+  const saleClickFunc = (sale: any) => {
+    if (currentView === "parked sales") {
+      window.localStorage.setItem("cart", JSON.stringify(sale));
+      //Update State
+      dispatch(
+        parkSales([
+          ...(parked_sales?.length >= 1
+            ? parked_sales?.filter(
+                (record: any) => record?.transact_id !== sale?.transact_id
+              )
+            : []),
+        ])
+      );
+      //Save Data Locally
+      window.localStorage.setItem(
+        "parked_sales",
+        JSON.stringify([
+          ...(parked_sales?.length >= 1
+            ? parked_sales?.filter(
+                (record: any) => record?.transact_id !== sale?.transact_id
+              )
+            : []),
+        ])
+      );
+      navigate("/app");
+    } else {
+      setActions(true);
+      setCurrentSale(sale);
+    }
+  };
+
   //component
   return (
     <>
@@ -34,10 +76,12 @@ const Sale: FC<Props> = ({ sales, currentView, markedArray, markItem }) => {
           return (
             <div
               key={sale?.transact_id}
-              className="h-14 w-full border-b border-slate-200 grid grid-cols-12 gap-1 
-    cursor-pointer hover:bg-slate-50 transition-all"
+              className={`h-14 w-[99.5%] m-auto border-b border-slate-200 grid grid-cols-12 gap-1 
+    cursor-pointer hover:bg-slate-50 ${
+      currentSale?.transact_id === sale?.transact_id && "bg-slate-100"
+    } transition-all`}
             >
-              <div className="h-full col-span-1 overflow-hidden flex items-center justify-center text-ellipsis whitespace-nowrap">
+              <div className="h-full col-span-1 pr-2 overflow-hidden flex items-center justify-center text-ellipsis whitespace-nowrap">
                 <input
                   type="checkbox"
                   name="select_all"
@@ -81,40 +125,14 @@ const Sale: FC<Props> = ({ sales, currentView, markedArray, markItem }) => {
                 />
               </div>
               <div
-              onClick={() => {
-                if (currentView === "parked sales") {
-                  window.localStorage.setItem("cart", JSON.stringify(sale));
-                  //Update State
-                  dispatch(
-                    parkSales([
-                      ...(parked_sales?.length >= 1
-                        ? parked_sales?.filter(
-                            (record: any) =>
-                              record?.transact_id !== sale?.transact_id
-                          )
-                        : []),
-                    ])
-                  );
-                  //Save Data Locally
-                  window.localStorage.setItem(
-                    "parked_sales",
-                    JSON.stringify([
-                      ...(parked_sales?.length >= 1
-                        ? parked_sales?.filter(
-                            (record: any) =>
-                              record?.transact_id !== sale?.transact_id
-                          )
-                        : []),
-                    ])
-                  );
-                  navigate("/app");
-                }
-              }}
-                className="h-full col-span-3 overflow-hidden px-2 flex items-center 
+                onClick={() => {
+                  saleClickFunc(sale);
+                }}
+                className="h-full col-span-2 overflow-hidden px-2 flex items-center 
           text-xs text-slate-500 font-semibold text-ellipsis whitespace-nowrap"
               >
                 <div
-                  className="h-9 w-9 rounded bg-slate-200 flex items-center justify-center text-base uppercase
+                  className="h-9 w-9 rounded bg-slate-200 text-cyan-800 flex items-center justify-center text-base uppercase
         border border-slate-300"
                 >
                   {sale?.customers_details?.name
@@ -127,7 +145,7 @@ const Sale: FC<Props> = ({ sales, currentView, markedArray, markItem }) => {
                       ? sale?.customers_details?.name
                       : "Unkown Customer"}
                   </span>
-                  <span className="font-medium text-[0.65rem] lowercase text-slate-400 w-full whitespace-nowrap overflow-hidden text-ellipsis">
+                  <span className="font-medium text-[0.7rem] lowercase text-slate-400 w-full whitespace-nowrap overflow-hidden text-ellipsis">
                     {sale?.customers_details?.email
                       ? sale?.customers_details?.email
                       : "no email"}
@@ -135,119 +153,46 @@ const Sale: FC<Props> = ({ sales, currentView, markedArray, markItem }) => {
                 </div>
               </div>
               <div
-              onClick={() => {
-                if (currentView === "parked sales") {
-                  window.localStorage.setItem("cart", JSON.stringify(sale));
-                  //Update State
-                  dispatch(
-                    parkSales([
-                      ...(parked_sales?.length >= 1
-                        ? parked_sales?.filter(
-                            (record: any) =>
-                              record?.transact_id !== sale?.transact_id
-                          )
-                        : []),
-                    ])
-                  );
-                  //Save Data Locally
-                  window.localStorage.setItem(
-                    "parked_sales",
-                    JSON.stringify([
-                      ...(parked_sales?.length >= 1
-                        ? parked_sales?.filter(
-                            (record: any) =>
-                              record?.transact_id !== sale?.transact_id
-                          )
-                        : []),
-                    ])
-                  );
-                  navigate("/app");
-                }
-              }}
+                onClick={() => {
+                  saleClickFunc(sale);
+                }}
                 className="h-full col-span-3 overflow-hidden flex flex-col px-2 justify-center space-y-0 
           text-xs text-slate-500 font-semibold text-ellipsis whitespace-nowrap uppercase"
               >
                 <span className="font-medium text-xs capitalize w-full whitespace-nowrap overflow-hidden text-ellipsis">
                   {new Date(sale?.date)?.toString()?.split("(")[0]}
                 </span>
-                <span className="font-medium text-[0.65rem] upperrcase text-slate-400 w-full whitespace-nowrap overflow-hidden text-ellipsis">
-                  ID - {sale?.transact_id}
+                <span className="font-medium text-[0.7rem] upperrcase text-slate-400 w-full whitespace-nowrap overflow-hidden text-ellipsis">
+                  {sale?.transact_id}
                 </span>
               </div>
               <div
-              onClick={() => {
-                if (currentView === "parked sales") {
-                  window.localStorage.setItem("cart", JSON.stringify(sale));
-                  //Update State
-                  dispatch(
-                    parkSales([
-                      ...(parked_sales?.length >= 1
-                        ? parked_sales?.filter(
-                            (record: any) =>
-                              record?.transact_id !== sale?.transact_id
-                          )
-                        : []),
-                    ])
-                  );
-                  //Save Data Locally
-                  window.localStorage.setItem(
-                    "parked_sales",
-                    JSON.stringify([
-                      ...(parked_sales?.length >= 1
-                        ? parked_sales?.filter(
-                            (record: any) =>
-                              record?.transact_id !== sale?.transact_id
-                          )
-                        : []),
-                    ])
-                  );
-                  navigate("/app");
-                }
-              }}
+                onClick={() => {
+                  saleClickFunc(sale);
+                }}
                 className="h-full col-span-2 overflow-hidden flex flex-col px-2 justify-center space-y-0 
           text-xs text-slate-500 font-semibold text-ellipsis whitespace-nowrap uppercase"
               >
                 <span className="font-medium text-xs capitalize w-full whitespace-nowrap overflow-hidden text-ellipsis">
-                  {sale?.sale_channel}
+                  {sale?.payment_method
+                    ? sale?.payment_method + " payment"
+                    : "no payment"}
                 </span>
-                <span className="font-medium text-[0.65rem] capitalize text-slate-400 w-full whitespace-nowrap overflow-hidden text-ellipsis">
-                  {sale?.service}
+                <span className="font-medium text-[0.7rem] capitalize text-slate-400 w-full whitespace-nowrap overflow-hidden text-ellipsis">
+                  {sale?.service} - {sale?.sale_channel}
                 </span>
               </div>
               <div
-              onClick={() => {
-                if (currentView === "parked sales") {
-                  window.localStorage.setItem("cart", JSON.stringify(sale));
-                  //Update State
-                  dispatch(
-                    parkSales([
-                      ...(parked_sales?.length >= 1
-                        ? parked_sales?.filter(
-                            (record: any) =>
-                              record?.transact_id !== sale?.transact_id
-                          )
-                        : []),
-                    ])
-                  );
-                  //Save Data Locally
-                  window.localStorage.setItem(
-                    "parked_sales",
-                    JSON.stringify([
-                      ...(parked_sales?.length >= 1
-                        ? parked_sales?.filter(
-                            (record: any) =>
-                              record?.transact_id !== sale?.transact_id
-                          )
-                        : []),
-                    ])
-                  );
-                  navigate("/app");
-                }
-              }}
+                onClick={() => {
+                  saleClickFunc(sale);
+                }}
                 className="h-full col-span-2 overflow-hidden px-2 flex items-center 
           text-xs text-slate-500 font-semibold text-ellipsis whitespace-nowrap uppercase"
               >
                 <div
+                  onClick={() => {
+                    saleClickFunc(sale);
+                  }}
                   className={`h-6 w-fit px-4 rounded-full 
         border flex items-center justify-center capitalize
          text-[0.6rem] font-medium  ${
@@ -266,7 +211,7 @@ const Sale: FC<Props> = ({ sales, currentView, markedArray, markItem }) => {
                 </div>
               </div>
               <div
-                className="h-full col-span-1 overflow-hidden px-2 flex items-center 
+                className="h-full col-span-2 overflow-hidden px-2 flex items-center 
           text-xs text-slate-500 font-semibold text-ellipsis whitespace-nowrap uppercase"
               >
                 {selectedCurrency?.symbol}&nbsp;

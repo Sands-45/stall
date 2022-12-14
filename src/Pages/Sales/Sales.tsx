@@ -12,6 +12,7 @@ import no_sales from "../../Assets/no_sales.png";
 import { Link } from "react-router-dom";
 import { parkSales } from "../../Redux/Slices/SalesSlice";
 import ActionPanel from "../../Components/Misc/ActionPanel";
+import SaleActions from "./SaleActions";
 
 type Props = {};
 
@@ -97,6 +98,16 @@ const Sales: FC<Props> = () => {
             )
             ?.includes(
               searchValue?.toString()?.toLowerCase()?.replace(/\s/gim, "")
+            ) ||
+          data?.products
+            ?.map((prod: any) =>
+              prod?.prod_obj?.payment_method
+                ?.toString()
+                ?.toLowerCase()
+                ?.replace(/\s/gim, "")
+            )
+            ?.includes(
+              searchValue?.toString()?.toLowerCase()?.replace(/\s/gim, "")
             )
       ),
     ]?.sort((a: any, b: any) => (a[sortBy] > b[sortBy] ? -1 : 1));
@@ -104,6 +115,8 @@ const Sales: FC<Props> = () => {
   const [markedArray, markItem] = useState<any[]>([]);
   const dispatch = useDispatch();
   const [openPanel, setActionPanel] = useState<boolean>(false);
+  const [showActions, setActions] = useState<boolean>(false);
+  const [currentSale, setCurrentSale] = useState<any>();
 
   //Delete parked cart
   const deleteParked = () => {
@@ -142,7 +155,7 @@ const Sales: FC<Props> = () => {
         {/**Top Nav ============ */}
         <div className="h-10 w-full flex items-center justify-between">
           <div className="w-fit h-full flex items-center space-x-4">
-            {markedArray?.length >= 1 && (
+            {markedArray?.length >= 1 && currentView === "parked sales" && (
               <button
                 onClick={() => {
                   setActionPanel(true);
@@ -275,6 +288,19 @@ const Sales: FC<Props> = () => {
                 >
                   sales channel
                 </button>
+                <button
+                  onClick={() => {
+                    setSort("payment method");
+                    window.localStorage.setItem(
+                      "salesSort",
+                      JSON.stringify("payment method")
+                    );
+                  }}
+                  className="w-full h-8 outline-none focus:outline-none px-1 text-xs text-slate-500 font-medium
+            hover:transition-all hover:bg-white last:border-0 border-b border-slate-300 text-left capitalize"
+                >
+                  Payment Method
+                </button>
               </div>
             </div>
           </div>
@@ -283,7 +309,7 @@ const Sales: FC<Props> = () => {
 
         {/**Sales Table */}
         <div className="w-full h-[calc(100%-2.5rem)] bg-white rounded overflow-hidden">
-          <div className="h-12 w-full bg-slate-50 border-b border-slate-200 grid grid-cols-12 gap-1">
+          <div className="h-12 w-full bg-slate-100 border-b border-slate-200 grid grid-cols-12 gap-1 text-cyan-900/80">
             <div className="h-full col-span-1 overflow-hidden px-1 flex items-center justify-center text-ellipsis whitespace-nowrap">
               <input
                 type="checkbox"
@@ -306,32 +332,32 @@ const Sales: FC<Props> = () => {
               />
             </div>
             <div
-              className="h-full col-span-3 overflow-hidden px-1 flex items-center 
-          text-xs text-slate-500 font-semibold text-ellipsis whitespace-nowrap uppercase"
+              className="h-full col-span-2 overflow-hidden px-1 flex items-center 
+          text-xs font-semibold text-ellipsis whitespace-nowrap uppercase"
             >
-              customers
+              customer's Name
             </div>
             <div
               className="h-full col-span-3 overflow-hidden px-1 flex items-center 
-          text-xs text-slate-500 font-semibold text-ellipsis whitespace-nowrap uppercase"
+          text-xs font-semibold text-ellipsis whitespace-nowrap uppercase"
             >
               payment date
             </div>
             <div
-              className="h-full col-span-2 overflow-hidden px-1 flex items-center 
-          text-xs text-slate-500 font-semibold text-ellipsis whitespace-nowrap uppercase"
+              className="h-full col-span-2 overflow-hidden flex items-center 
+          text-xs font-semibold text-ellipsis whitespace-nowrap uppercase"
             >
-              Channel
+              Payment Method
             </div>
             <div
               className="h-full col-span-2 overflow-hidden flex items-center 
-          text-xs text-slate-500 font-semibold text-ellipsis whitespace-nowrap uppercase"
+          text-xs font-semibold text-ellipsis whitespace-nowrap uppercase"
             >
-              Sale Status
+              Status
             </div>
             <div
-              className="h-full col-span-1 overflow-hidden flex items-center 
-          text-xs text-slate-500 font-semibold text-ellipsis whitespace-nowrap uppercase"
+              className="h-full col-span-2 overflow-hidden flex items-center 
+          text-xs font-semibold text-ellipsis whitespace-nowrap uppercase"
             >
               Amount
             </div>
@@ -343,6 +369,9 @@ const Sales: FC<Props> = () => {
                 currentView={currentView}
                 markItem={markItem}
                 markedArray={markedArray}
+                setActions={setActions}
+                setCurrentSale={setCurrentSale}
+                currentSale={currentSale}
               />
               {sales?.length <= 0 && (
                 <div className="w-full h-full flex flex-col items-center justify-center space-y-6">
@@ -371,6 +400,15 @@ const Sales: FC<Props> = () => {
         </div>
       </div>
 
+      {/**Sales Actions Overlay */}
+      {showActions && currentSale && (
+        <SaleActions
+          showActions={showActions}
+          setActions={setActions}
+          setCurrentSale={setCurrentSale}
+          currentSale={currentSale}
+        />
+      )}
       {/**Delete Action Prompt */}
       <ActionPanel
         openPanel={openPanel}
