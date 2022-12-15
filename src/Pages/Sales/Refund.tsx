@@ -128,7 +128,12 @@ const Refund: FC<Props> = ({ showRefund, openRefund, currentSale }) => {
                 refund amount
               </span>
               <input
-                type="text"
+                max={
+                  selectedCurrency?.rate_multiplier * Number(currentSale?.total)
+                }
+                min={0}
+                step="0.01"
+                type="number"
                 name="amount"
                 id="amount"
                 required

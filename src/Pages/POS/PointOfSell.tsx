@@ -1,11 +1,12 @@
 import { FC, useState, useMemo, useEffect } from "react";
 import {
   TbSearch,
-  TbQrcode,
+  TbScan,
   TbCheck,
   TbChevronLeft,
   TbChevronRight,
 } from "react-icons/tb";
+import { HiOutlineCollection } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootState } from "../../Redux/store";
@@ -14,6 +15,8 @@ import pos_empty from "../../Assets/pos_empty.png";
 import ProductPreview from "./ProductPreview";
 import Cart from "./Cart";
 import CheckOut from "./CheckOut";
+import CashFloat from "./CashFloat";
+import Authorize from "../../Components/Authorize/Authorize";
 
 type Props = {};
 
@@ -70,6 +73,18 @@ const PointOfSell: FC<Props> = () => {
   const [quantity, setQuantity] = useState<number>(1);
   const [customization, setCustomization] = useState<any>([]);
   const [isCheckout, openCheckout] = useState<boolean>(false);
+  const [openFloat, setFloatOpen] = useState<boolean>(false);
+  const [showAuthorize, setAuthorize] = useState<boolean>(false);
+
+  //Open Float with Auth Funct
+  const authFloat = (value: any) => {
+    if (value) {
+      setFloatOpen(true);
+      setAuthorize(false);
+    } else {
+      setFloatOpen(false);
+    }
+  };
 
   //Save Cart Changes Locally
   useEffect(() => {
@@ -88,11 +103,11 @@ const PointOfSell: FC<Props> = () => {
         <div className="h-full w-[calc(100%-23rem)] py-4">
           <div className="h-full w-full flex flex-col space-y-4">
             <div
-              className="h-12 w-full bg-white rounded
-          grid grid-cols-10 overflow-hidden"
+              className="h-12 w-full
+          flex items-center justify-between overflow-hidden"
             >
               {/** Search */}
-              <div className="h-full col-span-8 relative">
+              <div className="h-full w-[calc(100%-18rem)] relative">
                 <TbSearch className="absolute text-xl text-slate-500 top-3.5 left-2.5" />
                 <input
                   onChange={(e) => {
@@ -103,18 +118,30 @@ const PointOfSell: FC<Props> = () => {
                   type="search"
                   name="point_of_sale_main_search"
                   id="point_of_sale_main_search"
-                  className="h-full w-full rounded rounded-r-none p-2 px-3 pl-9 text-xs text-slate-600 placeholder:text-slate-400
+                  className="h-full w-full rounded p-2 px-3 pl-9 text-xs text-slate-600 placeholder:text-slate-400
               border-slate-300 focus:border-cyan-750 focus:ring-0"
                   placeholder="Quick Search ..."
                 />
               </div>
               <button
-                className="col-span-2 h-full bg-slate-100
-             border border-l-0 border-slate-300 rounded rounded-l-none flex items-center justify-center
+                className="w-28 h-full bg-slate-50
+             border border-slate-300 rounded-sm flex items-center justify-center focus:outline-none
              space-x-3 text-slate-600 hover:bg-cyan-750 hover:text-white transition-all"
               >
                 <span className="uppercase font-medium text-xs">Scan</span>
-                <TbQrcode className="text-xl" />
+                <TbScan className="text-xl" />
+              </button>
+              <button
+                onClick={() => {
+                  setAuthorize(true);
+                }}
+                className="w-40 h-11 bg-cyan-750 focus:outline-none rounded-sm flex items-center justify-center
+             space-x-3 text-white hover:bg-cyan-800 transition-all"
+              >
+                <span className="uppercase font-medium text-xs">
+                  Cash Float
+                </span>
+                <HiOutlineCollection className="text-xl" />
               </button>
             </div>
             {/** Categories */}
@@ -136,8 +163,8 @@ const PointOfSell: FC<Props> = () => {
                   )
                 )?.length <= 0 && (
                   <button
-                    className={`h-full w-fit px-3 bg-slate-50 rounded border text-[0.65rem]
-              uppercase font-medium border-slate-300 text-slate-400 hover:text-cyan-750 hover:border-cyan-750 flex 
+                    className={`h-full w-fit px-3 bg-white rounded border text-[0.65rem]
+              uppercase font-medium border-slate-300 text-slate-500 hover:text-cyan-750 hover:border-cyan-750 flex 
              items-center space-x-1 transition-all`}
                   >
                     <span className="whitespace-nowrap">no categories</span>{" "}
@@ -173,7 +200,7 @@ const PointOfSell: FC<Props> = () => {
                           }
                         }}
                         key={cat}
-                        className={`h-full w-fit px-3 bg-slate-50 rounded border text-[0.65rem]
+                        className={`h-full w-fit px-3 bg-white rounded border text-[0.65rem]
               uppercase font-medium ${
                 selectedCategory?.some((data: any) =>
                   data
@@ -182,7 +209,7 @@ const PointOfSell: FC<Props> = () => {
                     ?.includes(cat?.toString()?.toLowerCase())
                 )
                   ? "text-cyan-750 border-cyan-750 pl-1"
-                  : "border-slate-300 text-slate-400"
+                  : "border-slate-300 text-slate-500"
               } hover:text-cyan-750 hover:border-cyan-750 flex 
              items-center space-x-1 transition-all`}
                       >
@@ -218,7 +245,7 @@ const PointOfSell: FC<Props> = () => {
             {/** Products */}
             {inventory_data?.length >= 1 ? (
               <div
-                className="w-fill h-[calc(100%-5.5rem)] rounded bg-white p-4 
+                className="w-fill h-[calc(100%-5.5rem)] rounded bg-slate-50 p-4 
           overflow-hidden overflow-y-scroll no-scrollbar no-scrollbar::-webkit-scrollbar grid
            grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 gap-4 auto-rows-min"
               >
@@ -294,6 +321,17 @@ const PointOfSell: FC<Props> = () => {
         cart={cart}
         isCheckout={isCheckout}
         openCheckout={openCheckout}
+      />
+
+      {/**Flaot */}
+      <CashFloat openFloat={openFloat} setFloatOpen={setFloatOpen} />
+
+      {/**Auth */}
+      <Authorize
+        showAuthorize={showAuthorize}
+        setAuthorize={setAuthorize}
+        passedAuthFunc={authFloat}
+        showReason={false}
       />
     </>
   );

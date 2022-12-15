@@ -292,10 +292,11 @@ const Cart: FC<Props> = ({
                 openCheckout(true);
               }}
               disabled={cart?.products?.length <= 0 || !cart?.products}
-              className="h-10 w-full bg-cyan-750 hover:bg-cyan-800 transition-all rounded-sm
-            text-white text-xs uppercase font-medium disabled:cursor-not-allowed disabled:opacity-70"
+              className="h-11 w-full bg-cyan-750 hover:bg-cyan-800 transition-all rounded-sm
+            text-white text-xs uppercase font-medium disabled:cursor-not-allowed disabled:opacity-70
+            flex items-center justify-center space-x-4"
             >
-              check-out
+             <span>check-out</span>  <strong>{cart?.products?.length}</strong>
             </button>
           </div>
         </div>
