@@ -204,8 +204,8 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
             ),
             {
               ...openFloat,
-              total: (cart?.total + parseFloat(openFloat?.total))?.toFixed(2),
-              gross: (cart?.total + parseFloat(openFloat?.gross))?.toFixed(2),
+              total: (cart?.total + Number(openFloat?.total)),
+              gross: (cart?.total + Number(openFloat?.gross)),
               activities: [
                 ...openFloat?.activities,
                 {
@@ -228,8 +228,8 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
             ),
             {
               ...openFloat,
-              total: (cart?.total + parseFloat(openFloat?.total))?.toFixed(2),
-              gross: (cart?.total + parseFloat(openFloat?.gross))?.toFixed(2),
+              total: (cart?.total + Number(openFloat?.total)),
+              gross: (cart?.total + Number(openFloat?.gross)),
               activities: [
                 ...openFloat?.activities,
                 {
@@ -788,10 +788,10 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
           </>
         ) : (
           <div className="w-full h-full flex flex-col items-center justify-center space-y-6">
-            <div className="h-14 w-14 rounded-full bg-green-200 p-2">
+            <div className="h-20 w-20 rounded-full bg-green-200 p-2">
               <div
                 className="h-full w-full rounded-full bg-green-600 drop-shadow-lg
-              flex items-center justify-center text-xl text-white transition-all duration-200"
+              flex items-center justify-center text-2xl text-white transition-all duration-200"
               >
                 <TbChecks />
               </div>

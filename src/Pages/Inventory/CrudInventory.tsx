@@ -128,7 +128,7 @@ const CrudInventory: FC<Props> = ({
                         currrency?.name?.toLowerCase() ===
                         amountCurrency?.name?.toLowerCase()
                     )[0]?.rate_multiplier
-                  )?.toFixed(2)
+                  )
                 : stockObj?.price_in_usd,
             last_editedAt: new Date().getTime(),
           },
@@ -152,7 +152,7 @@ const CrudInventory: FC<Props> = ({
                         currrency?.name?.toLowerCase() ===
                         amountCurrency?.name?.toLowerCase()
                     )[0]?.rate_multiplier
-                  )?.toFixed(2)
+                  )
                 : stockObj?.price_in_usd,
             last_editedAt: new Date().getTime(),
           },
@@ -175,7 +175,7 @@ const CrudInventory: FC<Props> = ({
                         currrency?.name?.toLowerCase() ===
                         amountCurrency?.name?.toLowerCase()
                     )[0]?.rate_multiplier
-                  )?.toFixed(2)
+                  )
                 : stockObj?.price_in_usd,
             last_editedAt: new Date().getTime(),
           },
@@ -198,7 +198,7 @@ const CrudInventory: FC<Props> = ({
                         currrency?.name?.toLowerCase() ===
                         amountCurrency?.name?.toLowerCase()
                     )[0]?.rate_multiplier
-                  )?.toFixed(2)
+                  )
                 : stockObj?.price_in_usd,
             last_editedAt: new Date().getTime(),
           },
@@ -221,7 +221,7 @@ const CrudInventory: FC<Props> = ({
                         currrency?.name?.toLowerCase() ===
                         amountCurrency?.name?.toLowerCase()
                     )[0]?.rate_multiplier
-                  )?.toFixed(2)
+                  )
                 : stockObj?.price_in_usd,
             id_two: uniqueID(),
             last_editedAt: new Date().getTime(),
@@ -243,7 +243,7 @@ const CrudInventory: FC<Props> = ({
                         currrency?.name?.toLowerCase() ===
                         amountCurrency?.name?.toLowerCase()
                     )[0]?.rate_multiplier
-                  )?.toFixed(2)
+                  )
                 : stockObj?.price_in_usd,
             id_two: uniqueID(),
             last_editedAt: new Date().getTime(),
@@ -265,7 +265,7 @@ const CrudInventory: FC<Props> = ({
                         currrency?.name?.toLowerCase() ===
                         amountCurrency?.name?.toLowerCase()
                     )[0]?.rate_multiplier
-                  )?.toFixed(2)
+                  )
                 : stockObj?.price_in_usd,
             id_two: uniqueID(),
             last_editedAt: new Date().getTime(),
@@ -286,7 +286,7 @@ const CrudInventory: FC<Props> = ({
                         currrency?.name?.toLowerCase() ===
                         amountCurrency?.name?.toLowerCase()
                     )[0]?.rate_multiplier
-                  )?.toFixed(2)
+                  )
                 : stockObj?.price_in_usd,
             id_two: uniqueID(),
             last_editedAt: new Date().getTime(),

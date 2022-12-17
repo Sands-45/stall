@@ -296,7 +296,7 @@ const Cart: FC<Props> = ({
             text-white text-xs uppercase font-medium disabled:cursor-not-allowed disabled:opacity-70
             flex items-center justify-center space-x-4"
             >
-             <span>check-out</span>  <strong>{cart?.products?.length}</strong>
+             <span>check-out</span>  <strong className="text-sm">{cart?.products?.length}</strong>
             </button>
           </div>
         </div>

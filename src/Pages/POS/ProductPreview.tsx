@@ -86,8 +86,8 @@ const ProductPreview: FC<Props> = ({
      justify-center bg-cyan-750/40 overflow-hidden overflow-y-scroll`}
     >
       <div
-        className="w-[35rem] h-[25rem] bg-white rounded-md relative p-4 
-      grid grid-cols-5 gap-4"
+        className="w-[45rem] h-[30rem] bg-white rounded-md relative p-4 
+      grid grid-cols-4 gap-4"
       >
         {/**Close Btn */}
         <button
@@ -103,14 +103,14 @@ const ProductPreview: FC<Props> = ({
             setCustomization([]);
             setPreview(false);
           }}
-          className="absolute -top-3 -right-3 h-7 w-7 rounded-sm
+          className="absolute -top-3 -right-3 h-7 w-7 rounded
          bg-cyan-750 hover:bg-red-600 border border-white transition-all text-white text-sm"
         >
           &times;
         </button>
 
         {/**images  Prev*/}
-        <div className="col-span-3 w-full h-full grid grid-rows-6 gap-2 overflow-hidden">
+        <div className="col-span-2 w-full h-full grid grid-rows-6 gap-2 overflow-hidden">
           <img
             onError={(e) => {
               e.currentTarget.src = no_gallery;
@@ -151,7 +151,7 @@ const ProductPreview: FC<Props> = ({
             className="w-full h-full overflow-hidden flex flex-col 
            space-y-4 pt-6"
           >
-            <div className="w-full h-hit flex items-center pb-2 border-b-2 border-slate-200">
+            <div className="w-full h-hit flex items-center pb-2 border-b border-slate-200">
               <span
                 className="text-xs font-semibold text-slate-600 
                 whitespace-nowrap overflow-hidden text-ellipsis uppercase w-[60%]"
@@ -159,7 +159,7 @@ const ProductPreview: FC<Props> = ({
                 {product_obj?.name}
               </span>
               <small
-                className="text-[0.65rem] font-medium text-slate-500 
+                className="text-[0.7rem] font-medium text-slate-500 
                 whitepsace-nowrap  w-[40%] text-end overflow-hidden text-ellipsis"
               >
                 In Stock [
@@ -171,7 +171,7 @@ const ProductPreview: FC<Props> = ({
             </div>
             <p
               className="text-xs font-normal text-slate-400 overflow-hidden
-             text-ellipsis h-[4rem] w-full p-2 rounded border-dashed border-2 border-slate-200"
+             text-ellipsis h-[6rem] w-full p-2 rounded border-dashed border-2 border-slate-200"
             >
               {product_obj?.description}
             </p>
@@ -180,13 +180,13 @@ const ProductPreview: FC<Props> = ({
           flex flex-col"
             >
               <div
-                className="text-xs h-7 w-full font-semibold text-slate-500 
-                whitepsace-nowrap overflow-hidden text-ellipsis uppercase border-b-2 border-slate-200"
+                className="text-xs h-6 w-full font-semibold text-slate-500 
+                whitepsace-nowrap overflow-hidden text-ellipsis uppercase border-b border-slate-200"
               >
                 Customazation
               </div>
                 <div
-                  className="w-full h-[7.5rem] flex flex-col space-y-2 pt-2"
+                  className="w-full h-[10rem] flex flex-col space-y-2 pt-2 pr-2 mt-2 overflow-hidden overflow-y-scroll"
                 >
                   {product_obj?.customization_option?.length >= 1 &&product_obj?.customization_option?.map((cust: any) => {
                     return (
@@ -342,10 +342,10 @@ const ProductPreview: FC<Props> = ({
                 setCustomization([]);
                 setPreview(false);
               }}
-              className="h-9 w-9 rounded flex items-center justify-center space-x-2
-           bg-cyan-750 text-white text-xs font-medium capitalize"
+              className="h-9 w-32 rounded flex items-center justify-center space-x-2
+           bg-cyan-750 text-white text-xs font-medium uppercase hover:bg-cyan-800 transition-all"
             >
-              <TbShoppingCartPlus className="text-base" />
+             <span> Add to cart</span> <TbShoppingCartPlus className="text-base" />
             </button>
           </div>
         </div>

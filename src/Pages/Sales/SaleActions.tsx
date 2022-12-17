@@ -114,11 +114,11 @@ const SaleActions: FC<Props> = ({
               {
                 ...openFloat,
                 total: (
-                  parseFloat(openFloat?.total) - currentSale?.total
-                )?.toFixed(2),
+                  Number(openFloat?.total) - currentSale?.total
+                ),
                 gross: (
-                  parseFloat(openFloat?.gross) - currentSale?.total
-                )?.toFixed(2),
+                  Number(openFloat?.gross) - currentSale?.total
+                ),
                 activities: [
                   ...openFloat?.activities,
                   {
@@ -142,11 +142,11 @@ const SaleActions: FC<Props> = ({
               {
                 ...openFloat,
                 total: (
-                  parseFloat(openFloat?.total) - currentSale?.total
-                )?.toFixed(2),
+                  Number(openFloat?.total) - currentSale?.total
+                ),
                 gross: (
-                  parseFloat(openFloat?.gross) - currentSale?.total
-                )?.toFixed(2),
+                  Number(openFloat?.gross) - currentSale?.total
+                ),
                 activities: [
                   ...openFloat?.activities,
                   {
