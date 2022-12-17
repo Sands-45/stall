@@ -27,6 +27,7 @@ import {
 } from "../../Redux/Slices/UserSlice";
 import { AppDispatch, RootState } from "../../Redux/store";
 import { crypt } from "../../Custom Functions/Functions";
+import {TbSearch} from "react-icons/tb";
 
 // Initialize Firebase for auth======================
 initializeApp(firebaseConfig);
@@ -257,9 +258,11 @@ const Login: FC<Props> = () => {
               onChange={(e) => {
                 setSearch(e.target.value);
               }}
-              className="h-11 w-[27rem] p-2 px-4 login_input text-xs text-slate-700 rounded-full bg-white border border-cyan-900/50 focus:border-cyan-900/80 focus:ring-0 focus:outline-none"
+              className="h-11 w-[27rem] p-2 px-4 text-xs text-slate-700 placeholder:text-slate-400
+              rounded-full bg-white border border-cyan-900/50 focus:border-cyan-900/80 focus:ring-0 focus:outline-none"
             />
           </label>
+          <TbSearch className="absolute right-4 top-3 text-slate-500 text-lg"/>
         </div>
         <ul className="h-[20rem] w-[27rem] p-2 space-y-3 overflow-hidden overflow-y-scroll no-scrollbar no-scrollbar::-webkit-scrollbar">
           {saved_workspaces?.length >= 1 &&

@@ -16,7 +16,6 @@ import {
   loadInventoryData,
   updateLocalInventory_Changes,
 } from "../Redux/Slices/InventorySlice";
-import { updateAlert } from "../Redux/Slices/NotificationsSlice";
 
 // init services for firestore =========================
 export const db = getFirestore();
@@ -83,9 +82,6 @@ const FirestoreFunc: FC = () => {
   const inventory_data = useSelector(
     (state: RootState) => state.Inventory.inventory_data
   );
-  const alerts = useSelector(
-    (state: RootState) => state.NotificationsData.alerts
-  );
 
   //Listen For Offline and Online Changes
   useEffect(() => {
@@ -127,29 +123,7 @@ const FirestoreFunc: FC = () => {
                   ),
                 ])
               );
-              dispatch(
-                updateAlert([
-                  ...alerts,
-                  {
-                    message: "Successfull synced data to cloud",
-                    id: new Date().getTime(),
-                    color: "bg-green-200",
-                  },
-                ])
-              );
             })
-            .catch(() => {
-              dispatch(
-                updateAlert([
-                  ...alerts,
-                  {
-                    message: "Failed to sync data to cloud, a try will be made",
-                    id: new Date().getTime(),
-                    color: "bg-yellow-200",
-                  },
-                ])
-              );
-            });
         } else if (
           stock.edit &&
           !stock.deleted &&
@@ -175,29 +149,7 @@ const FirestoreFunc: FC = () => {
                   ),
                 ])
               );
-              dispatch(
-                updateAlert([
-                  ...alerts,
-                  {
-                    message: "Successfull synced data to cloud",
-                    id: new Date().getTime(),
-                    color: "bg-green-200",
-                  },
-                ])
-              );
             })
-            .catch(() => {
-              dispatch(
-                updateAlert([
-                  ...alerts,
-                  {
-                    message: "Failed to sync data to cloud, a try will be made",
-                    id: new Date().getTime(),
-                    color: "bg-yellow-200",
-                  },
-                ])
-              );
-            });
         } else if (!stock.id && stock.deleted) {
           window.localStorage.setItem(
             "inventory_changes_data",
@@ -212,16 +164,6 @@ const FirestoreFunc: FC = () => {
               ...inventory_data_queue?.filter(
                 (data: any) => data?.id_two !== stock?.id_two
               ),
-            ])
-          );
-          dispatch(
-            updateAlert([
-              ...alerts,
-              {
-                message: "Successfull synced data to cloud",
-                id: new Date().getTime(),
-                color: "bg-green-200",
-              },
             ])
           );
         } else if (stock?.deleted && stock?.id) {
@@ -242,29 +184,7 @@ const FirestoreFunc: FC = () => {
                   ),
                 ])
               );
-              dispatch(
-                updateAlert([
-                  ...alerts,
-                  {
-                    message: "Successfull synced data to cloud",
-                    id: new Date().getTime(),
-                    color: "bg-green-200",
-                  },
-                ])
-              );
             })
-            .catch(() => {
-              dispatch(
-                updateAlert([
-                  ...alerts,
-                  {
-                    message: "Failed to sync data to cloud, a try will be made",
-                    id: new Date().getTime(),
-                    color: "bg-yellow-200",
-                  },
-                ])
-              );
-            });
         } else if (
           (!stock.edit &&
             !stock.id &&
@@ -294,29 +214,7 @@ const FirestoreFunc: FC = () => {
                   ),
                 ])
               );
-              dispatch(
-                updateAlert([
-                  ...alerts,
-                  {
-                    message: "Successfull synced data to cloud",
-                    id: new Date().getTime(),
-                    color: "bg-green-200",
-                  },
-                ])
-              );
             })
-            .catch(() => {
-              dispatch(
-                updateAlert([
-                  ...alerts,
-                  {
-                    message: "Failed to sync data to cloud, a try will be made",
-                    id: new Date().getTime(),
-                    color: "bg-yellow-200",
-                  },
-                ])
-              );
-            });
         } else if (
           inventory_data?.filter(
             (data: any) => data?.id_two === stock?.id_two && data.id
@@ -340,7 +238,7 @@ const FirestoreFunc: FC = () => {
         }
       });
     }
-  }, [alerts, dispatch, inventory_data_queue, inventory_data, onlineStatus]);
+  }, [dispatch, inventory_data_queue, inventory_data, onlineStatus]);
 
   //Fetch Inventory Data
   useEffect((): any => {

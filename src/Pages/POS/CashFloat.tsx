@@ -312,10 +312,10 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
             >
               <label
                 htmlFor="float_add_amount"
-                className="col-span-1 h-8 overflow-hidden relative"
+                className="col-span-1 h-9 overflow-hidden relative"
               >
                 <span
-                  className="absolute top-1.5 left-4 text-sm text-slate-500 w-6 border-r overflow-hidden
+                  className="absolute top-2 left-4 text-sm text-slate-500 w-6 border-r overflow-hidden
                  text-ellipsis whitespace-nowrap"
                 >
                   {selectedCurrency?.symbol}
@@ -338,7 +338,7 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
                   focus:ring-0 focus:border-cyan-750 px-4 pl-12 text-sm text-slate-600 placeholder:text-slate-400"
                 />
               </label>
-              <div className="col-span-1 h-8 flex items-center justify-between">
+              <div className="col-span-1 h-9 flex items-center justify-between">
                 {cash_float?.length >= 1 &&
                 cash_float?.filter(
                   (data: any) => data?.status?.toLowerCase() === "open"

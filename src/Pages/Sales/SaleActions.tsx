@@ -418,34 +418,34 @@ const SaleActions: FC<Props> = ({
                 <ul className="mt-4 w-full h-fit flex flex-col py-2 space-y-1 border-dashed border-y border-slate-300">
                   <li className="w-full flex items-center justify-between">
                     <span className="text-xs text-slate-500 font-semibold">
-                      Tip
+                      Tip ({currentSale?.tip_percent??0}%)
                     </span>
                     <span className="text-xs text-slate-600 font-semibold">
-                      {selectedCurrency?.symbol}&nbsp;
-                      {currentSale?.tip_amount
-                        ? numberWithSpaces(
-                            (
-                              selectedCurrency?.rate_multiplier *
-                              currentSale?.tip_amount
-                            ).toFixed(2)
-                          )
-                        : "0.00"}
+                    {selectedCurrency?.symbol}&nbsp;
+                    {currentSale?.products?.length >= 1 && currentSale?.tip_amount
+                      ? numberWithSpaces(
+                          (
+                            selectedCurrency?.rate_multiplier *
+                            currentSale?.tip_amount
+                          ).toFixed(2)
+                        )
+                      : "0.00"}
                     </span>
                   </li>
                   <li className="w-full flex items-center justify-between">
                     <span className="text-xs text-slate-500 font-semibold">
-                      Discount
+                      Discount ({currentSale?.discount_percent??0}%)
                     </span>
                     <span className="text-xs text-slate-600 font-semibold">
                       {selectedCurrency?.symbol}&nbsp;
-                      {currentSale?.discount_amount
-                        ? numberWithSpaces(
-                            (
-                              selectedCurrency?.rate_multiplier *
-                              currentSale?.discount_amount
-                            ).toFixed(2)
-                          )
-                        : "0.00"}
+                    {currentSale?.products?.length >= 1 && currentSale?.discount_amount
+                      ? numberWithSpaces(
+                          (
+                            selectedCurrency?.rate_multiplier *
+                            currentSale?.discount_amount
+                          ).toFixed(2)
+                        )
+                      : "0.00"}
                     </span>
                   </li>
                   <li className="w-full flex items-center justify-between">

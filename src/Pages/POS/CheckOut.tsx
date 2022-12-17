@@ -63,6 +63,14 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
   const [change, calcChange] = useState<number>(0);
   const [transactProcess, startTransact] = useState<boolean>(false);
   const [showProcessDone, setProcessDone] = useState<boolean>(false);
+  const [discountObj, setDiscount] = useState<any>({
+    type: "amount",
+    value: "",
+  });
+  const [tipObj, setTip] = useState<any>({
+    type: "amount",
+    value: "",
+  });
 
   //Transact Func
   const createTransaction = () => {
@@ -204,8 +212,8 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
             ),
             {
               ...openFloat,
-              total: (cart?.total + Number(openFloat?.total)),
-              gross: (cart?.total + Number(openFloat?.gross)),
+              total: cart?.total + Number(openFloat?.total),
+              gross: cart?.total + Number(openFloat?.gross),
               activities: [
                 ...openFloat?.activities,
                 {
@@ -228,8 +236,8 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
             ),
             {
               ...openFloat,
-              total: (cart?.total + Number(openFloat?.total)),
-              gross: (cart?.total + Number(openFloat?.gross)),
+              total: cart?.total + Number(openFloat?.total),
+              gross: cart?.total + Number(openFloat?.gross),
               activities: [
                 ...openFloat?.activities,
                 {
@@ -405,22 +413,80 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
 
         {/**Discount */}
         <form
-          onSubmit={(e) => e.preventDefault()}
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (discountObj?.type === "amount") {
+              let value =
+                Number(discountObj?.value) / selectedCurrency?.rate_multiplier;
+              setCart((prev: any) => ({
+                ...prev,
+                total: prev?.total - value,
+                discount_type: discountObj?.type,
+                discount_amount: value,
+                discount_percent: ((value / prev?.total) * 100)?.toFixed(0),
+                discount_code: "none",
+              }));
+              e.currentTarget.reset();
+              setDiscount({
+                type: "amount",
+                value: "",
+              });
+            } else if (discountObj?.type === "percent") {
+              let value = (Number(discountObj?.value) / 100) * cart?.total;
+              setCart((prev: any) => ({
+                ...prev,
+                total: prev?.total - value,
+                discount_type: discountObj?.type,
+                discount_amount: value,
+                discount_percent: discountObj?.value,
+                discount_code: "none",
+              }));
+              e.currentTarget.reset();
+              setDiscount({
+                type: "amount",
+                value: "",
+              });
+            }
+          }}
           className="flex items-center justify-between"
         >
           <input
+            disabled={cart?.discount_amount > 0}
+            onChange={(e) => {
+              setDiscount((prev: any) => ({
+                ...prev,
+                value: Number(e.target.value?.replace(/%/gim, "")),
+              }));
+            }}
+            value={discountObj?.value}
             autoComplete="off"
             type="text"
             name="discount"
             id="discount"
-            placeholder="Discount code ..."
-            className="w-[80%] h-10 rounded rounded-r-none bg-slate-50 border border-slate-200 text-xs text-slate-600
-          placeholder:text-slate-400 px-3 focus:ring-0 focus:border-cyan-750 transition-all"
+            placeholder="Discount ..."
+            className="w-[calc(100%-12rem)] h-10 rounded rounded-r-none bg-slate-50 border border-slate-200 text-xs text-slate-600
+          placeholder:text-slate-400 px-3 focus:ring-0 focus:border-cyan-750 transition-all disabled:cursor-not-allowed"
           />
+          <select
+            disabled={cart?.discount_amount > 0}
+            onChange={(e) => {
+              setDiscount((prev: any) => ({
+                ...prev,
+                type: e.target.value,
+              }));
+            }}
+            className="h-10 w-28 border border-l-0 border-slate-200 bg-slate-50 text-xs text-slate-400
+          focus:ring-0  focus:border-cyan-750 transition-all overflow-hidden disabled:cursor-not-allowed"
+          >
+            <option value="amount">Amount</option>
+            <option value="percent">Percent</option>
+            <option value="code">Code</option>
+          </select>
           <button
+            disabled={cart?.discount_amount > 0}
             type="submit"
-            className="w-[20%] h-10 bg-cyan-750 text-[0.65rem] uppercase font-medium text-white rounded-r
-            hover:bg-cyan-800 transition-all"
+            className="w-20 h-10 bg-cyan-750 text-[0.65rem] uppercase font-medium text-white rounded-r
+            hover:bg-cyan-800 transition-all disabled:cursor-not-allowed"
           >
             Apply
           </button>
@@ -428,22 +494,75 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
 
         {/**Tip */}
         <form
-          onSubmit={(e) => e.preventDefault()}
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (tipObj?.type === "amount") {
+              let value =
+                Number(tipObj?.value) / selectedCurrency?.rate_multiplier;
+              setCart((prev: any) => ({
+                ...prev,
+                tip_type: tipObj?.type,
+                tip_amount: value,
+                tip_percent: ((value / prev?.total) * 100)?.toFixed(0),
+              }));
+              e.currentTarget.reset();
+              setTip({
+                type: "amount",
+                value: "",
+              });
+            } else if (tipObj?.type === "percent") {
+              let value = (Number(tipObj?.value) / 100) * cart?.total;
+              setCart((prev: any) => ({
+                ...prev,
+                tip_type: tipObj?.type,
+                tip_amount: value,
+                tip_percent: tipObj?.value,
+              }));
+              e.currentTarget.reset();
+              setTip({
+                type: "amount",
+                value: "",
+              });
+            }
+          }}
           className="flex items-center justify-between"
         >
           <input
+            disabled={cart?.tip_amount > 0}
+            onChange={(e) => {
+              setTip((prev: any) => ({
+                ...prev,
+                value: Number(e.target.value?.replace(/%/gim, "")),
+              }));
+            }}
+            value={tipObj?.value}
             autoComplete="off"
             type="text"
             name="tip"
             id="tip"
-            placeholder="Tip amount ..."
-            className="w-[80%] h-10 rounded rounded-r-none bg-slate-50 border border-slate-200 text-xs text-slate-600
-  placeholder:text-slate-400 px-3 focus:ring-0 focus:border-cyan-750 transition-all"
+            placeholder="Tip ..."
+            className="w-[calc(100%-12rem)] h-10 rounded rounded-r-none bg-slate-50 border border-slate-200 text-xs text-slate-600
+  placeholder:text-slate-400 px-3 focus:ring-0 focus:border-cyan-750 transition-all disabled:cursor-not-allowed"
           />
+          <select
+            disabled={cart?.tip_amount > 0}
+            onChange={(e) => {
+              setTip((prev: any) => ({
+                ...prev,
+                type: e.target.value,
+              }));
+            }}
+            className="h-10 w-28 border border-l-0 border-slate-200 bg-slate-50 text-xs text-slate-400
+          focus:ring-0  focus:border-cyan-750 transition-all overflow-hidden disabled:cursor-not-allowed"
+          >
+            <option value="amount">Amount</option>
+            <option value="percent">Percent</option>
+          </select>
           <button
+            disabled={cart?.tip_amount > 0}
             type="submit"
-            className="w-[20%] h-10 bg-cyan-750 text-[0.65rem] uppercase font-medium text-white rounded-r
-    hover:bg-cyan-800 transition-all"
+            className="w-20 h-10 bg-cyan-750 text-[0.65rem] uppercase font-medium text-white rounded-r
+    hover:bg-cyan-800 transition-all disabled:cursor-not-allowed"
           >
             apply
           </button>
@@ -509,24 +628,40 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
                   <span>email</span>
                 </div>
               </div>
-              <ul className="mt-2 w-full h-28 grid grid-rows-5 p-2 border-y border-slate-200">
-                <li className="row-span-1 w-full flex items-center justify-between">
+              <ul className="mt-2 w-full h-24 flex flex-col justify-between p-2 border-y border-slate-200">
+                <li className="h-8 w-full flex items-center justify-between">
                   <span className="text-xs text-slate-400 font-semibold">
-                    Tip
+                    Tip ({cart?.tip_percent}%)
                   </span>
                   <span className="text-xs text-slate-600 font-semibold">
-                    {selectedCurrency?.symbol}&nbsp;0.00
+                  {selectedCurrency?.symbol}&nbsp;
+                    {cart?.products?.length >= 1 && cart?.tip_amount
+                      ? numberWithSpaces(
+                          (
+                            selectedCurrency?.rate_multiplier *
+                            cart?.tip_amount
+                          ).toFixed(2)
+                        )
+                      : "0.00"}
                   </span>
                 </li>
-                <li className="row-span-1 w-full flex items-center justify-between">
+                <li className="h-8 w-full flex items-center justify-between">
                   <span className="text-xs text-slate-400 font-semibold">
-                    Discount
+                    Discount ({cart?.discount_percent}%)
                   </span>
                   <span className="text-xs text-slate-600 font-semibold">
-                    {selectedCurrency?.symbol}&nbsp;0.00
+                    {selectedCurrency?.symbol}&nbsp;
+                    {cart?.products?.length >= 1 && cart?.discount_amount
+                      ? numberWithSpaces(
+                          (
+                            selectedCurrency?.rate_multiplier *
+                            cart?.discount_amount
+                          ).toFixed(2)
+                        )
+                      : "0.00"}
                   </span>
                 </li>
-                <li className="row-span-1 w-full flex items-center justify-between">
+                <li className="h-8 w-full flex items-center justify-between">
                   <span className="text-xs text-slate-400 font-semibold">
                     Tax (15%)
                   </span>
@@ -541,23 +676,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
                       : "0.00"}
                   </span>
                 </li>
-                <li className="row-span-1 w-full flex items-center justify-between">
-                  <span className="text-xs text-slate-400 font-semibold">
-                    Subtotal
-                  </span>
-                  <span className="text-xs text-slate-600 font-semibold">
-                    {selectedCurrency?.symbol}&nbsp;
-                    {cart?.products?.length >= 1
-                      ? numberWithSpaces(
-                          (
-                            selectedCurrency?.rate_multiplier * cart?.total -
-                            selectedCurrency?.rate_multiplier * cart?.tax_in_usd
-                          ).toFixed(2)
-                        )
-                      : "0.00"}
-                  </span>
-                </li>
-                <li className="row-span-1 w-full flex items-center justify-between">
+                <li className="h-8 w-full flex items-center justify-between">
                   <span className="text-xs text-slate-400 font-semibold">
                     Overall Total
                   </span>
@@ -566,7 +685,8 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
                     {cart?.products?.length >= 1
                       ? numberWithSpaces(
                           (
-                            selectedCurrency?.rate_multiplier * cart?.total
+                            selectedCurrency?.rate_multiplier *
+                            (cart?.total + (cart?.tip_amount ?? 0))
                           ).toFixed(2)
                         )
                       : "0.00"}

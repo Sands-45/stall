@@ -132,8 +132,8 @@ const Sale: FC<Props> = ({
           text-xs text-slate-500 font-semibold text-ellipsis whitespace-nowrap"
               >
                 <div
-                  className="h-9 w-9 rounded bg-slate-200 text-cyan-800 flex items-center justify-center text-base uppercase
-        border border-slate-300"
+                  className="h-9 w-9 rounded bg-cyan-900 text-white flex items-center justify-center text-lg uppercase
+        "
                 >
                   {sale?.customers_details?.name
                     ? sale?.customers_details?.name?.charAt(0)

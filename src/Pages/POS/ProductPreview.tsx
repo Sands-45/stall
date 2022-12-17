@@ -110,7 +110,7 @@ const ProductPreview: FC<Props> = ({
         </button>
 
         {/**images  Prev*/}
-        <div className="col-span-2 w-full h-full grid grid-rows-6 gap-2 overflow-hidden">
+        <div className="col-span-2 w-full h-full grid grid-rows-6 gap-4 overflow-hidden">
           <img
             onError={(e) => {
               e.currentTarget.src = no_gallery;
@@ -119,7 +119,7 @@ const ProductPreview: FC<Props> = ({
             src={selectedImg ? selectedImg : no_gallery}
             alt="prod_preview"
             className="w-full row-span-5 h-full object-center object-fit object-contain 
-          p-2 bg-slate-50 border border-slate-200 rounded overflow-hidden cursor-zoom-in"
+          p-4 bg-slate-50 border border-slate-200 rounded overflow-hidden cursor-zoom-in"
           />
           <div
             className="w-full row-span-1 grid grid-cols-4 gap-1
@@ -158,16 +158,19 @@ const ProductPreview: FC<Props> = ({
               >
                 {product_obj?.name}
               </span>
-              <small
-                className="text-[0.7rem] font-medium text-slate-500 
-                whitepsace-nowrap  w-[40%] text-end overflow-hidden text-ellipsis"
+              <span
+                className="text-xs text-end font-semibold text-slate-500 
+                whitespace-nowrap overflow-hidden text-ellipsis uppercase w-[40%]"
               >
-                In Stock [
-                <span className="text-cyan-750">
-                  {Number(currentProd[0]?.in_stock)}
-                </span>
-                ]
-              </small>
+                {selectedCurrency?.symbol}&nbsp;
+                {numberWithSpaces(
+                  (
+                    selectedCurrency?.rate_multiplier *
+                    Number(product_obj?.price_in_usd) *
+                    Number(quantity)
+                  ).toFixed(2)
+                )}
+              </span>
             </div>
             <p
               className="text-xs font-normal text-slate-400 overflow-hidden
@@ -180,19 +183,28 @@ const ProductPreview: FC<Props> = ({
           flex flex-col"
             >
               <div
-                className="text-xs h-6 w-full font-semibold text-slate-500 
+                className="text-xs h-6 w-full font-semibold text-slate-500 flex items-center justify-between 
                 whitepsace-nowrap overflow-hidden text-ellipsis uppercase border-b border-slate-200"
               >
-                Customazation
+               <span>Customization</span>
+              <small
+                className="text-[0.7rem] font-medium text-slate-500 
+                whitepsace-nowrap  w-[40%] text-end overflow-hidden text-ellipsis"
+              >
+                In Stock :&nbsp;
+                <span className="text-cyan-750 text-xs font-semibold">
+                  {Number(currentProd[0]?.in_stock)}
+                </span>
+              </small>
               </div>
                 <div
-                  className="w-full h-[10rem] flex flex-col space-y-2 pt-2 pr-2 mt-2 overflow-hidden overflow-y-scroll"
+                  className="w-full h-[11.5rem] flex flex-col space-y-2 pt-2 px-2 mt-2 overflow-hidden overflow-y-scroll"
                 >
                   {product_obj?.customization_option?.length >= 1 &&product_obj?.customization_option?.map((cust: any) => {
                     return (
                       <div
                         key={cust?.id}
-                        className="h-8 w-full rounded border border-slate-300
+                        className="h-8 w-full rounded-sm bg-slate-50 border border-slate-200
                  hover:border-cyan-750 flex items-center justify-between
             relative p-2 text-xs text-slate-500 cursor-pointer transition-all group capitalize"
                       >
@@ -255,20 +267,6 @@ const ProductPreview: FC<Props> = ({
                     );
                   })}
                 </div>
-              <span
-                className="text-sm font-semibold text-slate-600 
-                whitepsace-nowrap w-full overflow-hidden text-ellipsis capitalize mt-2"
-              >
-                <span className="text-slate-500"> Cost &#10143;</span>{" "}
-                {selectedCurrency?.symbol}&nbsp;
-                {numberWithSpaces(
-                  (
-                    selectedCurrency?.rate_multiplier *
-                    Number(product_obj?.price_in_usd) *
-                    Number(quantity)
-                  ).toFixed(2)
-                )}
-              </span>
             </div>
           </div>
 
@@ -343,7 +341,7 @@ const ProductPreview: FC<Props> = ({
                 setPreview(false);
               }}
               className="h-9 w-32 rounded flex items-center justify-center space-x-2
-           bg-cyan-750 text-white text-xs font-medium uppercase hover:bg-cyan-800 transition-all"
+           bg-cyan-750 text-white text-xs font-semibold uppercase hover:bg-cyan-800 transition-all"
             >
              <span> Add to cart</span> <TbShoppingCartPlus className="text-base" />
             </button>
