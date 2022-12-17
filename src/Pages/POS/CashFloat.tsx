@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
 import no_float from "../../Assets/no_float.png";
@@ -29,15 +29,23 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
     startDate: getCurrentDateInput(),
     endDate: getCurrentDateInput(),
   });
-  const [selectedFloat, setActiveFloat] = useState<any>(
+  const [activeFloat, setActiveFloat] = useState<any>(
     cash_float?.length >= 1
       ? [...cash_float]?.sort((a: any, b: any) => b.date - a.date)[0]
       : null
   );
-  const activeFloat = useMemo(() => {
-    return selectedFloat && cash_float?.length >= 1 ? selectedFloat : null;
-  }, [selectedFloat, cash_float]);
   const [floatFunction, setFunction] = useState("");
+
+  //Update Selected Float On change
+  useEffect(() => {
+    if (cash_float?.length >= 1) {
+      setActiveFloat((prev: any) => ({
+        ...(prev
+          ? cash_float.filter((data: any) => data.id_two === prev?.id_two)[0]
+          : cash_float[0]),
+      }));
+    }
+  }, [cash_float]);
 
   //Handle Submit
   const handleSubmit = (e: React.SyntheticEvent) => {
@@ -224,7 +232,7 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
         openFloat ? "bottom-0 top-0" : "bottom-[200%]"
       } left-0 right-0 transition-all bg-cyan-750/50 backdrop-blur-sm flex justify-center pt-28 overflow-hidden overflow-y-scroll`}
     >
-      <div className="w-[45rem] h-[30rem] bg-white rounded relative">
+      <div className="w-[50rem] h-[30rem] bg-white rounded relative">
         <div className="h-fit flex justify-between space-x-2 overflow-hidden px-5 mt-5">
           <div
             className="h-fit w-[48.5%]
@@ -254,7 +262,7 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
               setDates({
                 startDate: getCurrentDateInput(),
                 endDate: getCurrentDateInput(),
-              })
+              });
             }}
             className="h-7 w-7 rounded-sm bg-slate-50 outline-none text-lg
            text-slate-500 font-medium hover:bg-red-50 transition-all border border-slate-200"
@@ -284,7 +292,7 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
                   onChange={(e) => {
                     setActivityObj((prev: any) => ({
                       ...prev,
-                      amount: Number(e.target.value),
+                      amount: e.target.value,
                     }));
                   }}
                   value={activityObj?.amount}
@@ -310,9 +318,9 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
                       }}
                       type="submit"
                       className="h-full w-[47%] rounded-sm focus:outline-none
-                 bg-cyan-750 hover:bg-cyan-800 transition-all text-white text-lg"
+                 bg-cyan-750 hover:bg-cyan-800 transition-all text-white text-[0.65rem] uppercase"
                     >
-                      +
+                      add
                     </button>
                     <button
                       onClick={() => {
@@ -320,9 +328,9 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
                       }}
                       type="submit"
                       className="h-full w-[47%] rounded-sm focus:outline-none
-                 bg-cyan-750 hover:bg-cyan-800 transition-all text-white text-lg"
+                 bg-cyan-750 hover:bg-cyan-800 transition-all text-white text-[0.65rem] uppercase"
                     >
-                      -
+                      remove
                     </button>
                   </>
                 ) : (
@@ -386,7 +394,7 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
                           setActiveFloat(float);
                         }}
                         key={float?.id_two}
-                        className={`w-full h-16 even:bg-slate-50 ${
+                        className={`w-full h-16 ${
                           float?.id_two === activeFloat?.id_two
                             ? "border-l-cyan-750 border-l-2"
                             : ""
@@ -447,7 +455,7 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
                                 );
                               }}
                               className="h-5 px-3 text-[0.6rem] focus:outline-none
-                         border border-slate-200 bg-slate-100 rounded"
+                         border border-slate-200 bg-slate-100 rounded-sm"
                             >
                               close
                             </button>
@@ -463,7 +471,7 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
           </div>
 
           {/**List Of Activitirs and Stats */}
-          <div className="col-span-2 h-full p-1 pl-4 flex flex-col items-center border-l border-slate-200">
+          <div className="col-span-2 h-full p-1 pl-4 flex flex-col items-center border-l border-slate-200 overflow-hidden">
             <div className="w-full h-14 grid grid-cols-3 gap-2">
               <div
                 className="h-full col-span-1 rounded-sm border bg-slate-50 p-2.5
@@ -555,7 +563,7 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
                   ?.map((log: any, index: number) => {
                     return (
                       <li
-                        key={index + log?.date}
+                        key={index + log?.time}
                         className="w-full h-14 flex flex-col space-y-1 border-b first:border-t border-slate-100 px-1 py-2"
                       >
                         <div className="flex items-center justify-between w-full h-fit">

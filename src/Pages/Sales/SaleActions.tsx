@@ -12,6 +12,7 @@ import {
 import { addSales, archieveSale } from "../../Redux/Slices/SalesSlice";
 import { updateAlert } from "../../Redux/Slices/NotificationsSlice";
 import Refund from "./Refund";
+import { updateFloat } from "../../Redux/Slices/SalesSlice";
 
 type Props = {
   showActions: boolean;
@@ -32,6 +33,7 @@ const SaleActions: FC<Props> = ({
   const selectedCurrency = useSelector(
     (state: RootState) => state.SettingsData.selectedCurrency
   );
+  const cash_float = useSelector((state: RootState) => state.Sales.cash_float);
   const [showAuthorize, setAuthorize] = useState<boolean>(false);
   const [reason, setReason] = useState<string>("");
   const dispatch: AppDispatch = useDispatch();
@@ -99,6 +101,65 @@ const SaleActions: FC<Props> = ({
             },
           ])
         );
+
+        //Update Cash Float
+        let openFloat =
+          cash_float?.filter((data: any) => data.status === "open")[0] ?? null;
+        if (openFloat && currentSale?.payment_method === "cash") {
+          dispatch(
+            updateFloat([
+              ...cash_float.filter(
+                (data: any) => data.id_two !== openFloat?.id_two
+              ),
+              {
+                ...openFloat,
+                total: (
+                  parseFloat(openFloat?.total) - currentSale?.total
+                )?.toFixed(2),
+                gross: (
+                  parseFloat(openFloat?.gross) - currentSale?.total
+                )?.toFixed(2),
+                activities: [
+                  ...openFloat?.activities,
+                  {
+                    note: "Voided Transaction",
+                    amount: "-" + currentSale?.total,
+                    time: new Date()?.getTime(),
+                  },
+                ],
+                edited: true,
+              },
+            ])
+          );
+
+          //Save Cash Float Local local
+          window.localStorage.setItem(
+            "cash_float",
+            JSON.stringify([
+              ...cash_float.filter(
+                (data: any) => data.id_two !== openFloat?.id_two
+              ),
+              {
+                ...openFloat,
+                total: (
+                  parseFloat(openFloat?.total) - currentSale?.total
+                )?.toFixed(2),
+                gross: (
+                  parseFloat(openFloat?.gross) - currentSale?.total
+                )?.toFixed(2),
+                activities: [
+                  ...openFloat?.activities,
+                  {
+                    note: "Voided Transaction",
+                    amount: "-" + currentSale?.total,
+                    time: new Date()?.getTime(),
+                  },
+                ],
+                edited: true,
+              },
+            ])
+          );
+        }
 
         //Deduct Stock From Inventory
         currentSale.products?.forEach((prod: any) => {
@@ -447,7 +508,11 @@ const SaleActions: FC<Props> = ({
       />
 
       {/**Refund Dialog */}
-      <Refund showRefund={showRefund} openRefund={openRefund} currentSale={currentSale} />
+      <Refund
+        showRefund={showRefund}
+        openRefund={openRefund}
+        currentSale={currentSale}
+      />
     </>
   );
 };

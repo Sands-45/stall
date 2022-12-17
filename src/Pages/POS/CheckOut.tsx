@@ -15,6 +15,7 @@ import {
   loadInventoryData,
   updateLocalInventory_Changes,
 } from "../../Redux/Slices/InventorySlice";
+import { updateFloat } from "../../Redux/Slices/SalesSlice";
 
 type Props = {
   cart: any;
@@ -40,6 +41,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
   const selectedCurrency = useSelector(
     (state: RootState) => state.SettingsData.selectedCurrency
   );
+  const cash_float = useSelector((state: RootState) => state.Sales.cash_float);
   const [paymentMethods, setMethod] = useState<any>([
     { method: "card", selected: true },
     { method: "cash", selected: false },
@@ -190,6 +192,57 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
           ])
         );
       });
+
+      //Update Cash Float
+      let openFloat =
+        cash_float?.filter((data: any) => data.status === "open")[0] ?? null;
+      if (openFloat) {
+        dispatch(
+          updateFloat([
+            ...cash_float.filter(
+              (data: any) => data.id_two !== openFloat?.id_two
+            ),
+            {
+              ...openFloat,
+              total: (cart?.total + parseFloat(openFloat?.total))?.toFixed(2),
+              gross: (cart?.total + parseFloat(openFloat?.gross))?.toFixed(2),
+              activities: [
+                ...openFloat?.activities,
+                {
+                  note: "Cash payment",
+                  amount: cart?.total,
+                  time: new Date()?.getTime(),
+                },
+              ],
+              edited: true,
+            },
+          ])
+        );
+
+        //Save local
+        window.localStorage.setItem(
+          "cash_float",
+          JSON.stringify([
+            ...cash_float.filter(
+              (data: any) => data.id_two !== openFloat?.id_two
+            ),
+            {
+              ...openFloat,
+              total: (cart?.total + parseFloat(openFloat?.total))?.toFixed(2),
+              gross: (cart?.total + parseFloat(openFloat?.gross))?.toFixed(2),
+              activities: [
+                ...openFloat?.activities,
+                {
+                  note: "Cash payment",
+                  amount: cart?.total,
+                  time: new Date()?.getTime(),
+                },
+              ],
+              edited: true,
+            },
+          ])
+        );
+      }
 
       //Clear Cart
       setCart({});

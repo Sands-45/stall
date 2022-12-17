@@ -127,18 +127,12 @@ const Login: FC<Props> = () => {
 
   //Check If User Is Logged
   useEffect(() => {
-    if (
-      window.localStorage.getItem("bs-sessions-persit") &&
-      window.localStorage.getItem("current_workspace")
-    ) {
+    if (user && window.localStorage.getItem("current_workspace")) {
       navigate("/portal");
-    } else if (
-      window.localStorage.getItem("bs-sessions-persit") &&
-      !window.localStorage.getItem("current_workspace")
-    ) {
+    } else if (user && !window.localStorage.getItem("current_workspace")) {
       setOverlay(true);
     }
-  }, [navigate]);
+  }, [navigate,user]);
 
   //component
   return (

@@ -381,7 +381,7 @@ const FirestoreFunc: FC = () => {
         );
       }
     });
-  }, [dispatch, inventory_data_queue]);
+  }, [dispatch, inventory_data_queue,onlineStatus]);
 
   return <></>;
 };
