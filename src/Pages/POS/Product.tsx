@@ -2,7 +2,6 @@ import { FC } from "react";
 import { TbShoppingCartPlus } from "react-icons/tb";
 import { useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
-import no_gallery from "../../Assets/no_gallery.png";
 import { numberWithSpaces } from "../../Reusable Functions/Functions";
 
 type Props = {
@@ -29,6 +28,7 @@ const Product: FC<Props> = ({
     inventory_data?.map((prod: any) => {
       return (
         <div
+        key={prod?.id_two}
           onClick={() => {
             setProObj(prod);
             setImg(prod?.gallery?.length >= 1 ? prod?.gallery[0]?.url : "");

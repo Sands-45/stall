@@ -26,6 +26,14 @@
     transition: background-color 5000s ease-in-out 0s;
   }
 
+  .login_input{
+    border: inherit inherit inherit;
+    -webkit-text-fill-color: #fff !important;
+    color: inherit;
+    -webkit-box-shadow: 0 0 0px 1000px inherit inset;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
   .navLinks {
     @apply flex items-center justify-center space-x-1 text-xs text-slate-700 font-medium
            h-full w-full col-span-1 border-r border-r-slate-200;

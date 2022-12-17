@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { decrypt } from "../../Custom Functions/Functions";
 
 const initialLocation = window.localStorage.getItem("locationPath") || "Stall";
 
@@ -14,8 +15,12 @@ interface InitialStateType {
 }
 
 const initialState: InitialStateType = {
-  user: initialUser ? JSON.parse(initialUser) : null,
-  saved_workspaces: initialSavedWorkspaces ? JSON.parse(initialSavedWorkspaces) : null,
+  user: initialUser
+    ? JSON.parse(decrypt("savedLocal", JSON.parse(initialUser)))
+    : null,
+  saved_workspaces: initialSavedWorkspaces
+    ? JSON.parse(initialSavedWorkspaces)
+    : null,
   routeLocation: initialLocation,
   current_workspace: localStorage.getItem("current_workspace"),
 };

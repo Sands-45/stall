@@ -26,6 +26,7 @@ import {
   updateUserData,
 } from "../../Redux/Slices/UserSlice";
 import { AppDispatch, RootState } from "../../Redux/store";
+import { crypt } from "../../Custom Functions/Functions";
 
 // Initialize Firebase for auth======================
 initializeApp(firebaseConfig);
@@ -33,7 +34,7 @@ initializeApp(firebaseConfig);
 //Initialize Services ======
 const auth = getAuth();
 // init services for firestore =========================
-const db = getFirestore(initializeApp(firebaseConfig))
+const db = getFirestore(initializeApp(firebaseConfig));
 
 type Props = {};
 
@@ -81,12 +82,10 @@ const Login: FC<Props> = () => {
             );
             dispatch(
               updateUserData(
-                saveWorkSpaces(
-                  snapshot.docs.map((doc: any) => ({
-                    ...doc.data(),
-                    id: doc.id,
-                  }))[0]
-                )
+                snapshot.docs.map((doc: any) => ({
+                  ...doc.data(),
+                  id: doc.id,
+                }))[0]
               )
             );
             window.localStorage.setItem(
@@ -168,7 +167,7 @@ const Login: FC<Props> = () => {
                 id="email"
                 className={`w-[20rem] h-11 text-xs text-cyan-50 placeholder:text-slate-300 rounded outline-none focus:ring-0 ${
                   incorrectWarning ? "border-red-600" : "border-slate-300"
-                } focus:border-cyan-50 focus:outline-none p-2 px-4 bg-cyan-800/80`}
+                } focus:border-cyan-50 focus:outline-none p-2 px-4 bg-cyan-800/80 login_input`}
                 placeholder="Enter email ..."
                 value={logValues?.email}
                 onChange={(e) =>
@@ -178,13 +177,13 @@ const Login: FC<Props> = () => {
             </label>
             <label htmlFor="password">
               <input
-              autoComplete="off"
+                autoComplete="off"
                 type="password"
                 name="password"
                 id="password"
                 className={`mt-4 w-[20rem] h-11 text-xs text-cyan-50 placeholder:text-slate-300 rounded outline-none focus:ring-0 ${
                   incorrectWarning ? "border-red-600" : "border-slate-300"
-                } focus:border-cyan-50 focus:outline-none p-2 px-4 bg-cyan-800/80`}
+                } focus:border-cyan-50 focus:outline-none p-2 px-4 bg-cyan-800/80 login_input`}
                 placeholder="Enter password ..."
                 value={logValues?.passwd}
                 onChange={(e) =>
@@ -264,7 +263,7 @@ const Login: FC<Props> = () => {
               onChange={(e) => {
                 setSearch(e.target.value);
               }}
-              className="h-11 w-[27rem] p-2 px-4 text-xs text-slate-700 rounded-full bg-white border border-cyan-900/50 focus:border-cyan-900/80 focus:ring-0 focus:outline-none"
+              className="h-11 w-[27rem] p-2 px-4 login_input text-xs text-slate-700 rounded-full bg-white border border-cyan-900/50 focus:border-cyan-900/80 focus:ring-0 focus:outline-none"
             />
           </label>
         </div>
@@ -297,10 +296,9 @@ const Login: FC<Props> = () => {
                         onClick={() => {
                           dispatch(setCurrent_workspace(space));
                           dispatch(
-                            updateUserData({
-                              ...user,
-                              workspace_name: space?.workspace_name,
-                            })
+                            updateUserData(
+                              crypt("savedLocal", JSON.stringify(user))
+                            )
                           );
                           window.localStorage.setItem(
                             "current_workspace",
@@ -308,10 +306,9 @@ const Login: FC<Props> = () => {
                           );
                           window.localStorage.setItem(
                             "bs-sessions-persit",
-                            JSON.stringify({
-                              ...user,
-                              workspace_name: space?.workspace_name,
-                            })
+                            JSON.stringify(
+                              crypt("savedLocal", JSON.stringify(user))
+                            )
                           );
 
                           window.location.reload();
