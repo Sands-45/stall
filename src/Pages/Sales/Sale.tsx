@@ -196,7 +196,7 @@ const Sale: FC<Props> = ({
                   className={`h-6 w-fit px-4 rounded-full 
         border flex items-center justify-center capitalize
          text-[0.6rem] font-medium  ${
-           sale?.status === "completed"
+           sale?.status === "paid"
              ? "text-green-600 bg-green-100 border-green-300"
              : sale?.status === "exchange"
              ? "text-blue-600 bg-blue-100 border-blue-300"

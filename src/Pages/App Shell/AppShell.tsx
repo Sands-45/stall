@@ -108,7 +108,7 @@ const AppShell: FC<Props> = () => {
               window.localStorage.setItem("selectedCurrency", e.target.value);
             }}
             className="h-8 w-[7rem] bg-inherit text-gray-700 focus:outline-none
-              uppercase text-xs rounded border-slate-400 focus:ring-0 focus:border-cyan-750"
+              uppercase text-xs font-semibold rounded border-slate-400 focus:ring-0 focus:border-cyan-750"
           >
             <option value={selectedCurrency}>{selectedCurrency.name}</option>
             {currencies?.map((cur: any) => {

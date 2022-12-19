@@ -57,22 +57,24 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
         updateFloat([
           ...cash_float,
           {
-            total: (
-              Number(activityObj?.amount) / selectedCurrency?.rate_multiplier
-            ),
+            total:
+              Number(activityObj?.amount) / selectedCurrency?.rate_multiplier,
+            opening:
+              Number(activityObj?.amount) / selectedCurrency?.rate_multiplier,
+            sales: 0,
+            refunds: 0,
+            additional: 0,
+            expenses: 0,
             status: "open",
             user: user,
-            refunds: 0,
-            gross: (
-              Number(activityObj?.amount) / selectedCurrency?.rate_multiplier
-            ),
             activities: [
               {
                 ...activityObj,
-                amount: (
-                  Number(activityObj?.amount) / selectedCurrency?.rate_multiplier
-                ),
+                amount:
+                  Number(activityObj?.amount) /
+                  selectedCurrency?.rate_multiplier,
                 time: new Date()?.getTime(),
+                currency: selectedCurrency?.name,
               },
             ],
             date: new Date()?.getTime(),
@@ -87,22 +89,24 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
         JSON.stringify([
           ...cash_float,
           {
-            total: (
-              Number(activityObj?.amount) / selectedCurrency?.rate_multiplier
-            ),
+            total:
+              Number(activityObj?.amount) / selectedCurrency?.rate_multiplier,
+            opening:
+              Number(activityObj?.amount) / selectedCurrency?.rate_multiplier,
+            sales: 0,
+            refunds: 0,
+            additional: 0,
+            expenses: 0,
             status: "open",
             user: user,
-            refunds: 0,
-            gross: (
-              Number(activityObj?.amount) / selectedCurrency?.rate_multiplier
-            ),
             activities: [
               {
                 ...activityObj,
-                amount: (
-                  Number(activityObj?.amount) / selectedCurrency?.rate_multiplier
-                ),
+                amount:
+                  Number(activityObj?.amount) /
+                  selectedCurrency?.rate_multiplier,
                 time: new Date()?.getTime(),
+                currency: selectedCurrency?.name,
               },
             ],
             date: new Date()?.getTime(),
@@ -125,22 +129,24 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
             ),
             {
               ...activeFloat,
-              total: (
-                Number(activityObj?.amount) / selectedCurrency?.rate_multiplier +
-                parseFloat(activeFloat?.total)
-              ),
-              gross: (
-                Number(activityObj?.amount) / selectedCurrency?.rate_multiplier +
-                parseFloat(activeFloat?.gross)
-              ),
+              total:
+                Number(activityObj?.amount) /
+                  selectedCurrency?.rate_multiplier +
+                parseFloat(activeFloat?.total),
+              additional:
+                activeFloat?.additional +
+                Number(activityObj?.amount) / selectedCurrency?.rate_multiplier,
+              status: "open",
+              user: user,
               activities: [
                 ...activeFloat?.activities,
                 {
                   ...activityObj,
-                  amount: (
-                    Number(activityObj?.amount) / selectedCurrency?.rate_multiplier
-                  ),
+                  amount:
+                    Number(activityObj?.amount) /
+                    selectedCurrency?.rate_multiplier,
                   time: new Date()?.getTime(),
+                  currency: selectedCurrency?.name,
                 },
               ],
               edited: true,
@@ -157,22 +163,24 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
             ),
             {
               ...activeFloat,
-              total: (
-                Number(activityObj?.amount) / selectedCurrency?.rate_multiplier +
-                parseFloat(activeFloat?.total)
-              ),
-              gross: (
-                Number(activityObj?.amount) / selectedCurrency?.rate_multiplier +
-                parseFloat(activeFloat?.gross)
-              ),
+              total:
+                Number(activityObj?.amount) /
+                  selectedCurrency?.rate_multiplier +
+                parseFloat(activeFloat?.total),
+              additional:
+                activeFloat?.additional +
+                Number(activityObj?.amount) / selectedCurrency?.rate_multiplier,
+              status: "open",
+              user: user,
               activities: [
                 ...activeFloat?.activities,
                 {
                   ...activityObj,
-                  amount: (
-                    Number(activityObj?.amount) / selectedCurrency?.rate_multiplier
-                  ),
+                  amount:
+                    Number(activityObj?.amount) /
+                    selectedCurrency?.rate_multiplier,
                   time: new Date()?.getTime(),
+                  currency: selectedCurrency?.name,
                 },
               ],
               edited: true,
@@ -193,22 +201,22 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
             ),
             {
               ...activeFloat,
-              total: (
+              total:
                 parseFloat(activeFloat?.total) -
-                Number(activityObj?.amount) / selectedCurrency?.rate_multiplier
-              ),
-              gross: (
-                parseFloat(activeFloat?.gross) -
-                Number(activityObj?.amount) / selectedCurrency?.rate_multiplier
-              ),
+                Number(activityObj?.amount) / selectedCurrency?.rate_multiplier,
+              expenses:
+                activeFloat?.expenses +
+                Number(activityObj?.amount) / selectedCurrency?.rate_multiplier,
               activities: [
                 ...activeFloat?.activities,
                 {
                   ...activityObj,
-                  amount: (
-                    Number(activityObj?.amount) / selectedCurrency?.rate_multiplier
-                  ),
+                  amount:
+                    "-" +
+                    Number(activityObj?.amount) /
+                      selectedCurrency?.rate_multiplier,
                   time: new Date()?.getTime(),
+                  currency: selectedCurrency?.name,
                 },
               ],
               edited: true,
@@ -225,22 +233,22 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
             ),
             {
               ...activeFloat,
-              total: (
+              total:
                 parseFloat(activeFloat?.total) -
-                Number(activityObj?.amount) / selectedCurrency?.rate_multiplier
-              ),
-              gross: (
-                parseFloat(activeFloat?.gross) -
-                Number(activityObj?.amount) / selectedCurrency?.rate_multiplier
-              ),
+                Number(activityObj?.amount) / selectedCurrency?.rate_multiplier,
+              expenses:
+                activeFloat?.expenses +
+                Number(activityObj?.amount) / selectedCurrency?.rate_multiplier,
               activities: [
                 ...activeFloat?.activities,
                 {
                   ...activityObj,
-                  amount: (
-                    Number(activityObj?.amount) / selectedCurrency?.rate_multiplier
-                  ),
+                  amount:
+                    "-" +
+                    Number(activityObj?.amount) /
+                      selectedCurrency?.rate_multiplier,
                   time: new Date()?.getTime(),
+                  currency: selectedCurrency?.name,
                 },
               ],
               edited: true,
@@ -262,15 +270,20 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
     <div
       className={`fixed ${
         openFloat ? "bottom-0 top-0" : "bottom-[200%]"
-      } left-0 right-0 transition-all bg-cyan-750/50 print:bg-white backdrop-blur-sm flex justify-center pt-28 overflow-hidden overflow-y-scroll`}
+      } left-0 right-0 transition-all bg-cyan-750/50 print:bg-white
+       backdrop-blur-sm flex justify-center pt-10 overflow-hidden overflow-y-scroll`}
     >
-      <div className="w-[50rem] h-[30rem] bg-white rounded relative">
+      <div className="w-[50rem] h-[40rem] bg-white rounded relative">
         <div className="h-fit flex justify-between space-x-2 overflow-hidden px-5 mt-5">
           <div
             className="h-fit w-[48.5%]
             flex justify-end space-x-2 overflow-hidden"
           >
             <input
+              disabled
+              onChange={() => {
+                console.log("disabled");
+              }}
               value={dates?.startDate}
               type="date"
               name="start_date_float"
@@ -279,6 +292,10 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
               focus:border-cyan-750 outline-none focus:outline-none focus:ring-0 font-medium"
             />
             <input
+              disabled
+              onChange={() => {
+                console.log("disabled");
+              }}
               value={dates?.endDate}
               type="date"
               name="end_date_float"
@@ -296,16 +313,16 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
                 endDate: getCurrentDateInput(),
               });
             }}
-            className="h-7 w-7 rounded-sm bg-slate-50 outline-none text-lg
+            className="h-7 w-fit px-3 rounded-sm bg-slate-50 outline-none text-xs uppercase
            text-slate-600 font-medium hover:bg-red-50 transition-all border border-slate-200"
           >
-            &times;
+            close
           </button>
           {/**Close Float Btn */}
         </div>
 
         <div className="w-full h-[calc(100%-3rem)] p-4 grid grid-cols-4 gap-4">
-          <div className="col-span-2 h-full overflow-hidden p-1 flex flex-col">
+          <div className="col-span-2 h-full overflow-hidden p-1 flex flex-col justify-between">
             <form
               onSubmit={(e) => handleSubmit(e)}
               className="h-fit grid grid-cols-2 gap-2 overflow-hidden"
@@ -393,7 +410,7 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
                 id="float_note"
                 placeholder="Add note ..."
                 required
-                className="col-span-2 h-16 rounded-sm border-2 border-dashed border-slate-200 text-xs
+                className="col-span-2 h-[5.25rem] rounded-sm border-2 border-dashed border-slate-200 text-xs
                  hover:border-ccyan-750 transition-all resize-none text-slate-600 placeholder:text-slate-400
                   focus:ring-0 focus:border-cyan-750 bg-slate-50"
               ></textarea>
@@ -409,7 +426,7 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
               </span>
             )}
             <div
-              className="mt-2 w-full h-[calc(100%-10.5rem)] p-0.5 overflow-hidden overflow-y-scroll
+              className="mt-2 w-full h-[calc(100%-11rem)] p-0.5 overflow-hidden overflow-y-scroll
             no-scrollbar no-scrollbar::-webkit-scrollbar"
             >
               {cash_float?.length <= 0 ? (
@@ -434,12 +451,12 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
                           setActiveFloat(float);
                         }}
                         key={float?.id_two}
-                        className={`w-full h-14 ${
+                        className={`w-full h-16 ${
                           float?.id_two === activeFloat?.id_two
                             ? "border-l-cyan-750 border-l-2 bg-slate-50"
                             : ""
                         } first:border-t border-b border-slate-100 p-2
-                       flex flex-col justify-center space-y-2 cursor-pointer select-none`}
+                       flex flex-col justify-center space-y-1 cursor-pointer select-none`}
                       >
                         <div className="w-full flex items-center justify-between text-xs text-slate-500 font-medium">
                           <span className="w-[60%] font-semibold whitespace-nowrap overflow-hidden text-ellipsis uppercase">
@@ -517,64 +534,139 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
           </div>
 
           {/**List Of Activitirs and Stats */}
-          <div className="col-span-2 h-full p-1 pl-4 flex flex-col items-center border-l border-slate-200 overflow-hidden">
-            <div className="w-full h-14 grid grid-cols-3 gap-2">
+          <div className="col-span-2 h-full p-1 pl-4 flex flex-col items-center justify-between border-l border-slate-200 overflow-hidden">
+            <div className="w-full h-32 grid grid-cols-3 gap-2">
               <div
-                className="h-full col-span-1 rounded-sm border bg-slate-50 p-2.5
+                className="h-full col-span-1 border bg-slate-50 p-3 rounded-sm
               flex flex-col justify-between overflow-hidden"
               >
                 <span
-                  className="text-xs text-left px-1 font-semibold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                  className="text-xs text-center px-1 font-semibold text-slate-600 w-full whitespace-nowrap overflow-hidden
                 text-ellipsis"
                 >
                   {selectedCurrency?.symbol}&nbsp;
-                  {activeFloat?.refund
+                  {activeFloat?.opening
                     ? numberWithSpaces(
                         (
                           selectedCurrency?.rate_multiplier *
-                          parseFloat(activeFloat?.refund)
+                          parseFloat(activeFloat?.opening)
                         ).toFixed(2)
                       )
                     : "0.00"}
                 </span>
                 <span
-                  className="text-[0.7rem] text-left px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                  className="text-[0.65rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                >
+                  opening
+                </span>
+              </div>
+              <div
+                className="h-full col-span-1 border bg-slate-50 p-3 rounded-sm
+              flex flex-col justify-between overflow-hidden"
+              >
+                <span
+                  className="text-xs text-center px-1 font-semibold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                >
+                  {selectedCurrency?.symbol}&nbsp;
+                  {activeFloat?.expenses
+                    ? numberWithSpaces(
+                        (
+                          selectedCurrency?.rate_multiplier *
+                          parseFloat(activeFloat?.expenses)
+                        ).toFixed(2)
+                      )
+                    : "0.00"}
+                </span>
+                <span
+                  className="text-[0.65rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                >
+                  Expenses
+                </span>
+              </div>
+              <div
+                className="h-full col-span-1 border bg-slate-50 p-3 rounded-sm
+              flex flex-col justify-between overflow-hidden"
+              >
+                <span
+                  className="text-xs text-center px-1 font-semibold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                >
+                  {selectedCurrency?.symbol}&nbsp;
+                  {activeFloat?.sales
+                    ? numberWithSpaces(
+                        (
+                          selectedCurrency?.rate_multiplier *
+                          parseFloat(activeFloat?.sales)
+                        ).toFixed(2)
+                      )
+                    : "0.00"}
+                </span>
+                <span
+                  className="text-[0.65rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                >
+                  Sales
+                </span>
+              </div>
+              <div
+                className="h-full col-span-1 border bg-slate-50 p-3 rounded-sm
+              flex flex-col justify-between overflow-hidden"
+              >
+                <span
+                  className="text-xs text-center px-1 font-semibold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                >
+                  {selectedCurrency?.symbol}&nbsp;
+                  {activeFloat?.refunds
+                    ? numberWithSpaces(
+                        (
+                          selectedCurrency?.rate_multiplier *
+                          parseFloat(activeFloat?.refunds)
+                        ).toFixed(2)
+                      )
+                    : "0.00"}
+                </span>
+                <span
+                  className="text-[0.65rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
                 text-ellipsis"
                 >
                   refunds
                 </span>
               </div>
               <div
-                className="h-full col-span-1 rounded-sm border bg-slate-50 p-2.5
+                className="h-full col-span-1 border bg-slate-50 p-3 rounded-sm
               flex flex-col justify-between overflow-hidden"
               >
                 <span
-                  className="text-xs text-left px-1 font-semibold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                  className="text-xs text-center px-1 font-semibold text-slate-600 w-full whitespace-nowrap overflow-hidden
                 text-ellipsis"
                 >
                   {selectedCurrency?.symbol}&nbsp;
-                  {activeFloat?.gross
+                  {activeFloat?.additional
                     ? numberWithSpaces(
                         (
                           selectedCurrency?.rate_multiplier *
-                          parseFloat(activeFloat?.gross)
+                          parseFloat(activeFloat?.additional)
                         ).toFixed(2)
                       )
                     : "0.00"}
                 </span>
                 <span
-                  className="text-[0.7rem] text-left px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                  className="text-[0.65rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
                 text-ellipsis"
                 >
-                  Gross
+                  added amount
                 </span>
               </div>
               <div
-                className="h-full col-span-1 rounded-sm border bg-slate-50 p-2.5
+                className="h-full col-span-1 border bg-slate-50 p-3 rounded-sm
               flex flex-col justify-between overflow-hidden"
               >
                 <span
-                  className="text-xs text-left px-1 font-semibold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                  className="text-xs text-center px-1 font-semibold text-slate-600 w-full whitespace-nowrap overflow-hidden
                 text-ellipsis"
                 >
                   {selectedCurrency?.symbol}&nbsp;
@@ -588,7 +680,7 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
                     : "0.00"}
                 </span>
                 <span
-                  className="text-[0.7rem] text-left px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                  className="text-[0.65rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
                 text-ellipsis"
                 >
                   Total
@@ -601,8 +693,8 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
             activeFloat?.activities?.length >= 1 &&
             cash_float?.length >= 1 ? (
               <ul
-                className="mt-4 w-full h-[calc(100%-5rem)] pr-2 py-1 
-            overflow-hidden overflow-y-scroll flex flex-col space-y-2 print:no-scrollbar print:no-scrollbar::-webkit-scrollbar print:bg-white print:!p-6
+                className="mt-4 w-full h-[calc(100%-10rem)] pr-2 py-1 
+            overflow-hidden overflow-y-scroll flex flex-col space-y-2 print:space-y-4 print:no-scrollbar print:no-scrollbar::-webkit-scrollbar print:bg-white print:!p-6
             print:fixed print:-top-4 print:-left-2 print:-right-4 print:-bottom-4 print:z-[999999] print:min-w-screen print:min-h-screen"
               >
                 <span
@@ -615,90 +707,165 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
                   </span>
                   <span>{new Date(activeFloat?.date)?.toDateString()}</span>
                 </span>
-                <div className="w-full h-14 mb-4 hidden print:grid grid-cols-3 gap-2">
-              <div
-                className="h-full col-span-1 rounded-sm border bg-slate-50 p-2.5
+                <div className="w-full h-32 mb-6 hidden print:grid grid-cols-3 gap-2">
+                  <div
+                    className="h-full col-span-1 border bg-slate-50 p-3 rounded-sm
               flex flex-col justify-between overflow-hidden"
-              >
-                <span
-                  className="text-xs text-left px-1 font-semibold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                  >
+                    <span
+                      className="text-xs text-center px-1 font-semibold text-slate-600 w-full whitespace-nowrap overflow-hidden
                 text-ellipsis"
-                >
-                  {selectedCurrency?.symbol}&nbsp;
-                  {activeFloat?.refund
-                    ? numberWithSpaces(
-                        (
-                          selectedCurrency?.rate_multiplier *
-                          parseFloat(activeFloat?.refund)
-                        ).toFixed(2)
-                      )
-                    : "0.00"}
-                </span>
-                <span
-                  className="text-[0.7rem] text-left px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                    >
+                      {selectedCurrency?.symbol}&nbsp;
+                      {activeFloat?.opening
+                        ? numberWithSpaces(
+                            (
+                              selectedCurrency?.rate_multiplier *
+                              parseFloat(activeFloat?.opening)
+                            ).toFixed(2)
+                          )
+                        : "0.00"}
+                    </span>
+                    <span
+                      className="text-[0.65rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
                 text-ellipsis"
-                >
-                  refunds
-                </span>
-              </div>
-              <div
-                className="h-full col-span-1 rounded-sm border bg-slate-50 p-2.5
+                    >
+                      opening
+                    </span>
+                  </div>
+                  <div
+                    className="h-full col-span-1 border bg-slate-50 p-3 rounded-sm
               flex flex-col justify-between overflow-hidden"
-              >
-                <span
-                  className="text-xs text-left px-1 font-semibold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                  >
+                    <span
+                      className="text-xs text-center px-1 font-semibold text-slate-600 w-full whitespace-nowrap overflow-hidden
                 text-ellipsis"
-                >
-                  {selectedCurrency?.symbol}&nbsp;
-                  {activeFloat?.gross
-                    ? numberWithSpaces(
-                        (
-                          selectedCurrency?.rate_multiplier *
-                          parseFloat(activeFloat?.gross)
-                        ).toFixed(2)
-                      )
-                    : "0.00"}
-                </span>
-                <span
-                  className="text-[0.7rem] text-left px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                    >
+                      {selectedCurrency?.symbol}&nbsp;
+                      {activeFloat?.expenses
+                        ? numberWithSpaces(
+                            (
+                              selectedCurrency?.rate_multiplier *
+                              parseFloat(activeFloat?.expenses)
+                            ).toFixed(2)
+                          )
+                        : "0.00"}
+                    </span>
+                    <span
+                      className="text-[0.65rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
                 text-ellipsis"
-                >
-                  Gross
-                </span>
-              </div>
-              <div
-                className="h-full col-span-1 rounded-sm border bg-slate-50 p-2.5
+                    >
+                      Expenses
+                    </span>
+                  </div>
+                  <div
+                    className="h-full col-span-1 border bg-slate-50 p-3 rounded-sm
               flex flex-col justify-between overflow-hidden"
-              >
-                <span
-                  className="text-xs text-left px-1 font-semibold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                  >
+                    <span
+                      className="text-xs text-center px-1 font-semibold text-slate-600 w-full whitespace-nowrap overflow-hidden
                 text-ellipsis"
-                >
-                  {selectedCurrency?.symbol}&nbsp;
-                  {activeFloat?.total
-                    ? numberWithSpaces(
-                        (
-                          selectedCurrency?.rate_multiplier *
-                          parseFloat(activeFloat?.total)
-                        ).toFixed(2)
-                      )
-                    : "0.00"}
-                </span>
-                <span
-                  className="text-[0.7rem] text-left px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                    >
+                      {selectedCurrency?.symbol}&nbsp;
+                      {activeFloat?.sales
+                        ? numberWithSpaces(
+                            (
+                              selectedCurrency?.rate_multiplier *
+                              parseFloat(activeFloat?.sales)
+                            ).toFixed(2)
+                          )
+                        : "0.00"}
+                    </span>
+                    <span
+                      className="text-[0.65rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
                 text-ellipsis"
-                >
-                  Total
-                </span>
-              </div>
-            </div>
+                    >
+                      Sales
+                    </span>
+                  </div>
+                  <div
+                    className="h-full col-span-1 border bg-slate-50 p-3 rounded-sm
+              flex flex-col justify-between overflow-hidden"
+                  >
+                    <span
+                      className="text-xs text-center px-1 font-semibold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                    >
+                      {selectedCurrency?.symbol}&nbsp;
+                      {activeFloat?.refunds
+                        ? numberWithSpaces(
+                            (
+                              selectedCurrency?.rate_multiplier *
+                              parseFloat(activeFloat?.refunds)
+                            ).toFixed(2)
+                          )
+                        : "0.00"}
+                    </span>
+                    <span
+                      className="text-[0.65rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                    >
+                      refunds
+                    </span>
+                  </div>
+                  <div
+                    className="h-full col-span-1 border bg-slate-50 p-3 rounded-sm
+              flex flex-col justify-between overflow-hidden"
+                  >
+                    <span
+                      className="text-xs text-center px-1 font-semibold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                    >
+                      {selectedCurrency?.symbol}&nbsp;
+                      {activeFloat?.additional
+                        ? numberWithSpaces(
+                            (
+                              selectedCurrency?.rate_multiplier *
+                              parseFloat(activeFloat?.additional)
+                            ).toFixed(2)
+                          )
+                        : "0.00"}
+                    </span>
+                    <span
+                      className="text-[0.65rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                    >
+                      added amount
+                    </span>
+                  </div>
+                  <div
+                    className="h-full col-span-1 border bg-slate-50 p-3 rounded-sm
+              flex flex-col justify-between overflow-hidden"
+                  >
+                    <span
+                      className="text-xs text-center px-1 font-semibold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                    >
+                      {selectedCurrency?.symbol}&nbsp;
+                      {activeFloat?.total
+                        ? numberWithSpaces(
+                            (
+                              selectedCurrency?.rate_multiplier *
+                              parseFloat(activeFloat?.total)
+                            ).toFixed(2)
+                          )
+                        : "0.00"}
+                    </span>
+                    <span
+                      className="text-[0.65rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                    >
+                      Total
+                    </span>
+                  </div>
+                </div>
                 {[...activeFloat?.activities]
                   ?.sort((a: any, b: any) => b.time - a.time)
                   ?.map((log: any, index: number) => {
                     return (
                       <li
                         key={index + log?.time}
-                        className="w-full h-14 flex flex-col space-y-1 border-b first:border-t border-slate-100 px-1 py-2"
+                        className="w-full h-14 flex flex-col justify-center space-y-0.5 border-b first:border-t border-slate-100 px-1 py-2"
                       >
                         <div className="flex items-center justify-between w-full h-fit">
                           <span
@@ -722,19 +889,27 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
                               : "0.00"}
                           </span>
                         </div>
-                        <span
-                          className="text-xs capitalize text-slate-400 font-medium w-full
+                        <div className="flex justify-between items-center">
+                          <span
+                            className="text-xs capitalize text-slate-400 font-medium w-[60%]
                  overflow-hidden whitespace-nowrap text-ellipsis"
-                        >
-                          {new Date(log?.time).toString()?.split("(")[0]}
-                        </span>
+                          >
+                            {new Date(log?.time).toString()?.split("(")[0]}
+                          </span>
+                          <span
+                            className="text-xs text-end uppercase text-slate-400 font-medium w-[40%]
+                 overflow-hidden whitespace-nowrap text-ellipsis"
+                          >
+                            {log?.currency}
+                          </span>
+                        </div>
                       </li>
                     );
                   })}
               </ul>
             ) : (
               <div
-                className="mt-4 w-full h-[calc(100%-5rem)] pr-2 py-1 pt-16 
+                className="mt-4 w-full h-[calc(100%-10rem)] pr-2 py-1 pt-16 
             overflow-hidden flex flex-col space-y-4 items-center"
               >
                 <img

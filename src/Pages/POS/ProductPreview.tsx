@@ -193,7 +193,7 @@ const ProductPreview: FC<Props> = ({
               >
                 In Stock :&nbsp;
                 <span className="text-cyan-750 text-xs font-semibold">
-                  {Number(currentProd[0]?.in_stock)}
+                  {Number(currentProd[0]?.in_stock??0)}
                 </span>
               </small>
               </div>

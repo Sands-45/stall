@@ -2,8 +2,6 @@ import { FC, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../../Redux/store";
 import { numberWithSpaces } from "../../Reusable Functions/Functions";
-import { QRCode } from "react-qrcode-logo";
-import Barcode from "react-barcode";
 import Authorize from "../../Components/Authorize/Authorize";
 import {
   loadInventoryData,
@@ -113,18 +111,15 @@ const SaleActions: FC<Props> = ({
               ),
               {
                 ...openFloat,
-                total: (
-                  Number(openFloat?.total) - currentSale?.total
-                ),
-                gross: (
-                  Number(openFloat?.gross) - currentSale?.total
-                ),
+                total: Number(openFloat?.total) - currentSale?.total,
+                refunds: Number(openFloat?.refunds) + currentSale?.total,
                 activities: [
                   ...openFloat?.activities,
                   {
                     note: "Voided Transaction",
                     amount: "-" + currentSale?.total,
                     time: new Date()?.getTime(),
+                    currency: selectedCurrency?.name,
                   },
                 ],
                 edited: true,
@@ -141,12 +136,8 @@ const SaleActions: FC<Props> = ({
               ),
               {
                 ...openFloat,
-                total: (
-                  Number(openFloat?.total) - currentSale?.total
-                ),
-                gross: (
-                  Number(openFloat?.gross) - currentSale?.total
-                ),
+                total: Number(openFloat?.total) - currentSale?.total,
+                gross: Number(openFloat?.gross) - currentSale?.total,
                 activities: [
                   ...openFloat?.activities,
                   {
@@ -295,21 +286,23 @@ const SaleActions: FC<Props> = ({
         >
           <div className="h-8 w-full flex items-center justify-between print:hidden">
             <button
+              disabled={currentSale?.not_eligable_for_refund}
               onClick={() => {
                 setAuthorize(true);
               }}
               className="h-8 w-20 bg-cyan-750 hover:bg-cyan-800 text-[0.65rem] uppercase
-               font-medium text-white rounded-sm
+               font-medium text-white rounded-sm disabled:cursor-not-allowed disabled:opacity-80
                "
             >
               void
             </button>
             <button
+              disabled={currentSale?.not_eligable_for_refund}
               onClick={() => {
                 openRefund(true);
               }}
               className="h-8 w-20 bg-cyan-750 hover:bg-cyan-800 text-[0.65rem] uppercase
-               font-medium text-white rounded-sm
+               font-medium text-white rounded-sm disabled:cursor-not-allowed disabled:opacity-80
                "
             >
               Refund
@@ -342,55 +335,246 @@ const SaleActions: FC<Props> = ({
           </div>
 
           <div
-            className="w-full h-[calc(100%-2.5rem)] flex items-center justify-between 
-        overflow-hidden overflow-y-scroll no-scrollbar no-scrollbar::-webkit-scrollbar"
+            className="w-full h-[calc(100%-2.5rem)] flex flex-col items-center 
+        overflow-hidden overflow-y-scroll no-scrollbar no-scrollbar::-webkit-scrollbar space-y-6"
           >
+            <div className="w-full h-fit px-2 print:hidden">
+              <div className="text-lg font-semibold text-slate-600 flex items-center justify-between w-full">
+                <span className="w-[50%] whitespace-nowrap overflow-hidden text-ellipsis">
+                  Total
+                </span>
+                <span className="text-end w-[50%] whitespace-nowrap overflow-hidden text-ellipsis">
+                  {selectedCurrency?.symbol}&nbsp;
+                  {numberWithSpaces(
+                    (
+                      currentSale?.total * selectedCurrency?.rate_multiplier
+                    )?.toFixed(2)
+                  )}
+                </span>
+              </div>
+              <span className="text-xs text-slate-500 w-full whitespace-nowrap overflow-hidden text-ellipsis capitalize">
+                {new Date(currentSale?.date)?.toString()?.split("(")[0]}
+              </span>
+              <div
+                className="text-xs text-slate-500 flex items-center
+               justify-between w-full border-t border-slate-200 pt-2 mt-1"
+              >
+                <span className="w-[50%] whitespace-nowrap overflow-hidden text-ellipsis font-medium">
+                  Customer's Name
+                </span>
+                <span className="text-end w-[50%] whitespace-nowrap overflow-hidden text-ellipsis">
+                  {currentSale?.customers_details?.name ?? "Unknown"}
+                </span>
+              </div>
+              <div
+                className="text-xs text-slate-500 flex items-center
+               justify-between w-full py-0.5"
+              >
+                <span className="w-[50%] whitespace-nowrap overflow-hidden text-ellipsis font-medium">
+                  Customer's Email
+                </span>
+                <span className="text-end w-[50%] whitespace-nowrap overflow-hidden text-ellipsis lowercase">
+                  {currentSale?.customers_details?.email
+                    ? currentSale?.customers_details?.email
+                    : "none"}
+                </span>
+              </div>
+              <div
+                className="text-xs text-slate-500 flex items-center
+               justify-between w-full pb-1"
+              >
+                <span className="w-[50%] whitespace-nowrap overflow-hidden text-ellipsis font-medium">
+                  Customer's Address
+                </span>
+                <span className="text-end w-[50%] whitespace-nowrap overflow-hidden text-ellipsis">
+                  {currentSale?.customers_details?.address
+                    ? currentSale?.customers_details?.address
+                    : "No Address"}
+                </span>
+              </div>
+              <div
+                className="text-xs text-slate-500 flex items-center
+               justify-between w-full border-t border-slate-200 pt-2 py-0.5 mt-1"
+              >
+                <span className="w-[50%] whitespace-nowrap overflow-hidden text-ellipsis font-medium">
+                  Payment Method
+                </span>
+                <span className="text-end w-[50%] whitespace-nowrap overflow-hidden text-ellipsis capitalize">
+                  {currentSale?.payment_method}
+                </span>
+              </div>
+              <div
+                className="text-xs text-slate-500 flex items-center
+               justify-between w-full py-0.5"
+              >
+                <span className="w-[50%] whitespace-nowrap overflow-hidden text-ellipsis font-medium">
+                  Payment Status
+                </span>
+                <span className="text-end w-[50%] whitespace-nowrap overflow-hidden text-ellipsis capitalize">
+                  {currentSale?.status}
+                </span>
+              </div>
+              {currentSale?.refund_amount && (
+                <div
+                  className="text-xs text-slate-500 flex items-center
+               justify-between w-full py-0.5"
+                >
+                  <span className="w-[50%] whitespace-nowrap overflow-hidden text-ellipsis font-medium">
+                    Refund Amount
+                  </span>
+                  <span className="text-end w-[50%] whitespace-nowrap overflow-hidden text-ellipsis capitalize">
+                    {selectedCurrency?.symbol}&nbsp;
+                    {numberWithSpaces(
+                      (
+                        currentSale?.refund_amount *
+                        selectedCurrency?.rate_multiplier
+                      )?.toFixed(2)
+                    )}
+                  </span>
+                </div>
+              )}
+
+              {currentSale?.refund_date && (
+                <div
+                  className="text-xs text-slate-500 flex items-center
+               justify-between w-full py-0.5"
+                >
+                  <span className="w-[50%] whitespace-nowrap overflow-hidden text-ellipsis font-medium">
+                    Refund Date
+                  </span>
+                  <span className="text-end w-[50%] whitespace-nowrap overflow-hidden text-ellipsis capitalize">
+                    {
+                      new Date(currentSale?.refund_date)
+                        ?.toString()
+                        ?.split("(")[0]
+                    }
+                  </span>
+                </div>
+              )}
+
+              {currentSale?.refund_reason && (
+                <div
+                  className="text-xs text-slate-500 flex items-center
+               justify-between w-full py-0.5"
+                >
+                  <span className="w-[50%] whitespace-nowrap overflow-hidden text-ellipsis font-medium">
+                    Refund Reason
+                  </span>
+                  <span className="text-end w-[50%] whitespace-nowrap overflow-hidden text-ellipsis capitalize">
+                    <abbr title={currentSale?.refund_reason}>
+                      {currentSale?.refund_reason}
+                    </abbr>
+                  </span>
+                </div>
+              )}
+              <div
+                className="text-xs text-slate-500 flex items-center
+               justify-between w-full py-0.5"
+              >
+                <span className="w-[50%] whitespace-nowrap overflow-hidden text-ellipsis font-medium">
+                  Sale Channel
+                </span>
+                <span className="text-end w-[50%] whitespace-nowrap overflow-hidden text-ellipsis capitalize">
+                  {currentSale?.sale_channel}
+                </span>
+              </div>
+              <div
+                className="text-xs text-slate-500 flex items-center
+               justify-between w-full py-0.5"
+              >
+                <span className="w-[50%] whitespace-nowrap overflow-hidden text-ellipsis font-medium">
+                  Service Type
+                </span>
+                <span className="text-end w-[50%] whitespace-nowrap overflow-hidden text-ellipsis capitalize">
+                  {currentSale?.service}
+                </span>
+              </div>
+              <div
+                className="text-xs text-slate-500 flex items-center
+               justify-between w-full py-0.5"
+              >
+                <span className="w-[50%] whitespace-nowrap overflow-hidden text-ellipsis font-medium">
+                  Served By
+                </span>
+                <span className="text-end w-[50%] whitespace-nowrap overflow-hidden text-ellipsis capitalize">
+                  {currentSale?.user?.name}
+                </span>
+              </div>
+            </div>
+            <span className="text-sm font-semibold text-slate-600 w-full">
+              Invoice Preview
+            </span>
             {/**Slip Preview */}
             <div
-              className="w-[27rem] print:max-w-full print:w-full min-h-full h-fit flex flex-col justify-between overflow-hidden 
-            overflow-y-scroll no-scrollbar no-scrollbar::-webkit-scrollbar
-           border border-slate-200 rounded-sm p-6 bg-white print:border-none
+              className="w-[27rem] h-fit flex flex-col
+           border border-slate-200 rounded-sm p-6 bg-white print:max-w-full print:w-full print:border-none
             print:fixed print:top-0 print:left-0 print:bottom-0 print:right-0 prirnt:z-[9999] print:rounded-none"
             >
-              <div className="w-full h-fit">
-                <div className="flex justify-between items-center py-2 pb-4 border-b border-dashed border-slate-300">
-                  <div className="w-[60%] h-fit overflow-hidden text-slate-600 space-y-1">
-                    <p className="text-xs uppercase font-bold w-full whitespace-nowrap overflow-hidden text-ellipsis">
-                      Test Shop
-                    </p>
-                    <p className="text-xs uppercase font-medium w-full whitespace-nowrap overflow-hidden text-ellipsis">
-                      146 Maddle Street Mulbaton 1456
-                    </p>
-                    <p className="text-xs uppercase font-medium w-full whitespace-nowrap overflow-hidden text-ellipsis">
-                      Phone : 088 890 6765
-                    </p>
-                    <p className="text-xs lowercase font-medium w-full whitespace-nowrap overflow-hidden text-ellipsis">
-                      <span className="uppercase">email :</span> shop@test.com
-                    </p>
-                    <p className="text-xs capitalize font-medium w-full whitespace-nowrap overflow-hidden text-ellipsis">
-                      <span className="uppercase">Served by :</span> sands
-                      tester
-                    </p>
-                    <p className="text-xs capitalize font-medium w-full whitespace-nowrap overflow-hidden text-ellipsis">
-                      {new Date(currentSale?.date)?.toString()?.split("(")[0]}
-                    </p>
-                  </div>
-                  <div className="w-[40%] flex justify-end max-h-[5.5rem] overflow-hidden">
-                    {showActions && currentSale?.transact_id?.length > 4 && (
-                      <QRCode
-                        value={currentSale?.transact_id ?? "none"}
-                        size={70}
-                      />
-                    )}
-                  </div>
+              <div className="h-fit w-full pb-4 border-b border-dashed border-slate-300">
+                <div className="w-full h-fit overflow-hidden text-slate-600 space-y-1">
+                  <p className="text-xs uppercase font-bold w-full whitespace-nowrap overflow-hidden text-ellipsis">
+                    Test Shop
+                  </p>
+                  <p className="text-xs uppercase font-medium w-full whitespace-nowrap overflow-hidden text-ellipsis">
+                    146 Maddle Street Mulbaton 1456
+                  </p>
+                  <p className="text-xs uppercase font-medium w-full whitespace-nowrap overflow-hidden text-ellipsis">
+                    Phone : 088 890 6765
+                  </p>
+                  <p className="text-xs lowercase font-medium w-full whitespace-nowrap overflow-hidden text-ellipsis">
+                    <span className="uppercase">email :</span> shop@test.com
+                  </p>
+                  <p className="text-xs capitalize font-medium w-full whitespace-nowrap overflow-hidden text-ellipsis">
+                    <span className="uppercase">Served by :</span>{" "}
+                    {currentSale?.user?.name}
+                  </p>
+                  <p className="text-xs capitalize font-medium w-full whitespace-nowrap overflow-hidden text-ellipsis">
+                    {new Date(currentSale?.date)?.toString()?.split("(")[0]}
+                  </p>
+                  <p className="text-xs uppercase font-medium w-full whitespace-nowrap overflow-hidden text-ellipsis">
+                    RECEIPT #{currentSale?.transact_id}
+                  </p>
                 </div>
-                <ul className="mt-4 w-full flex flex-col space-y-1">
-                  {currentSale?.products?.length >= 1 &&
-                    currentSale?.products?.map((prod: any) => {
+              </div>
+
+              <ul className="w-full h-fit space-y-1 py-4 overflow-hidden">
+                {currentSale?.products?.length >= 1 &&
+                  currentSale?.products?.map((prod: any) => {
+                    return (
+                      <li
+                        key={prod?.prod_cart_uid}
+                        className="w-full h-5 flex justify-between items-center uppercase text-xs text-slate-600"
+                      >
+                        <span>
+                          {prod?.prod_obj?.name}&nbsp;&nbsp;
+                          <span className="lowercase">x</span> {prod?.quantity}
+                        </span>
+                        <span>
+                          {selectedCurrency?.symbol}&nbsp;
+                          {numberWithSpaces(
+                            (
+                              selectedCurrency?.rate_multiplier *
+                              Number(prod?.prod_obj?.price_in_usd) *
+                              Number(prod?.quantity)
+                            ).toFixed(2)
+                          )}
+                        </span>
+                      </li>
+                    );
+                  })}
+                {currentSale?.refunded_products?.length >= 1 && (
+                  <>
+                    <span
+                      className="text-xs uppercase font-semibold
+                     text-slate-500 w-full whitespace-nowrap overflow-hidden text-ellipsis"
+                    >
+                      Returned items
+                    </span>
+                    {currentSale?.refunded_products?.map((prod: any) => {
                       return (
                         <li
                           key={prod?.prod_cart_uid}
-                          className="w-full flex justify-between items-center uppercase text-xs text-slate-600"
+                          className="w-full h-5 flex justify-between items-center uppercase text-xs text-slate-600"
                         >
                           <span>
                             {prod?.prod_obj?.name}&nbsp;&nbsp;
@@ -410,19 +594,20 @@ const SaleActions: FC<Props> = ({
                         </li>
                       );
                     })}
-                </ul>
-              </div>
+                  </>
+                )}
+              </ul>
 
               {/**Totals */}
-              <div className="w-full flex flex-col space-y-2">
-                <ul className="mt-4 w-full h-fit flex flex-col py-2 space-y-1 border-dashed border-y border-slate-300">
-                  <li className="w-full flex items-center justify-between">
-                    <span className="text-xs text-slate-500 font-semibold">
-                      Tip ({currentSale?.tip_percent??0}%)
-                    </span>
-                    <span className="text-xs text-slate-600 font-semibold">
+              <ul className="w-full h-fit overflow-hidden py-4 space-y-1 border-dashed border-y border-slate-300">
+                <li className="w-full h-4 flex items-center justify-between">
+                  <span className="text-xs text-slate-500 font-semibold">
+                    Tip ({currentSale?.tip_percent ?? 0}%)
+                  </span>
+                  <span className="text-xs text-slate-600 font-semibold">
                     {selectedCurrency?.symbol}&nbsp;
-                    {currentSale?.products?.length >= 1 && currentSale?.tip_amount
+                    {currentSale?.products?.length >= 1 &&
+                    currentSale?.tip_amount
                       ? numberWithSpaces(
                           (
                             selectedCurrency?.rate_multiplier *
@@ -430,15 +615,16 @@ const SaleActions: FC<Props> = ({
                           ).toFixed(2)
                         )
                       : "0.00"}
-                    </span>
-                  </li>
-                  <li className="w-full flex items-center justify-between">
-                    <span className="text-xs text-slate-500 font-semibold">
-                      Discount ({currentSale?.discount_percent??0}%)
-                    </span>
-                    <span className="text-xs text-slate-600 font-semibold">
-                      {selectedCurrency?.symbol}&nbsp;
-                    {currentSale?.products?.length >= 1 && currentSale?.discount_amount
+                  </span>
+                </li>
+                <li className="w-full h-4 flex items-center justify-between">
+                  <span className="text-xs text-slate-500 font-semibold">
+                    Discount ({currentSale?.discount_percent ?? 0}%)
+                  </span>
+                  <span className="text-xs text-slate-600 font-semibold">
+                    {selectedCurrency?.symbol}&nbsp;
+                    {currentSale?.products?.length >= 1 &&
+                    currentSale?.discount_amount
                       ? numberWithSpaces(
                           (
                             selectedCurrency?.rate_multiplier *
@@ -446,11 +632,28 @@ const SaleActions: FC<Props> = ({
                           ).toFixed(2)
                         )
                       : "0.00"}
-                    </span>
-                  </li>
-                  <li className="w-full flex items-center justify-between">
+                  </span>
+                </li>
+                <li className="w-full h-4 flex items-center justify-between">
+                  <span className="text-xs text-slate-500 font-semibold">
+                    VAT ({currentSale?.tax_percentage}%)
+                  </span>
+                  <span className="text-xs text-slate-600 font-semibold">
+                    {selectedCurrency?.symbol}&nbsp;
+                    {currentSale?.products?.length >= 1
+                      ? numberWithSpaces(
+                          (
+                            selectedCurrency?.rate_multiplier *
+                            currentSale?.tax_in_usd
+                          ).toFixed(2)
+                        )
+                      : "0.00"}
+                  </span>
+                </li>
+                {currentSale?.refund_amount && (
+                  <li className="w-full h-4 flex items-center justify-between">
                     <span className="text-xs text-slate-500 font-semibold">
-                      VAT ({currentSale?.tax_percentage}%)
+                      Refund Amount
                     </span>
                     <span className="text-xs text-slate-600 font-semibold">
                       {selectedCurrency?.symbol}&nbsp;
@@ -458,40 +661,30 @@ const SaleActions: FC<Props> = ({
                         ? numberWithSpaces(
                             (
                               selectedCurrency?.rate_multiplier *
-                              currentSale?.tax_in_usd
+                              currentSale?.refund_amount
                             ).toFixed(2)
                           )
                         : "0.00"}
                     </span>
                   </li>
-                  <li className="w-full flex items-center justify-between">
-                    <span className="text-xs text-slate-500 font-semibold">
-                      Total
-                    </span>
-                    <span className="text-xs text-slate-600 font-semibold">
-                      {selectedCurrency?.symbol}&nbsp;
-                      {currentSale?.products?.length >= 1
-                        ? numberWithSpaces(
-                            (
-                              selectedCurrency?.rate_multiplier *
-                              currentSale?.total
-                            ).toFixed(2)
-                          )
-                        : "0.00"}
-                    </span>
-                  </li>
-                </ul>
-                <div className="w-full flex items-center justify-center">
-                  {showActions && currentSale?.transact_id?.length > 4 && (
-                    <Barcode
-                      value={currentSale?.transact_id ?? "none"}
-                      height={25}
-                      width={1.5}
-                      fontSize={14}
-                    />
-                  )}
-                </div>
-              </div>
+                )}
+                <li className="w-full h-4 flex items-center justify-between">
+                  <span className="text-xs text-slate-500 font-semibold">
+                    Total
+                  </span>
+                  <span className="text-xs text-slate-600 font-semibold">
+                    {selectedCurrency?.symbol}&nbsp;
+                    {currentSale?.products?.length >= 1
+                      ? numberWithSpaces(
+                          (
+                            selectedCurrency?.rate_multiplier *
+                            currentSale?.total
+                          ).toFixed(2)
+                        )
+                      : "0.00"}
+                  </span>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -512,6 +705,7 @@ const SaleActions: FC<Props> = ({
         showRefund={showRefund}
         openRefund={openRefund}
         currentSale={currentSale}
+        setActions={setActions}
       />
     </>
   );

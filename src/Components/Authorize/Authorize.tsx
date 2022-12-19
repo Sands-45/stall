@@ -55,7 +55,7 @@ const Authorize: FC<Props> = ({
         <button
           onClick={() => {
             setAuthorize(false);
-            setReason("");
+            setReason&&setReason("");
             setValue("");
           }}
           className="h-7 w-7 bg-white border rounded text-slate-700 text-xl
@@ -116,6 +116,7 @@ const Authorize: FC<Props> = ({
             <div className="w-full flex items-center justify-between">
               <label htmlFor="auth_pin" className="w-[65%]">
                 <input
+                autoFocus
                   onChange={(e) => {
                     setValue(e.target.value);
                   }}
