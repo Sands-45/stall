@@ -339,7 +339,7 @@ const SaleActions: FC<Props> = ({
         overflow-hidden overflow-y-scroll no-scrollbar no-scrollbar::-webkit-scrollbar space-y-6"
           >
             <div className="w-full h-fit px-2 print:hidden">
-              <div className="text-lg font-semibold text-slate-600 flex items-center justify-between w-full">
+              <div className="text-lg font-semibold text-slate-700 flex items-center justify-between w-full">
                 <span className="w-[50%] whitespace-nowrap overflow-hidden text-ellipsis">
                   Total
                 </span>
@@ -352,11 +352,11 @@ const SaleActions: FC<Props> = ({
                   )}
                 </span>
               </div>
-              <span className="text-xs text-slate-500 w-full whitespace-nowrap overflow-hidden text-ellipsis capitalize">
+              <span className="text-xs text-slate-600 w-full whitespace-nowrap overflow-hidden text-ellipsis capitalize">
                 {new Date(currentSale?.date)?.toString()?.split("(")[0]}
               </span>
               <div
-                className="text-xs text-slate-500 flex items-center
+                className="text-xs text-slate-600 flex items-center
                justify-between w-full border-t border-slate-200 pt-2 mt-1"
               >
                 <span className="w-[50%] whitespace-nowrap overflow-hidden text-ellipsis font-medium">
@@ -367,7 +367,7 @@ const SaleActions: FC<Props> = ({
                 </span>
               </div>
               <div
-                className="text-xs text-slate-500 flex items-center
+                className="text-xs text-slate-600 flex items-center
                justify-between w-full py-0.5"
               >
                 <span className="w-[50%] whitespace-nowrap overflow-hidden text-ellipsis font-medium">
@@ -380,7 +380,7 @@ const SaleActions: FC<Props> = ({
                 </span>
               </div>
               <div
-                className="text-xs text-slate-500 flex items-center
+                className="text-xs text-slate-600 flex items-center
                justify-between w-full pb-1"
               >
                 <span className="w-[50%] whitespace-nowrap overflow-hidden text-ellipsis font-medium">
@@ -393,7 +393,7 @@ const SaleActions: FC<Props> = ({
                 </span>
               </div>
               <div
-                className="text-xs text-slate-500 flex items-center
+                className="text-xs text-slate-600 flex items-center
                justify-between w-full border-t border-slate-200 pt-2 py-0.5 mt-1"
               >
                 <span className="w-[50%] whitespace-nowrap overflow-hidden text-ellipsis font-medium">
@@ -404,7 +404,7 @@ const SaleActions: FC<Props> = ({
                 </span>
               </div>
               <div
-                className="text-xs text-slate-500 flex items-center
+                className="text-xs text-slate-600 flex items-center
                justify-between w-full py-0.5"
               >
                 <span className="w-[50%] whitespace-nowrap overflow-hidden text-ellipsis font-medium">
@@ -416,7 +416,7 @@ const SaleActions: FC<Props> = ({
               </div>
               {currentSale?.refund_amount && (
                 <div
-                  className="text-xs text-slate-500 flex items-center
+                  className="text-xs text-slate-600 flex items-center
                justify-between w-full py-0.5"
                 >
                   <span className="w-[50%] whitespace-nowrap overflow-hidden text-ellipsis font-medium">
@@ -436,7 +436,7 @@ const SaleActions: FC<Props> = ({
 
               {currentSale?.refund_date && (
                 <div
-                  className="text-xs text-slate-500 flex items-center
+                  className="text-xs text-slate-600 flex items-center
                justify-between w-full py-0.5"
                 >
                   <span className="w-[50%] whitespace-nowrap overflow-hidden text-ellipsis font-medium">
@@ -451,24 +451,8 @@ const SaleActions: FC<Props> = ({
                   </span>
                 </div>
               )}
-
-              {currentSale?.refund_reason && (
-                <div
-                  className="text-xs text-slate-500 flex items-center
-               justify-between w-full py-0.5"
-                >
-                  <span className="w-[50%] whitespace-nowrap overflow-hidden text-ellipsis font-medium">
-                    Refund Reason
-                  </span>
-                  <span className="text-end w-[50%] whitespace-nowrap overflow-hidden text-ellipsis capitalize">
-                    <abbr title={currentSale?.refund_reason}>
-                      {currentSale?.refund_reason}
-                    </abbr>
-                  </span>
-                </div>
-              )}
               <div
-                className="text-xs text-slate-500 flex items-center
+                className="text-xs text-slate-600 flex items-center
                justify-between w-full py-0.5"
               >
                 <span className="w-[50%] whitespace-nowrap overflow-hidden text-ellipsis font-medium">
@@ -479,7 +463,7 @@ const SaleActions: FC<Props> = ({
                 </span>
               </div>
               <div
-                className="text-xs text-slate-500 flex items-center
+                className="text-xs text-slate-600 flex items-center
                justify-between w-full py-0.5"
               >
                 <span className="w-[50%] whitespace-nowrap overflow-hidden text-ellipsis font-medium">
@@ -490,7 +474,7 @@ const SaleActions: FC<Props> = ({
                 </span>
               </div>
               <div
-                className="text-xs text-slate-500 flex items-center
+                className="text-xs text-slate-600 flex items-center
                justify-between w-full py-0.5"
               >
                 <span className="w-[50%] whitespace-nowrap overflow-hidden text-ellipsis font-medium">
@@ -500,18 +484,38 @@ const SaleActions: FC<Props> = ({
                   {currentSale?.user?.name}
                 </span>
               </div>
+              {currentSale?.refund_reason && (
+                <div className="text-xs text-slate-600 flex flex-col space-y-1 w-full py-0.5 pt-2 mt-2 border-t border-slate-300">
+                  <span className="w-full whitespace-nowrap overflow-hidden text-ellipsis font-medium">
+                    Refund Reason
+                  </span>
+                  <span className="w-full whitespace-wrap overflow-hidden text-ellipsis capitalize">
+                    {currentSale?.refund_reason}
+                  </span>
+                </div>
+              )}
+              {currentSale?.note && (
+                <div className="text-xs text-slate-600 flex flex-col space-y-1 w-full py-0.5 pt-2 mt-2 border-t border-slate-300">
+                  <span className="w-full whitespace-nowrap overflow-hidden text-ellipsis font-medium">
+                    Note
+                  </span>
+                  <span className="w-full whitespace-wrap overflow-hidden text-ellipsis capitalize">
+                    {currentSale?.note}
+                  </span>
+                </div>
+              )}
             </div>
-            <span className="text-sm font-semibold text-slate-600 w-full">
+            <span className="text-sm font-semibold text-slate-700 w-full">
               Invoice Preview
             </span>
             {/**Slip Preview */}
             <div
               className="w-[27rem] h-fit flex flex-col
-           border border-slate-200 rounded-sm p-6 bg-white print:max-w-full print:w-full print:border-none
+           border border-slate-200 rounded-sm p-6 bg-slate-50 print:bg-white print:max-w-full print:w-full print:border-none
             print:fixed print:top-0 print:left-0 print:bottom-0 print:right-0 prirnt:z-[9999] print:rounded-none"
             >
               <div className="h-fit w-full pb-4 border-b border-dashed border-slate-300">
-                <div className="w-full h-fit overflow-hidden text-slate-600 space-y-1">
+                <div className="w-full h-fit overflow-hidden text-slate-700 space-y-1">
                   <p className="text-xs uppercase font-bold w-full whitespace-nowrap overflow-hidden text-ellipsis">
                     Test Shop
                   </p>
@@ -543,7 +547,7 @@ const SaleActions: FC<Props> = ({
                     return (
                       <li
                         key={prod?.prod_cart_uid}
-                        className="w-full h-5 flex justify-between items-center uppercase text-xs text-slate-600"
+                        className="w-full h-5 flex justify-between items-center uppercase text-xs text-slate-700"
                       >
                         <span>
                           {prod?.prod_obj?.name}&nbsp;&nbsp;
@@ -566,7 +570,7 @@ const SaleActions: FC<Props> = ({
                   <>
                     <span
                       className="text-xs uppercase font-semibold
-                     text-slate-500 w-full whitespace-nowrap overflow-hidden text-ellipsis"
+                     text-slate-600 w-full whitespace-nowrap overflow-hidden text-ellipsis"
                     >
                       Returned items
                     </span>
@@ -574,7 +578,7 @@ const SaleActions: FC<Props> = ({
                       return (
                         <li
                           key={prod?.prod_cart_uid}
-                          className="w-full h-5 flex justify-between items-center uppercase text-xs text-slate-600"
+                          className="w-full h-5 flex justify-between items-center uppercase text-xs text-slate-700"
                         >
                           <span>
                             {prod?.prod_obj?.name}&nbsp;&nbsp;
@@ -601,10 +605,10 @@ const SaleActions: FC<Props> = ({
               {/**Totals */}
               <ul className="w-full h-fit overflow-hidden py-4 space-y-1 border-dashed border-y border-slate-300">
                 <li className="w-full h-4 flex items-center justify-between">
-                  <span className="text-xs text-slate-500 font-semibold">
+                  <span className="text-xs text-slate-600 font-semibold">
                     Tip ({currentSale?.tip_percent ?? 0}%)
                   </span>
-                  <span className="text-xs text-slate-600 font-semibold">
+                  <span className="text-xs text-slate-700 font-semibold">
                     {selectedCurrency?.symbol}&nbsp;
                     {currentSale?.products?.length >= 1 &&
                     currentSale?.tip_amount
@@ -618,10 +622,10 @@ const SaleActions: FC<Props> = ({
                   </span>
                 </li>
                 <li className="w-full h-4 flex items-center justify-between">
-                  <span className="text-xs text-slate-500 font-semibold">
+                  <span className="text-xs text-slate-600 font-semibold">
                     Discount ({currentSale?.discount_percent ?? 0}%)
                   </span>
-                  <span className="text-xs text-slate-600 font-semibold">
+                  <span className="text-xs text-slate-700 font-semibold">
                     {selectedCurrency?.symbol}&nbsp;
                     {currentSale?.products?.length >= 1 &&
                     currentSale?.discount_amount
@@ -635,10 +639,10 @@ const SaleActions: FC<Props> = ({
                   </span>
                 </li>
                 <li className="w-full h-4 flex items-center justify-between">
-                  <span className="text-xs text-slate-500 font-semibold">
+                  <span className="text-xs text-slate-600 font-semibold">
                     VAT ({currentSale?.tax_percentage}%)
                   </span>
-                  <span className="text-xs text-slate-600 font-semibold">
+                  <span className="text-xs text-slate-700 font-semibold">
                     {selectedCurrency?.symbol}&nbsp;
                     {currentSale?.products?.length >= 1
                       ? numberWithSpaces(
@@ -652,10 +656,10 @@ const SaleActions: FC<Props> = ({
                 </li>
                 {currentSale?.refund_amount && (
                   <li className="w-full h-4 flex items-center justify-between">
-                    <span className="text-xs text-slate-500 font-semibold">
+                    <span className="text-xs text-slate-600 font-semibold">
                       Refund Amount
                     </span>
-                    <span className="text-xs text-slate-600 font-semibold">
+                    <span className="text-xs text-slate-700 font-semibold">
                       {selectedCurrency?.symbol}&nbsp;
                       {currentSale?.products?.length >= 1
                         ? numberWithSpaces(
@@ -669,10 +673,10 @@ const SaleActions: FC<Props> = ({
                   </li>
                 )}
                 <li className="w-full h-4 flex items-center justify-between">
-                  <span className="text-xs text-slate-500 font-semibold">
+                  <span className="text-xs text-slate-600 font-semibold">
                     Total
                   </span>
-                  <span className="text-xs text-slate-600 font-semibold">
+                  <span className="text-xs text-slate-700 font-semibold">
                     {selectedCurrency?.symbol}&nbsp;
                     {currentSale?.products?.length >= 1
                       ? numberWithSpaces(

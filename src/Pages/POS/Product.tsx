@@ -40,14 +40,14 @@ const Product: FC<Props> = ({
             });
             setPreview(true);
           }}
-          className={`col-span-1 h-[8.5rem] bg-white rounded border border-cyan-750/30 cursor-pointer
+          className={`col-span-1 h-[8.5rem] bg-white rounded border border-cyan-750/30 group cursor-pointer
             hover:border-cyan-750 transition-all shadow-md flex flex-col justify-between p-3 select-none ${
               Number(prod?.in_stock) <= 0 ? "!pointer-events-none" : ""
             }`}
         >
           <div className="w-full h-fit flex flex-col space-y-1 pt-2 px-2">
             <span
-              className="text-xs font-semibold text-slate-600
+              className="text-xs font-semibold text-slate-700
                      uppercase w-full whitespace-nowrap overflow-hidden text-ellipsis"
             >
               {prod?.name}
@@ -59,7 +59,7 @@ const Product: FC<Props> = ({
               IN-STOCK : <strong>{prod?.in_stock}</strong>
             </p>
             <span
-              className="text-sm font-semibold text-slate-500 capitalize w-full
+              className="text-sm font-semibold text-slate-600 capitalize w-full
                    whitespace-nowrap overflow-hidden text-ellipsis text-left"
             >
               {selectedCurrency?.symbol}&nbsp;
@@ -82,10 +82,10 @@ const Product: FC<Props> = ({
               });
               setPreview(true);
             }}
-            className="h-8 w-full rounded-sm border border-cyan-750/20 hover:border-cyan-750 bg-slate-50 transition-all text-cyan-750 
+            className="h-8 w-full rounded-sm border border-cyan-750/20 group-hover:text-cyan-800 bg-slate-50 transition-all text-cyan-750 
                   text-base flex items-center justify-between px-2"
           >
-            <span className="text-xs font-medium uppercase">Add item</span><TbShoppingCartPlus />
+            <span className="text-xs font-semibold uppercase">Add item</span><TbShoppingCartPlus className="stroke-[2.5]" />
           </button>
         </div>
       );

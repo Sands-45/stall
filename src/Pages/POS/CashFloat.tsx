@@ -273,7 +273,7 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
       } left-0 right-0 transition-all bg-cyan-750/50 print:bg-white
        backdrop-blur-sm flex justify-center pt-10 overflow-hidden overflow-y-scroll`}
     >
-      <div className="w-[50rem] h-[40rem] bg-white rounded relative">
+      <div className="w-[55rem] h-[40rem] bg-white rounded relative">
         <div className="h-fit flex justify-between space-x-2 overflow-hidden px-5 mt-5">
           <div
             className="h-fit w-[48.5%]
@@ -355,7 +355,7 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
                   focus:ring-0 focus:border-cyan-750 px-4 pl-12 text-sm text-slate-600 placeholder:text-slate-400"
                 />
               </label>
-              <div className="col-span-1 h-9 flex items-center justify-between">
+              <div className="col-span-1 h-10 flex items-center justify-between">
                 {cash_float?.length >= 1 &&
                 cash_float?.filter(
                   (data: any) => data?.status?.toLowerCase() === "open"
@@ -394,7 +394,7 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
                     className="h-full w-full rounded-sm focus:outline-none  bg-cyan-750
                      hover:bg-cyan-800 transition-all text-white text-xs uppercase font-medium"
                   >
-                    add float
+                    new float
                   </button>
                 )}
               </div>
@@ -410,7 +410,7 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
                 id="float_note"
                 placeholder="Add note ..."
                 required
-                className="col-span-2 h-[5.25rem] rounded-sm border-2 border-dashed border-slate-200 text-xs
+                className="col-span-2 h-[5rem] rounded-sm border-2 border-dashed border-slate-200 text-xs
                  hover:border-ccyan-750 transition-all resize-none text-slate-600 placeholder:text-slate-400
                   focus:ring-0 focus:border-cyan-750 bg-slate-50"
               ></textarea>
@@ -909,7 +909,7 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
               </ul>
             ) : (
               <div
-                className="mt-4 w-full h-[calc(100%-10rem)] pr-2 py-1 pt-16 
+                className="mt-4 w-full h-[calc(100%-10rem)] pr-2 py-1 pt-20 
             overflow-hidden flex flex-col space-y-4 items-center"
               >
                 <img

@@ -76,7 +76,7 @@ const Sale: FC<Props> = ({
           return (
             <div
               key={sale?.transact_id}
-              className={`h-14 w-[99.5%] m-auto border-b border-slate-200 grid grid-cols-12 gap-1 
+              className={`h-14 w-[99.5%] m-auto border-b border-slate-200 grid grid-cols-5 md:grid-cols-12 gap-1 
     cursor-pointer hover:bg-slate-50 ${
       currentSale?.transact_id === sale?.transact_id && "bg-slate-100"
     } transition-all`}
@@ -129,7 +129,7 @@ const Sale: FC<Props> = ({
                   saleClickFunc(sale);
                 }}
                 className="h-full col-span-2 overflow-hidden px-2 flex items-center 
-          text-xs text-slate-500 font-semibold text-ellipsis whitespace-nowrap"
+          text-xs text-slate-400 font-semibold text-ellipsis whitespace-nowrap"
               >
                 <div
                   className="h-9 w-9 rounded bg-cyan-900 text-white flex items-center justify-center text-lg uppercase
@@ -140,7 +140,7 @@ const Sale: FC<Props> = ({
                     : "U"}
                 </div>
                 <div className="w-[calc(100%-2.5rem)] h-full flex flex-col px-2 justify-center space-y-0">
-                  <span className="font-medium text-xs capitalize w-full whitespace-nowrap overflow-hidden text-ellipsis">
+                  <span className="text-slate-600 font-semibold text-xs capitalize w-full whitespace-nowrap overflow-hidden text-ellipsis">
                     {sale?.customers_details?.name
                       ? sale?.customers_details?.name
                       : "Unkown Customer"}
@@ -156,8 +156,8 @@ const Sale: FC<Props> = ({
                 onClick={() => {
                   saleClickFunc(sale);
                 }}
-                className="h-full col-span-3 overflow-hidden flex flex-col px-2 justify-center space-y-0 
-          text-xs text-slate-500 font-semibold text-ellipsis whitespace-nowrap uppercase"
+                className="h-full col-span-3 overflow-hidden hidden md:flex flex-col px-2 justify-center space-y-0 
+          text-xs text-slate-600 font-semibold text-ellipsis whitespace-nowrap uppercase"
               >
                 <span className="font-medium text-xs capitalize w-full whitespace-nowrap overflow-hidden text-ellipsis">
                   {new Date(sale?.date)?.toString()?.split("(")[0]}
@@ -170,8 +170,8 @@ const Sale: FC<Props> = ({
                 onClick={() => {
                   saleClickFunc(sale);
                 }}
-                className="h-full col-span-2 overflow-hidden flex flex-col px-2 justify-center space-y-0 
-          text-xs text-slate-500 font-semibold text-ellipsis whitespace-nowrap uppercase"
+                className="h-full col-span-2 overflow-hidden hidden md:flex flex-col px-2 justify-center space-y-0 
+          text-xs text-slate-600 font-semibold text-ellipsis whitespace-nowrap uppercase"
               >
                 <span className="font-medium text-xs capitalize w-full whitespace-nowrap overflow-hidden text-ellipsis">
                   {sale?.payment_method
@@ -186,24 +186,24 @@ const Sale: FC<Props> = ({
                 onClick={() => {
                   saleClickFunc(sale);
                 }}
-                className="h-full col-span-2 overflow-hidden px-2 flex items-center 
-          text-xs text-slate-500 font-semibold text-ellipsis whitespace-nowrap uppercase"
+                className="h-full col-span-2 overflow-hidden px-2 hidden md:flex items-center 
+          text-xs text-slate-600 font-semibold text-ellipsis whitespace-nowrap uppercase"
               >
                 <div
                   onClick={() => {
                     saleClickFunc(sale);
                   }}
-                  className={`h-6 w-fit px-4 rounded-full 
+                  className={`h-6 w-24 pt-0.5 rounded-full 
         border flex items-center justify-center capitalize
          text-[0.6rem] font-medium  ${
            sale?.status === "paid"
-             ? "text-green-600 bg-green-100 border-green-300"
+             ? "text-green-600 bg-green-50 border-green-200"
              : sale?.status === "exchange"
-             ? "text-blue-600 bg-blue-100 border-blue-300"
+             ? "text-blue-600 bg-blue-50 border-blue-200"
              : sale?.status === "refund"
-             ? "text-red-600 bg-red-100 border-red-300"
+             ? "text-red-600 bg-red-50 border-red-200"
              : sale?.status === "pending"
-             ? "text-yellow-600 bg-yellow-100 border-yellow-300"
+             ? "text-yellow-600 bg-yellow-50 border-yellow-200"
              : ""
          }`}
                 >
@@ -212,7 +212,7 @@ const Sale: FC<Props> = ({
               </div>
               <div
                 className="h-full col-span-2 overflow-hidden px-2 flex items-center 
-          text-xs text-slate-500 font-semibold text-ellipsis whitespace-nowrap uppercase"
+          text-xs text-slate-600 font-semibold text-ellipsis whitespace-nowrap uppercase"
               >
                 {selectedCurrency?.symbol}&nbsp;
                 {numberWithSpaces(

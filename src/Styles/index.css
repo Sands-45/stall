@@ -35,7 +35,7 @@
   }
 
   .navLinks {
-    @apply flex items-center justify-center space-x-1 text-xs text-slate-700 font-medium
+    @apply flex items-center justify-center space-x-1 text-xs text-slate-800 font-medium
            h-full w-full col-span-1 border-r border-r-slate-200;
   }
 

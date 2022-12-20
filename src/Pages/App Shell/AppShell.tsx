@@ -173,20 +173,6 @@ const AppShell: FC<Props> = () => {
           </span>
         </NavLink>
         <NavLink
-          to="/app/campaigns"
-          className={`navLinks
-            px-2 ${
-              location.pathname === "/app/campaigns"
-                ? "border-b-4 border-b-cyan-750 bg-cyan-50"
-                : ""
-            }`}
-        >
-          <MdLoyalty className="text-xl" />{" "}
-          <span className="hidden lg:flex whitespace-nowrap max-w-[70%] overflow-hidden text-ellipsis">
-            Campaigns
-          </span>
-        </NavLink>
-        <NavLink
           to="/app/reports"
           className={`navLinks
             px-2 ${
@@ -198,6 +184,20 @@ const AppShell: FC<Props> = () => {
           <MdAnalytics className="text-xl" />{" "}
           <span className="hidden lg:flex whitespace-nowrap max-w-[70%] overflow-hidden text-ellipsis">
             Reports
+          </span>
+        </NavLink>
+        <NavLink
+          to="/app/campaigns"
+          className={`navLinks
+            px-2 ${
+              location.pathname === "/app/campaigns"
+                ? "border-b-4 border-b-cyan-750 bg-cyan-50"
+                : ""
+            }`}
+        >
+          <MdLoyalty className="text-xl" />{" "}
+          <span className="hidden lg:flex whitespace-nowrap max-w-[70%] overflow-hidden text-ellipsis">
+            Campaigns
           </span>
         </NavLink>
         <NavLink
