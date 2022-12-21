@@ -40,6 +40,17 @@ const Cart: FC<Props> = ({
           ?.reduce((acc: any, value: any) => Number(acc) + Number(value), 0)
       : 0.0;
   }, [cart]);
+  const profit = useMemo((): any => {
+    return cart?.products?.length >= 1
+      ? total -
+          cart?.products
+            ?.map(
+              (prod: any) =>
+                prod?.prod_obj?.buying_price_in_usd * prod?.quantity
+            )
+            ?.reduce((acc: any, value: any) => Number(acc) + Number(value), 0)
+      : 0.0;
+  }, [cart]);
   const tax = useMemo((): any => {
     return cart?.products?.length >= 1 ? ((15 / 100) * total).toFixed(2) : 0.0;
   }, [total, cart]);
@@ -47,7 +58,7 @@ const Cart: FC<Props> = ({
   //Component
   return (
     <>
-      <div className="h-full w-[23rem] bg-white p-4 pt-4 flex flex-col justify-between items-center">
+      <div className="h-full w-[25rem] bg-white p-4 pt-4 flex flex-col justify-between items-center">
         <div className="w-full flex justify-between items-center space-x-2">
           <label
             htmlFor="search_cart"
@@ -70,8 +81,8 @@ const Cart: FC<Props> = ({
           </label>
           <button
             onClick={() => setCart({})}
-            className="h-10 w-10 rounded bg-red-50 hover:bg-red-100 transition-all border border-red-100 
-         hover:border-red-300 flex items-center justify-center text-lg text-red-600"
+            className="h-10 w-10 rounded bg-slate-50 hover:bg-red-100 transition-all border border-red-100 
+         hover:border-red-300 flex items-center justify-center text-lg text-red-500"
           >
             <TbTrash />
           </button>
@@ -283,6 +294,7 @@ const Cart: FC<Props> = ({
                 //Update State
                 setCart((prev: any) => ({
                   ...prev,
+                  profit: profit,
                   total: total,
                   tax_percentage: 15,
                   tax_in_usd: tax,
@@ -293,10 +305,11 @@ const Cart: FC<Props> = ({
               }}
               disabled={cart?.products?.length <= 0 || !cart?.products}
               className="h-11 w-full bg-cyan-750 hover:bg-cyan-800 transition-all rounded-sm
-            text-white text-xs uppercase font-medium disabled:cursor-not-allowed disabled:opacity-70
+            text-white text-xs uppercase font-medium disabled:cursor-not-allowed
             flex items-center justify-center space-x-4"
             >
-             <span>check-out</span>  <strong className="text-sm">{cart?.products?.length}</strong>
+              <span>check-out</span>{" "}
+              <strong className="text-sm">{cart?.products?.length ?? 0}</strong>
             </button>
           </div>
         </div>

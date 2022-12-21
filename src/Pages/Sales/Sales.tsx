@@ -184,7 +184,7 @@ const Sales: FC<Props> = () => {
   //Component ==========
   return (
     <>
-      <div className="w-full h-full overflow-hidden px-[2.5%] py-4 flex flex-col space-y-4">
+      <div className="w-full h-full overflow-hidden px-[2.5%] py-4 bg-slate-100 flex flex-col space-y-4">
         {/**Top Nav ============ */}
         <div className="h-10 w-full grid grid-cols-3 lg:grid-cols-6 gap-4">
           <div className="col-span-2 h-full flex items-center space-x-4">
@@ -419,7 +419,7 @@ const Sales: FC<Props> = () => {
         {/**Stats ============ */}
         <div className="w-full h-fit overflow-hidded grid grid-cols-3 lg:grid-cols-6 gap-4">
           <div
-            className="col-span-1 h-20 bg-white rounded border
+            className="col-span-1 h-20 px-6 bg-white rounded border
            border-slate-200 p-4 flex flex-col justify-center space-y-0 overflow-hidden"
           >
             <span className="text-base font-semibold text-slate-700">
@@ -438,7 +438,7 @@ const Sales: FC<Props> = () => {
             </span>
           </div>
           <div
-            className="col-span-1 h-20 bg-white rounded border
+            className="col-span-1 h-20 px-6 bg-white rounded border
            border-slate-200 p-4 flex flex-col justify-center space-y-0 overflow-hidden"
           >
             <span className="text-base font-semibold text-slate-700">
@@ -450,37 +450,45 @@ const Sales: FC<Props> = () => {
             </span>
           </div>
           <div
-            className="col-span-1 h-20 bg-white rounded border
+            className="col-span-1 h-20 px-6 bg-white rounded border
            border-slate-200 p-4 flex flex-col justify-center space-y-0 overflow-hidden"
           >
             <span className="text-base font-semibold text-slate-700">
-              {selectedCurrency?.symbol}&nbsp;0.00
+              {selectedCurrency?.symbol}&nbsp;
+              {statsData?.net_profit
+                ? numberWithSpaces(
+                    (
+                      selectedCurrency?.rate_multiplier *
+                      Number(statsData?.net_profit)
+                    ).toFixed(2)
+                  )
+                : "0.00"}
             </span>
             <span className="text-xs uppercase font-medium text-slate-500">
               Net Profit
             </span>
           </div>
           <div
-            className="col-span-1 h-20 bg-white rounded border
+            className="col-span-1 h-20 px-6 bg-white rounded border
            border-slate-200 p-4 flex flex-col justify-center space-y-0 overflow-hidden"
           >
             <span className="text-base font-semibold text-slate-700">
               {selectedCurrency?.symbol}&nbsp;
-              {statsData?.average_spend
+              {statsData?.tips_amount
                 ? numberWithSpaces(
                     (
                       selectedCurrency?.rate_multiplier *
-                      Number(statsData?.average_spend)
+                      Number(statsData?.tips_amount)
                     ).toFixed(2)
                   )
                 : "0.00"}
             </span>
             <span className="text-xs uppercase font-medium text-slate-500">
-              Average Spend
+              Tips Amount
             </span>
           </div>
           <div
-            className="col-span-1 h-20 bg-white rounded border
+            className="col-span-1 h-20 px-6 bg-white rounded border
            border-slate-200 p-4 flex flex-col justify-center space-y-0 overflow-hidden"
           >
             <span className="text-base font-semibold text-slate-700">
@@ -499,7 +507,7 @@ const Sales: FC<Props> = () => {
             </span>
           </div>
           <div
-            className="col-span-1 h-20 bg-white rounded border
+            className="col-span-1 h-20 px-6 bg-white rounded border
            border-slate-200 p-4 flex flex-col justify-center space-y-0 overflow-hidden"
           >
             <span className="text-base font-semibold text-slate-700">
@@ -513,8 +521,8 @@ const Sales: FC<Props> = () => {
         </div>
 
         {/**Sales Table */}
-        <div className="w-full h-[calc(100%-19rem)] md:h-[calc(100%-8.5rem)] bg-white rounded overflow-hidden">
-          <div className="h-12 w-full bg-slate-100 border-b border-slate-200 grid grid-cols-5 md:grid-cols-12 gap-1 text-slate-700">
+        <div className="w-full h-[calc(100%-19rem)] md:h-[calc(100%-8.5rem)] bg-white border border-slate-200 rounded overflow-hidden">
+          <div className="h-12 w-full bg-slate-50 border-b border-slate-200 grid grid-cols-5 md:grid-cols-12 gap-1 text-slate-500">
             <div className="h-full col-span-1 overflow-hidden px-1 flex items-center justify-center text-ellipsis whitespace-nowrap">
               <input
                 type="checkbox"

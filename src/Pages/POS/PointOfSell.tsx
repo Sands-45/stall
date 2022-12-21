@@ -98,9 +98,9 @@ const PointOfSell: FC<Props> = () => {
     <>
       <div
         className="w-full h-full flex justify-between
-     overflow-hidden pl-[2.5%] space-x-4"
+     overflow-hidden pl-[2.5%] space-x-4 bg-slate-100"
       >
-        <div className="h-full w-[calc(100%-23rem)] py-4">
+        <div className="h-full w-[calc(100%-25rem)] py-4">
           <div className="h-full w-full flex flex-col space-y-4">
             <div
               className="h-12 w-full
@@ -226,7 +226,7 @@ const PointOfSell: FC<Props> = () => {
               </div>
               <div
                 className="h-full w-fit pl-2 flex items-center space-x-1 justify-end
-               absolute right-0 bg-slate-200"
+               absolute right-0 bg-slate-100"
               >
                 <button
                   className="h-6 w-8 text-sm text-slate-500 bg-slate-50 rounded
@@ -245,7 +245,7 @@ const PointOfSell: FC<Props> = () => {
             {/** Products */}
             {inventory_data?.length >= 1 ? (
               <div
-                className="w-fill h-[calc(100%-5.5rem)] rounded bg-slate-50 p-4 
+                className="w-fill h-[calc(100%-5.5rem)] rounded bg-slate-50 border border-slate-300 p-4 
           overflow-hidden overflow-y-scroll no-scrollbar no-scrollbar::-webkit-scrollbar grid
            grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 gap-4 auto-rows-min"
               >
@@ -259,7 +259,7 @@ const PointOfSell: FC<Props> = () => {
               </div>
             ) : (
               <div
-                className="w-fill h-[calc(100%-5.5rem)] rounded bg-white p-4 
+                className="w-fill h-[calc(100%-5.5rem)] rounded bg-white border border-slate-300 p-4 
             overflow-hidden flex flex-col items-center justify-center space-y-4"
               >
                 <img

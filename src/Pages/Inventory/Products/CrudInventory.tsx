@@ -1,20 +1,20 @@
 import React, { FC, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../Redux/store";
+import { AppDispatch, RootState } from "../../../Redux/store";
 import { TbTrash, TbColorSwatch } from "react-icons/tb";
-import no_gallery from "../../Assets/no_gallery.png";
-import ZoomedMed from "../../Components/Zoom Media/ZoomedMedia";
+import no_gallery from "../../../Assets/no_gallery.png";
+import ZoomedMed from "../../../Components/Zoom Media/ZoomedMedia";
 import {
   loadInventoryData,
   updateLocalInventory_Changes,
-} from "../../Redux/Slices/InventorySlice";
+} from "../../../Redux/Slices/InventorySlice";
 import {
   getStorage,
   ref,
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
-import { org } from "../../Firebase/Firestore_Func";
+import { org } from "../../../Firebase/Firestore_Func";
 
 type Props = {
   onlineStatus: boolean;
@@ -45,6 +45,11 @@ const CrudInventory: FC<Props> = ({
     symbol: "$",
     rate_multiplier: 1,
   });
+  const [amountBuyingCurrency, setAmountBuyingCurrency] = useState<any>({
+    name: "usd",
+    symbol: "$",
+    rate_multiplier: 1,
+  });
   const formRef = useRef<HTMLFormElement>(null);
   const [zoomMed, setZoomed] = useState({
     open: false,
@@ -67,7 +72,8 @@ const CrudInventory: FC<Props> = ({
       category: "",
       description: "",
       price_in_usd: "",
-      in_stock: "",
+      buying_price_in_usd: "",
+      in_stock: 0,
       customization_option: [],
       gallery: [],
       best_before: "",
@@ -121,15 +127,22 @@ const CrudInventory: FC<Props> = ({
             ...stockObj,
             price_in_usd:
               amountCurrency?.name?.toLowerCase() !== "usd"
-                ? (
-                    Number(stockObj?.price_in_usd) /
-                    currencies?.filter(
-                      (currrency: any) =>
-                        currrency?.name?.toLowerCase() ===
-                        amountCurrency?.name?.toLowerCase()
-                    )[0]?.rate_multiplier
-                  )
+                ? Number(stockObj?.price_in_usd) /
+                  currencies?.filter(
+                    (currrency: any) =>
+                      currrency?.name?.toLowerCase() ===
+                      amountCurrency?.name?.toLowerCase()
+                  )[0]?.rate_multiplier
                 : stockObj?.price_in_usd,
+            buying_price_in_usd:
+              amountBuyingCurrency?.name?.toLowerCase() !== "usd"
+                ? Number(stockObj?.buying_price_in_usd) /
+                  currencies?.filter(
+                    (currrency: any) =>
+                      currrency?.name?.toLowerCase() ===
+                      amountBuyingCurrency?.name?.toLowerCase()
+                  )[0]?.rate_multiplier
+                : stockObj?.buying_price_in_usd,
             last_editedAt: new Date().getTime(),
           },
         ])
@@ -145,15 +158,22 @@ const CrudInventory: FC<Props> = ({
             edit: true,
             price_in_usd:
               amountCurrency?.name?.toLowerCase() !== "usd"
-                ? (
-                    Number(stockObj?.price_in_usd) /
-                    currencies?.filter(
-                      (currrency: any) =>
-                        currrency?.name?.toLowerCase() ===
-                        amountCurrency?.name?.toLowerCase()
-                    )[0]?.rate_multiplier
-                  )
+                ? Number(stockObj?.price_in_usd) /
+                  currencies?.filter(
+                    (currrency: any) =>
+                      currrency?.name?.toLowerCase() ===
+                      amountCurrency?.name?.toLowerCase()
+                  )[0]?.rate_multiplier
                 : stockObj?.price_in_usd,
+            buying_price_in_usd:
+              amountBuyingCurrency?.name?.toLowerCase() !== "usd"
+                ? Number(stockObj?.buying_price_in_usd) /
+                  currencies?.filter(
+                    (currrency: any) =>
+                      currrency?.name?.toLowerCase() ===
+                      amountBuyingCurrency?.name?.toLowerCase()
+                  )[0]?.rate_multiplier
+                : stockObj?.buying_price_in_usd,
             last_editedAt: new Date().getTime(),
           },
         ])
@@ -168,15 +188,22 @@ const CrudInventory: FC<Props> = ({
             ...stockObj,
             price_in_usd:
               amountCurrency?.name?.toLowerCase() !== "usd"
-                ? (
-                    Number(stockObj?.price_in_usd) /
-                    currencies?.filter(
-                      (currrency: any) =>
-                        currrency?.name?.toLowerCase() ===
-                        amountCurrency?.name?.toLowerCase()
-                    )[0]?.rate_multiplier
-                  )
+                ? Number(stockObj?.price_in_usd) /
+                  currencies?.filter(
+                    (currrency: any) =>
+                      currrency?.name?.toLowerCase() ===
+                      amountCurrency?.name?.toLowerCase()
+                  )[0]?.rate_multiplier
                 : stockObj?.price_in_usd,
+            buying_price_in_usd:
+              amountBuyingCurrency?.name?.toLowerCase() !== "usd"
+                ? Number(stockObj?.buying_price_in_usd) /
+                  currencies?.filter(
+                    (currrency: any) =>
+                      currrency?.name?.toLowerCase() ===
+                      amountBuyingCurrency?.name?.toLowerCase()
+                  )[0]?.rate_multiplier
+                : stockObj?.buying_price_in_usd,
             last_editedAt: new Date().getTime(),
           },
         ])
@@ -191,15 +218,22 @@ const CrudInventory: FC<Props> = ({
             edit: true,
             price_in_usd:
               amountCurrency?.name?.toLowerCase() !== "usd"
-                ? (
-                    Number(stockObj?.price_in_usd) /
-                    currencies?.filter(
-                      (currrency: any) =>
-                        currrency?.name?.toLowerCase() ===
-                        amountCurrency?.name?.toLowerCase()
-                    )[0]?.rate_multiplier
-                  )
+                ? Number(stockObj?.price_in_usd) /
+                  currencies?.filter(
+                    (currrency: any) =>
+                      currrency?.name?.toLowerCase() ===
+                      amountCurrency?.name?.toLowerCase()
+                  )[0]?.rate_multiplier
                 : stockObj?.price_in_usd,
+            buying_price_in_usd:
+              amountBuyingCurrency?.name?.toLowerCase() !== "usd"
+                ? Number(stockObj?.buying_price_in_usd) /
+                  currencies?.filter(
+                    (currrency: any) =>
+                      currrency?.name?.toLowerCase() ===
+                      amountBuyingCurrency?.name?.toLowerCase()
+                  )[0]?.rate_multiplier
+                : stockObj?.buying_price_in_usd,
             last_editedAt: new Date().getTime(),
           },
         ])
@@ -214,15 +248,22 @@ const CrudInventory: FC<Props> = ({
             ...stockObj,
             price_in_usd:
               amountCurrency?.name?.toLowerCase() !== "usd"
-                ? (
-                    Number(stockObj?.price_in_usd) /
-                    currencies?.filter(
-                      (currrency: any) =>
-                        currrency?.name?.toLowerCase() ===
-                        amountCurrency?.name?.toLowerCase()
-                    )[0]?.rate_multiplier
-                  )
+                ? Number(stockObj?.price_in_usd) /
+                  currencies?.filter(
+                    (currrency: any) =>
+                      currrency?.name?.toLowerCase() ===
+                      amountCurrency?.name?.toLowerCase()
+                  )[0]?.rate_multiplier
                 : stockObj?.price_in_usd,
+            buying_price_in_usd:
+              amountBuyingCurrency?.name?.toLowerCase() !== "usd"
+                ? Number(stockObj?.buying_price_in_usd) /
+                  currencies?.filter(
+                    (currrency: any) =>
+                      currrency?.name?.toLowerCase() ===
+                      amountBuyingCurrency?.name?.toLowerCase()
+                  )[0]?.rate_multiplier
+                : stockObj?.buying_price_in_usd,
             id_two: uniqueID(),
             last_editedAt: new Date().getTime(),
           },
@@ -236,15 +277,22 @@ const CrudInventory: FC<Props> = ({
             ...stockObj,
             price_in_usd:
               amountCurrency?.name?.toLowerCase() !== "usd"
-                ? (
-                    Number(stockObj?.price_in_usd) /
-                    currencies?.filter(
-                      (currrency: any) =>
-                        currrency?.name?.toLowerCase() ===
-                        amountCurrency?.name?.toLowerCase()
-                    )[0]?.rate_multiplier
-                  )
+                ? Number(stockObj?.price_in_usd) /
+                  currencies?.filter(
+                    (currrency: any) =>
+                      currrency?.name?.toLowerCase() ===
+                      amountCurrency?.name?.toLowerCase()
+                  )[0]?.rate_multiplier
                 : stockObj?.price_in_usd,
+            buying_price_in_usd:
+              amountBuyingCurrency?.name?.toLowerCase() !== "usd"
+                ? Number(stockObj?.buying_price_in_usd) /
+                  currencies?.filter(
+                    (currrency: any) =>
+                      currrency?.name?.toLowerCase() ===
+                      amountBuyingCurrency?.name?.toLowerCase()
+                  )[0]?.rate_multiplier
+                : stockObj?.buying_price_in_usd,
             id_two: uniqueID(),
             last_editedAt: new Date().getTime(),
           },
@@ -258,15 +306,22 @@ const CrudInventory: FC<Props> = ({
             ...stockObj,
             price_in_usd:
               amountCurrency?.name?.toLowerCase() !== "usd"
-                ? (
-                    Number(stockObj?.price_in_usd) /
-                    currencies?.filter(
-                      (currrency: any) =>
-                        currrency?.name?.toLowerCase() ===
-                        amountCurrency?.name?.toLowerCase()
-                    )[0]?.rate_multiplier
-                  )
+                ? Number(stockObj?.price_in_usd) /
+                  currencies?.filter(
+                    (currrency: any) =>
+                      currrency?.name?.toLowerCase() ===
+                      amountCurrency?.name?.toLowerCase()
+                  )[0]?.rate_multiplier
                 : stockObj?.price_in_usd,
+            buying_price_in_usd:
+              amountBuyingCurrency?.name?.toLowerCase() !== "usd"
+                ? Number(stockObj?.buying_price_in_usd) /
+                  currencies?.filter(
+                    (currrency: any) =>
+                      currrency?.name?.toLowerCase() ===
+                      amountBuyingCurrency?.name?.toLowerCase()
+                  )[0]?.rate_multiplier
+                : stockObj?.buying_price_in_usd,
             id_two: uniqueID(),
             last_editedAt: new Date().getTime(),
           },
@@ -279,15 +334,22 @@ const CrudInventory: FC<Props> = ({
             ...stockObj,
             price_in_usd:
               amountCurrency?.name?.toLowerCase() !== "usd"
-                ? (
-                    Number(stockObj?.price_in_usd) /
-                    currencies?.filter(
-                      (currrency: any) =>
-                        currrency?.name?.toLowerCase() ===
-                        amountCurrency?.name?.toLowerCase()
-                    )[0]?.rate_multiplier
-                  )
+                ? Number(stockObj?.price_in_usd) /
+                  currencies?.filter(
+                    (currrency: any) =>
+                      currrency?.name?.toLowerCase() ===
+                      amountCurrency?.name?.toLowerCase()
+                  )[0]?.rate_multiplier
                 : stockObj?.price_in_usd,
+            buying_price_in_usd:
+              amountBuyingCurrency?.name?.toLowerCase() !== "usd"
+                ? Number(stockObj?.buying_price_in_usd) /
+                  currencies?.filter(
+                    (currrency: any) =>
+                      currrency?.name?.toLowerCase() ===
+                      amountBuyingCurrency?.name?.toLowerCase()
+                  )[0]?.rate_multiplier
+                : stockObj?.buying_price_in_usd,
             id_two: uniqueID(),
             last_editedAt: new Date().getTime(),
           },
@@ -309,9 +371,13 @@ const CrudInventory: FC<Props> = ({
         onSubmit={(e) => handleSubmit(e)}
         ref={formRef}
         autoComplete="off"
-        className="h-full w-[28rem] bg-white relative"
+        className="h-full w-[30rem] bg-white relative"
       >
-        <div className="h-full w-full flex flex-col justify-between">
+        <div
+          className={`h-full w-full ${
+            crudOpen ? "flex" : "hidden"
+          } flex-col justify-between`}
+        >
           {/**Close Button */}
           <button
             type="button"
@@ -326,7 +392,7 @@ const CrudInventory: FC<Props> = ({
           {/**Input Form  */}
           <div className="w-full h-[calc(100%-4.25rem)] p-6 space-y-3 flex flex-col overflow-hidden overflow-y-scroll">
             <div className="text-lg text-slate-600 font-semibold capitalize">
-              Stock Item
+              Product
             </div>
             <p className="text-xs text-slate-500">
               Leverage all the customizations option to provide better choices
@@ -355,7 +421,7 @@ const CrudInventory: FC<Props> = ({
             </label>
             <label htmlFor="product_id">
               <span className="text-xs text-slate-500 font-medium uppercase">
-                Product UID
+                Product UID/SKU
               </span>
               <input
                 required
@@ -420,6 +486,7 @@ const CrudInventory: FC<Props> = ({
                 In-Stock
               </span>
               <input
+                disabled
                 required
                 type="number"
                 name="In-Stock"
@@ -454,11 +521,59 @@ const CrudInventory: FC<Props> = ({
               />
             </label>
 
+            <label htmlFor="buying_price">
+              <div className="flex items-end justify-between w-full space-x-2">
+                <div className="w-[70%]">
+                  <span className="text-xs text-slate-500 font-medium uppercase">
+                    Buying Price
+                  </span>
+                  <input
+                    required
+                    type="number"
+                    name="buying_price"
+                    id="buying_price"
+                    placeholder="Amount ..."
+                    className="inventory_input"
+                    value={stockObj?.buying_price_in_usd}
+                    onChange={(e) => {
+                      setStockObj((prev: any) => ({
+                        ...prev,
+                        buying_price_in_usd: e.target.value,
+                      }));
+                    }}
+                  />
+                </div>
+                <div className="h-12 w-[25%] px-1 bg-white border border-slate-200 rounded">
+                  <select
+                    onChange={(e) => {
+                      setAmountBuyingCurrency(JSON.parse(e.target.value));
+                    }}
+                    required
+                    name="payment_currency"
+                    id="payment_currency"
+                    className="w-full h-full flex items-center justify-center pt-1 text-xs 
+                    border-0 focus:border-0 focus:ring-0 focus:outline-none uppercase text-slate-700"
+                  >
+                    {currencies?.map((currence: any) => {
+                      return (
+                        <option
+                          key={currence.name}
+                          value={JSON.stringify(currence)}
+                        >
+                          {currence.name}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+              </div>
+            </label>
+
             <label htmlFor="Price">
               <div className="flex items-end justify-between w-full space-x-2">
                 <div className="w-[70%]">
                   <span className="text-xs text-slate-500 font-medium uppercase">
-                    Price
+                    Selling Price
                   </span>
                   <input
                     required

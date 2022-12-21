@@ -41,7 +41,7 @@ const Product: FC<Props> = ({
             setPreview(true);
           }}
           className={`col-span-1 h-[8.5rem] bg-white rounded border border-cyan-750/30 group cursor-pointer
-            hover:border-cyan-750 transition-all shadow-md flex flex-col justify-between p-3 select-none ${
+            hover:border-cyan-750 transition-all hover:shadow-md flex flex-col justify-between p-3 select-none ${
               Number(prod?.in_stock) <= 0 ? "!pointer-events-none" : ""
             }`}
         >

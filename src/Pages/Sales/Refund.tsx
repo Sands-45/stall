@@ -122,6 +122,7 @@ const Refund: FC<Props> = ({
           //New Sale Object with updated values
           let newCart = {
             ...currentSale,
+            profit: currentSale?.profit - total,
             total: currentSale?.total - total,
             refund_amount: total,
             refund_date: new Date()?.getTime(),
@@ -310,10 +311,11 @@ const Refund: FC<Props> = ({
           //New Sale Object with updated values
           let newCart = {
             ...currentSale,
+            profit: currentSale?.profit - (refundAmount / selectedCurrency?.rate_multiplier),
             total:
               currentSale?.total -
-              refundAmount / selectedCurrency?.rate_multiplier,
-            refund_amount: refundAmount / selectedCurrency?.rate_multiplier,
+              (refundAmount / selectedCurrency?.rate_multiplier),
+            refund_amount: (refundAmount / selectedCurrency?.rate_multiplier),
             refund_date: new Date()?.getTime(),
             not_eligable_for_refund: true,
             refund_reason: reason,
