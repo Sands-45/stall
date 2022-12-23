@@ -1,11 +1,8 @@
 import { FC, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addStock_Orders,
-  addStock_OrdersLocal,
-} from "../../../Redux/Slices/InventorySlice";
+import { addStock_Orders } from "../../../Redux/Slices/InventorySlice";
 import { updateAlert } from "../../../Redux/Slices/NotificationsSlice";
-import { AppDispatch, RootState } from "../../../Redux/store";
+import { RootState } from "../../../Redux/store";
 import { numberWithSpaces } from "../../../Reusable Functions/Functions";
 import {
   loadInventoryData,
@@ -29,7 +26,7 @@ const CrudOrders: FC<Props> = ({
   crudOption,
   setOption,
 }) => {
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useDispatch();
   const alerts = useSelector(
     (state: RootState) => state.NotificationsData.alerts
   );
@@ -49,15 +46,9 @@ const CrudOrders: FC<Props> = ({
   const stock_orders = useSelector(
     (state: RootState) => state.Inventory.stock_orders
   );
-  const stock_orders_changes = useSelector(
-    (state: RootState) => state.Inventory.stock_orders_changes
-  );
   const user = useSelector((state: RootState) => state.UserInfo.user);
   const fetched_inventory_data = useSelector(
     (state: RootState) => state.Inventory.inventory_data
-  );
-  const inventory_data_queue = useSelector(
-    (state: RootState) => state.Inventory.inventory_changes_data
   );
   const [itemObj, setItem] = useState<any>({
     product_obj: null,
@@ -92,6 +83,36 @@ const CrudOrders: FC<Props> = ({
       )
       ?.slice(0, 3);
   }, [searchProduct, fetched_inventory_data]);
+  const [search, setSearchVendor] = useState<any>("");
+  const fetched_vendors_data = useSelector(
+    (state: RootState) => state.Inventory.vendors
+  );
+  const vendors = useMemo(() => {
+    return fetched_vendors_data?.length >= 1
+      ? [...fetched_vendors_data]
+          ?.filter(
+            (data: any) =>
+              !data?.isDeleted &&
+              (data?.name
+                ?.toLowerCase()
+                ?.replace(/\s/gim, "")
+                ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
+                data?.notes
+                  ?.toLowerCase()
+                  ?.replace(/\s/gim, "")
+                  ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
+                data?.email
+                  ?.toLowerCase()
+                  ?.replace(/\s/gim, "")
+                  ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
+                data?.phone
+                  ?.toLowerCase()
+                  ?.replace(/\s/gim, "")
+                  ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")))
+          )
+          ?.sort((a: any, b: any) => (b.name - a.name ? -1 : 1))
+      : [];
+  }, [fetched_vendors_data, search]);
 
   //Place Oders
   const createOrder = () => {
@@ -130,7 +151,7 @@ const CrudOrders: FC<Props> = ({
           {
             ...orderObject,
             user: user,
-            status:"pending",
+            status: "pending",
             order_id: uniqueID(),
             date: new Date()?.getTime(),
             total_cost: Number(
@@ -138,25 +159,7 @@ const CrudOrders: FC<Props> = ({
                 ?.map((data: any) => data?.amount)
                 ?.reduce((a: any, v: any) => a + v, 0)
             ),
-          },
-        ])
-      );
-
-      //Save Changes
-      dispatch(
-        addStock_OrdersLocal([
-          ...stock_orders_changes,
-          {
-            ...orderObject,
-            user: user,
-            status:"pending",
-            order_id: uniqueID(),
-            date: new Date()?.getTime(),
-            total_cost: Number(
-              orderObject?.items
-                ?.map((data: any) => data?.amount)
-                ?.reduce((a: any, v: any) => a + v, 0)
-            ),
+            isNew: true,
           },
         ])
       );
@@ -169,7 +172,7 @@ const CrudOrders: FC<Props> = ({
           {
             ...orderObject,
             user: user,
-            status:"pending",
+            status: "pending",
             order_id: uniqueID(),
             date: new Date()?.getTime(),
             total_cost: Number(
@@ -177,25 +180,7 @@ const CrudOrders: FC<Props> = ({
                 ?.map((data: any) => data?.amount)
                 ?.reduce((a: any, v: any) => a + v, 0)
             ),
-          },
-        ])
-      );
-
-      window.localStorage.setItem(
-        "stock_orders_changes",
-        JSON.stringify([
-          ...stock_orders_changes,
-          {
-            ...orderObject,
-            user: user,
-            status:"pending",
-            order_id: uniqueID(),
-            date: new Date()?.getTime(),
-            total_cost: Number(
-              orderObject?.items
-                ?.map((data: any) => data?.amount)
-                ?.reduce((a: any, v: any) => a + v, 0)
-            ),
+            isNew: true,
           },
         ])
       );
@@ -221,7 +206,7 @@ const CrudOrders: FC<Props> = ({
         items: [],
         date: "",
         order_id: "",
-        status:"pending"
+        status: "pending",
       });
       setOption("new");
       openCrud(false);
@@ -234,21 +219,7 @@ const CrudOrders: FC<Props> = ({
         ...stock_orders?.filter(
           (data: any) => data?.order_id !== orderObject?.order_id
         ),
-      ])
-    );
-
-    //Save Changes
-    dispatch(
-      addStock_OrdersLocal([
-        ...stock_orders_changes?.filter(
-          (data: any) => data?.order_id !== orderObject?.order_id
-        ),
-        {
-          ...stock_orders_changes?.filter(
-            (data: any) => data?.order_id === orderObject?.order_id
-          )[0],
-          delete: true,
-        },
+        { ...orderObject, isNew: false, isDeleted: true, edited: false },
       ])
     );
 
@@ -259,21 +230,7 @@ const CrudOrders: FC<Props> = ({
         ...stock_orders?.filter(
           (data: any) => data?.order_id !== orderObject?.order_id
         ),
-      ])
-    );
-
-    window.localStorage.setItem(
-      "stock_orders_changes",
-      JSON.stringify([
-        ...stock_orders_changes?.filter(
-          (data: any) => data?.order_id !== orderObject?.order_id
-        ),
-        {
-          ...stock_orders_changes?.filter(
-            (data: any) => data?.order_id === orderObject?.order_id
-          )[0],
-          delete: true,
-        },
+        { ...orderObject, isNew: false, isDeleted: true, edited: false },
       ])
     );
 
@@ -315,21 +272,9 @@ const CrudOrders: FC<Props> = ({
           )[0],
           status: "recieved",
           recieved_date: new Date()?.getTime(),
-        },
-      ])
-    );
-
-    dispatch(
-      addStock_OrdersLocal([
-        ...stock_orders_changes?.filter(
-          (data: any) => data?.order_id !== orderObject?.order_id
-        ),
-        {
-          ...stock_orders_changes?.filter(
-            (data: any) => data?.order_id !== orderObject?.order_id
-          )[0],
-          status: "recieved",
-          recieved_date: new Date()?.getTime(),
+          isNew: false,
+          isDeleted: false,
+          edited: true,
         },
       ])
     );
@@ -347,39 +292,69 @@ const CrudOrders: FC<Props> = ({
           )[0],
           status: "recieved",
           recieved_date: new Date()?.getTime(),
-        },
-      ])
-    );
-
-    window.localStorage.setItem(
-      "stock_orders_changes",
-      JSON.stringify([
-        ...stock_orders_changes?.filter(
-          (data: any) => data?.order_id !== orderObject?.order_id
-        ),
-        {
-          ...stock_orders_changes?.filter(
-            (data: any) => data?.order_id !== orderObject?.order_id
-          )[0],
-          status: "recieved",
-          recieved_date: new Date()?.getTime(),
+          isNew: false,
+          isDeleted: false,
+          edited: true,
         },
       ])
     );
 
     //Update Stock
-    orderObject.items.forEach((item: any) => {
+    orderObject.items.forEach((edited_item: any) => {
+      let localInvent = window.localStorage.getItem("inventory_data");
       window.localStorage.setItem(
         "inventory_data",
         JSON.stringify([
-          ...fetched_inventory_data?.filter(
-            (data: any) => data?.id_two !== item?.product_obj?.id_two
-          ),
+          ...(localInvent
+            ? JSON.parse(localInvent)?.filter(
+                (data: any) => data?.id_two !== edited_item?.product_obj?.id_two
+              )
+            : []),
           {
-            ...item?.product_obj,
+            ...edited_item?.product_obj,
             in_stock:
-              Number(item?.product_obj?.in_stock) + Number(item?.quantity),
-            buying_price_in_usd: Number(item?.amount),
+              Number(edited_item?.product_obj?.in_stock) +
+              Number(edited_item?.quantity),
+            buying_price_in_usd: Number(edited_item?.price),
+            last_editedAt: new Date().getTime(),
+          },
+        ])
+      );
+      dispatch(
+        loadInventoryData([
+          ...(localInvent
+            ? JSON.parse(localInvent)?.filter(
+                (data: any) => data?.id_two !== edited_item?.product_obj?.id_two
+              )
+            : []),
+          {
+            ...edited_item?.product_obj,
+            in_stock:
+              Number(edited_item?.product_obj?.in_stock) +
+              Number(edited_item?.quantity),
+            buying_price_in_usd: Number(edited_item?.price),
+            last_editedAt: new Date().getTime(),
+          },
+        ])
+      );
+
+      let localInventChanges = window.localStorage.getItem(
+        "inventory_changes_data"
+      );
+      dispatch(
+        updateLocalInventory_Changes([
+          ...(localInventChanges
+            ? JSON.parse(localInventChanges)?.filter(
+                (data: any) => data?.id_two !== edited_item?.product_obj?.id_two
+              )
+            : []),
+          {
+            ...edited_item?.product_obj,
+            edit: true,
+            in_stock:
+              Number(edited_item?.product_obj?.in_stock) +
+              Number(edited_item?.quantity),
+            buying_price_in_usd: Number(edited_item?.price),
             last_editedAt: new Date().getTime(),
           },
         ])
@@ -387,45 +362,18 @@ const CrudOrders: FC<Props> = ({
       window.localStorage.setItem(
         "inventory_changes_data",
         JSON.stringify([
-          ...inventory_data_queue?.filter(
-            (data: any) => data?.id_two !== item?.product_obj?.id_two
-          ),
+          ...(localInventChanges
+            ? JSON.parse(localInventChanges)?.filter(
+                (data: any) => data?.id_two !== edited_item?.product_obj?.id_two
+              )
+            : []),
           {
-            ...item?.product_obj,
+            ...edited_item?.product_obj,
             edit: true,
             in_stock:
-              Number(item?.product_obj?.in_stock) + Number(item?.quantity),
-            buying_price_in_usd: Number(item?.amount),
-            last_editedAt: new Date().getTime(),
-          },
-        ])
-      );
-      //Update Redux
-      dispatch(
-        loadInventoryData([
-          ...fetched_inventory_data?.filter(
-            (data: any) => data?.id_two !== item?.product_obj?.id_two
-          ),
-          {
-            ...item?.product_obj,
-            in_stock:
-              Number(item?.product_obj?.in_stock) + Number(item?.quantity),
-            buying_price_in_usd: Number(item?.amount),
-            last_editedAt: new Date().getTime(),
-          },
-        ])
-      );
-      dispatch(
-        updateLocalInventory_Changes([
-          ...inventory_data_queue?.filter(
-            (data: any) => data?.id_two !== item?.product_obj?.id_two
-          ),
-          {
-            ...item?.product_obj,
-            edit: true,
-            in_stock:
-              Number(item?.product_obj?.in_stock) + Number(item?.quantity),
-            buying_price_in_usd: Number(item?.amount),
+              Number(edited_item?.product_obj?.in_stock) +
+              Number(edited_item?.quantity),
+            buying_price_in_usd: Number(edited_item?.price),
             last_editedAt: new Date().getTime(),
           },
         ])
@@ -453,7 +401,7 @@ const CrudOrders: FC<Props> = ({
       items: [],
       date: "",
       order_id: "",
-      status:"pending"
+      status: "pending",
     });
     setOption("new");
     openCrud(false);
@@ -489,7 +437,7 @@ const CrudOrders: FC<Props> = ({
               items: [],
               date: "",
               order_id: "",
-              status:"pending"
+              status: "pending",
             });
             setOption("new");
             openCrud(false);
@@ -539,7 +487,7 @@ const CrudOrders: FC<Props> = ({
             )}
             <button
               onClick={() => {
-                receiveOrder();
+                window.print();
               }}
               className="px-4 w-32 h-10 bg-cyan-750 text-xs text-white font-medium
          rounded-sm outline-none focus:outline-none"
@@ -582,6 +530,10 @@ const CrudOrders: FC<Props> = ({
                 {orderObject?.vendor?.length <= 0 && (
                   <>
                     <input
+                      onChange={(e) => {
+                        setSearchVendor(e.target.value);
+                      }}
+                      value={search}
                       type="search"
                       name="vendor search"
                       id="vendor search"
@@ -593,19 +545,34 @@ const CrudOrders: FC<Props> = ({
                       className="absolute top-[2.95rem] left-1 right-1 min-h-[3rem]
                  bg-slate-50 border border-slate-300 shadow-lg p-2 hidden group-hover:flex flex-col"
                     >
-                      <li
-                        onClick={() => {
-                          setOrderObj((prev: any) => ({
-                            ...prev,
-                            vendor: [{ name: "test vendor" }],
-                          }));
-                        }}
-                        className="w-full h-8 text-xs font-medium
+                      {vendors.length >= 1 ? (
+                        vendors?.map((vendor: any) => {
+                          return (
+                            <li
+                              key={vendor?.id_two}
+                              onClick={() => {
+                                setOrderObj((prev: any) => ({
+                                  ...prev,
+                                  vendor: [vendor],
+                                }));
+                              }}
+                              className="w-full h-8 text-xs font-medium
                    text-slate-600 capitalize border-b last:border-0
                     border-slate-200 flex items-center cursor-pointer select-none"
-                      >
-                        Test vendor
-                      </li>
+                            >
+                              {vendor?.name}
+                            </li>
+                          );
+                        })
+                      ) : (
+                        <li
+                          className="w-full h-8 text-xs font-medium
+           text-slate-600 capitalize border-b last:border-0
+            border-slate-200 flex items-center cursor-pointer select-none"
+                        >
+                          no results
+                        </li>
+                      )}
                     </ul>
                   </>
                 )}
@@ -894,7 +861,7 @@ const CrudOrders: FC<Props> = ({
                   </select>
                 </div>
               </div>
-              <div className="w-[15%] h-10 bg-slate-50 border-b border-slate-300 hover:border-cyan-750 transition-all">
+              <div className="w-[15%] h-10 bg-slate-50 hover:border-cyan-750 transition-all">
                 <button
                   onClick={() => {
                     if (itemObj?.product_obj) {
@@ -910,12 +877,14 @@ const CrudOrders: FC<Props> = ({
                             ...itemObj,
                             quantity: itemObj?.quantity ?? 1,
                             price:
-                              (Number(itemObj?.price) ??
-                                itemObj?.product_obj?.price_in_usd) /
+                              (Number(itemObj?.price) <= 0
+                                ? itemObj?.product_obj?.price_in_usd
+                                : Number(itemObj?.price)) /
                                 amountCurrency?.rate_multiplier ?? 1,
                             amount:
-                              ((Number(itemObj?.price) ??
-                                itemObj?.product_obj?.price_in_usd) /
+                              ((Number(itemObj?.price) <= 0
+                                ? itemObj?.product_obj?.price_in_usd
+                                : Number(itemObj?.price)) /
                                 amountCurrency?.rate_multiplier) *
                               (itemObj?.quantity ?? 1),
                           },
@@ -926,7 +895,7 @@ const CrudOrders: FC<Props> = ({
                         quantity: "",
                         price: "",
                       });
-                      setSearchValue("")
+                      setSearchValue("");
                     }
                   }}
                   className="h-full w-full text-white text-xs capitalize font-medium bg-cyan-750 rounded-sm"

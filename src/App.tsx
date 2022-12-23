@@ -16,6 +16,7 @@ const OnlineStore = lazy(() => import("./Pages/Online Store/OnlineStore"));
 const Settings = lazy(() => import("./Pages/Settings/Settings"));
 const Products = lazy(() => import("./Pages/Inventory/Products/Products"));
 const StockOrder = lazy(() => import("./Pages/Inventory/Stock Orders/StockOrder"));
+const Vendors = lazy(() => import("./Pages/Inventory/Vendors/Vendors"));
 
 const App: FC = () => {
   //Component || App
@@ -46,6 +47,7 @@ const App: FC = () => {
               <Route path="inventory" element={<Inventory />}>
                 <Route path="" element={<Products />} />
                 <Route path="stock-orders" element={<StockOrder />} />
+                <Route path="vendors" element={<Vendors />} />
               </Route>
               <Route path="online-store" element={<OnlineStore />} />
               <Route path="settings" element={<Settings />} />

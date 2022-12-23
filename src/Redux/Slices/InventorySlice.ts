@@ -10,6 +10,7 @@ const local_changelog_inventory_data = localStorage.getItem(
 );
 const localStock_orders = localStorage.getItem("stock_orders");
 const localStock_orders_changes = localStorage.getItem("stock_orders_changes");
+const vendorsLocal = localStorage.getItem("vendors");
 
 interface InitialStateType {
   inventory_data: any[];
@@ -17,6 +18,7 @@ interface InitialStateType {
   inventory_changelog_data: any[];
   stock_orders: any[];
   stock_orders_changes: any[];
+  vendors: any[];
 }
 
 const initialState: InitialStateType = {
@@ -30,6 +32,9 @@ const initialState: InitialStateType = {
   stock_orders: localStock_orders ? JSON.parse(localStock_orders) : [],
   stock_orders_changes: localStock_orders_changes
     ? JSON.parse(localStock_orders_changes)
+    : [],
+    vendors: vendorsLocal
+    ? JSON.parse(vendorsLocal)
     : [],
 };
 
@@ -52,6 +57,9 @@ export const InventorySlice = createSlice({
     addStock_OrdersLocal: (state, action: PayloadAction<any[]>) => {
       state.stock_orders_changes = action.payload;
     },
+    addVendors: (state, action: PayloadAction<any[]>) => {
+      state.vendors = action.payload;
+    },
   },
 });
 
@@ -61,6 +69,7 @@ export const {
   updateLocalInventory_ChangeLogs,
   addStock_Orders,
   addStock_OrdersLocal,
+  addVendors
 } = InventorySlice.actions;
 
 export default InventorySlice.reducer;

@@ -31,70 +31,19 @@ const ProductsList: FC<Props> = ({
   const selectedCurrency = useSelector(
     (state: RootState) => state.SettingsData.selectedCurrency
   );
-  const inventory_data_queue = useSelector(
-    (state: RootState) => state.Inventory.inventory_changes_data
-  );
   const alerts = useSelector(
     (state: RootState) => state.NotificationsData.alerts
   );
   const dispatch = useDispatch();
   const [showAuthorize, setAuthorize] = useState<boolean>(false);
   const [inven, setInven] = useState<any>("");
-  const [action, setAction] = useState<string>("edit");
 
   const crudAction = (verify: any) => {
     if (verify) {
-      if (action !== "delete") {
-        setEdit(true);
-        setCrud(true);
-        setStockObj(inven);
-        setAuthorize(false);
-      } else {
-        //Save Local
-        window.localStorage.setItem(
-          "inventory_data",
-          JSON.stringify([
-            ...inventory_data?.filter(
-              (data: any) => data?.id_two !== inven?.id_two
-            ),
-          ])
-        );
-        window.localStorage.setItem(
-          "inventory_changes_data",
-          JSON.stringify([
-            ...inventory_data_queue?.filter(
-              (data: any) => data?.id_two !== inven?.id_two
-            ),
-            {
-              ...inventory_data?.filter(
-                (data: any) => data?.id_two === inven?.id_two
-              )[0],
-              deleted: true,
-            },
-          ])
-        );
-        //Update Redux
-        dispatch(
-          updateLocalInventory_Changes([
-            ...inventory_data_queue?.filter(
-              (data: any) => data?.id_two !== inven?.id_two
-            ),
-            {
-              ...inventory_data?.filter(
-                (data: any) => data?.id_two === inven?.id_two
-              )[0],
-              deleted: true,
-            },
-          ])
-        );
-        dispatch(
-          loadInventoryData([
-            ...inventory_data?.filter(
-              (data: any) => data?.id_two !== inven?.id_two
-            ),
-          ])
-        );
-      }
+      setEdit(true);
+      setCrud(true);
+      setStockObj(inven);
+      setAuthorize(false);
     }
   };
 
@@ -219,7 +168,7 @@ const ProductsList: FC<Props> = ({
                     </span>
                   </div>
                 </div>
-                <div className="w-[9.52%] h-full overflow-hidden">
+                <div className="w-[9.52%] h-full overflow-hidden px-4">
                   <div className="h-full w-full flex items-center space-x-3 p-2">
                     <button
                       onClick={() => {
@@ -231,17 +180,6 @@ const ProductsList: FC<Props> = ({
                     border-slate-200 bg-slate-50 hover:bg-cyan-50 transition-all"
                     >
                       <TbEdit />
-                    </button>
-                    <button
-                      onClick={() => {
-                        setAction("delete");
-                        setAuthorize(true);
-                      }}
-                      className="flex justify-center items-center text-base
-                   text-slate-600 h-7 w-7 rounded border
-                    border-slate-200 bg-slate-50 hover:bg-red-50 transition-all"
-                    >
-                      <TbTrash />
                     </button>
                   </div>
                 </div>

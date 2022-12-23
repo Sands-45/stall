@@ -486,7 +486,6 @@ const CrudInventory: FC<Props> = ({
                 In-Stock
               </span>
               <input
-                disabled
                 required
                 type="number"
                 name="In-Stock"

@@ -1,8 +1,5 @@
 import { FC, useState, useEffect, useMemo } from "react";
-import {
-  TbDotsVertical,
-  TbTrash,
-} from "react-icons/tb";
+import { TbDotsVertical, TbTrash } from "react-icons/tb";
 import ProductsList from "./ProductsList";
 import pos_empty from "../../../Assets/pos_empty.png";
 import { Link } from "react-router-dom";
@@ -44,29 +41,31 @@ const Products: FC<Props> = () => {
   });
   const [search, setSearch] = useState<string>("");
   const inventory_data = useMemo(() => {
-    return [...fetched_inventory_data].filter(
-      (data: any) =>
-        data?.name
-          ?.toLowerCase()
-          ?.replace(/\s/gim, "")
-          ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
-        data?.product_id
-          ?.toLowerCase()
-          ?.replace(/\s/gim, "")
-          ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
-        data?.category
-          ?.toLowerCase()
-          ?.replace(/\s/gim, "")
-          ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
-        data?.description
-          ?.toLowerCase()
-          ?.replace(/\s/gim, "")
-          ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
-        data?.price_in_usd
-          ?.toLowerCase()
-          ?.replace(/\s/gim, "")
-          ?.includes(search?.toLowerCase()?.replace(/\s/gim, ""))
-    );
+    return [...fetched_inventory_data]
+      .filter(
+        (data: any) =>
+          data?.name
+            ?.toLowerCase()
+            ?.replace(/\s/gim, "")
+            ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
+          data?.product_id
+            ?.toLowerCase()
+            ?.replace(/\s/gim, "")
+            ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
+          data?.category
+            ?.toLowerCase()
+            ?.replace(/\s/gim, "")
+            ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
+          data?.description
+            ?.toLowerCase()
+            ?.replace(/\s/gim, "")
+            ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
+          data?.price_in_usd
+            ?.toLowerCase()
+            ?.replace(/\s/gim, "")
+            ?.includes(search?.toLowerCase()?.replace(/\s/gim, ""))
+      )
+      ?.sort((a: any, b: any) => b.last_editedAt - a.last_editedAt);
   }, [search, fetched_inventory_data]);
   const [showAuthorize, setAuthorize] = useState<boolean>(false);
   const [action, setAction] = useState<string>("edit");
@@ -150,6 +149,9 @@ const Products: FC<Props> = () => {
         setAuthorize(false);
       } else {
         deleteStock();
+        setCrud(false);
+        setEdit(false);
+        setAuthorize(false);
       }
     }
   };

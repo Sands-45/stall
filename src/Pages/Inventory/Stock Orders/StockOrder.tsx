@@ -38,33 +38,36 @@ const StockOrder: FC<Props> = () => {
   );
   const stock_orders = useMemo(() => {
     return fetched_stock_orders?.length >= 1
-      ? fetched_stock_orders?.filter(
-          (data: any) =>
-            data?.name
-              ?.toLowerCase()
-              ?.replace(/\s/gim, "")
-              ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
-            data?.order_id
-              ?.toLowerCase()
-              ?.replace(/\s/gim, "")
-              ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
-            data?.vendor[0]?.name
-              ?.toLowerCase()
-              ?.replace(/\s/gim, "")
-              ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
-            data?.notes
-              ?.toLowerCase()
-              ?.replace(/\s/gim, "")
-              ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
-            data?.user?.name
-              ?.toLowerCase()
-              ?.replace(/\s/gim, "")
-              ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
-            data?.status
-              ?.toLowerCase()
-              ?.replace(/\s/gim, "")
-              ?.includes(search?.toLowerCase()?.replace(/\s/gim, ""))
-        )
+      ? fetched_stock_orders
+          ?.filter(
+            (data: any) =>
+              !data?.isDeleted &&
+              (data?.name
+                ?.toLowerCase()
+                ?.replace(/\s/gim, "")
+                ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
+                data?.order_id
+                  ?.toLowerCase()
+                  ?.replace(/\s/gim, "")
+                  ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
+                data?.vendor[0]?.name
+                  ?.toLowerCase()
+                  ?.replace(/\s/gim, "")
+                  ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
+                data?.notes
+                  ?.toLowerCase()
+                  ?.replace(/\s/gim, "")
+                  ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
+                data?.user?.name
+                  ?.toLowerCase()
+                  ?.replace(/\s/gim, "")
+                  ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
+                data?.status
+                  ?.toLowerCase()
+                  ?.replace(/\s/gim, "")
+                  ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")))
+          )
+          ?.sort((a: any, b: any) => b.date - a.date)
       : [];
   }, [fetched_stock_orders, search]);
 
@@ -85,7 +88,7 @@ const StockOrder: FC<Props> = () => {
   return (
     <>
       <div className="w-full h-full bg-white p-4 border border-slate-200 rounded overflow-hidden">
-        <div className="h-9 w-full overflow-hidden flex justify-between">
+        <div className="h-9 w-full overflow-hidden flex justify-between items-center">
           <span className="text-lg font-semibold text-slate-700">
             Stock Orders
           </span>
@@ -127,7 +130,7 @@ const StockOrder: FC<Props> = () => {
           >
             <div className="col-span-2 h-full overflow-hidden">
               <div className="h-full w-full flex items-center p-2 font-semibold">
-                Order id
+                Order date
               </div>
             </div>
             <div className="col-span-2 h-full overflow-hidden">
@@ -167,11 +170,13 @@ const StockOrder: FC<Props> = () => {
                       setAuthorize(true);
                     }}
                     key={order?.order_id}
-                    className="w-full h-12 bg-white hover:bg-slate-50 cursor-pointer select-none transition-all relative
+                    className="w-full h-14 bg-white hover:bg-slate-50 cursor-pointer select-none transition-all relative
                      border-b border-slate-200 grid grid-cols-12 overflow-hidden text-xs px-1 text-slate-600 font-normal"
                   >
-                    <div className="col-span-2 h-full overflow-hidden px-2 flex items-center uppercase font-medium text-[0.65rem]">
-                      {order?.order_id}
+                    <div className="col-span-2 h-full overflow-hidden px-2 flex flex-col justify-center uppercase font-medium text-[0.65rem]">
+                      <span className="text-xs">
+                        {new Date(order?.date).toDateString()}
+                      </span>
                     </div>
                     <div className="col-span-2 h-full overflow-hidden px-2 flex items-center capitalize font-normal">
                       {order?.user?.name}
