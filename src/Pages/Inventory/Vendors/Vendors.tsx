@@ -125,7 +125,7 @@ const Vendors: FC<Props> = () => {
                                 ...fetched_vendors_data?.filter(
                                   (data: any) => data?.id_two !== vendor?.id_two
                                 ),
-                                { ...vendor, isDeleted: true },
+                                { ...vendor, isDeleted: true,isNew:false,edited:false },
                               ])
                             );
                             window.localStorage.setItem(

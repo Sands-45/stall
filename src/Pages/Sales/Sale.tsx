@@ -140,12 +140,12 @@ const Sale: FC<Props> = ({
                     : "U"}
                 </div>
                 <div className="w-[calc(100%-2.5rem)] h-full flex flex-col px-2 justify-center space-y-0">
-                  <span className="text-slate-600 font-medium text-xs capitalize w-full whitespace-nowrap overflow-hidden text-ellipsis">
+                  <span className="text-slate-600 font-semibold text-xs capitalize w-full whitespace-nowrap overflow-hidden text-ellipsis">
                     {sale?.customers_details?.name
                       ? sale?.customers_details?.name
                       : "Unkown Customer"}
                   </span>
-                  <span className="font-normal text-[0.7rem] lowercase text-slate-400 w-full whitespace-nowrap overflow-hidden text-ellipsis">
+                  <span className="font-medium text-[0.7rem] lowercase text-slate-400 w-full whitespace-nowrap overflow-hidden text-ellipsis">
                     {sale?.customers_details?.email
                       ? sale?.customers_details?.email
                       : "no email"}
@@ -159,10 +159,10 @@ const Sale: FC<Props> = ({
                 className="h-full col-span-3 overflow-hidden hidden md:flex flex-col px-2 justify-center space-y-0 
           text-xs text-slate-600 font-semibold text-ellipsis whitespace-nowrap uppercase"
               >
-                <span className="font-normal text-xs capitalize w-full whitespace-nowrap overflow-hidden text-ellipsis">
+                <span className="font-medium text-xs capitalize w-full whitespace-nowrap overflow-hidden text-ellipsis">
                   {new Date(sale?.date)?.toString()?.split("(")[0]}
                 </span>
-                <span className="font-normal text-[0.7rem] upperrcase text-slate-400 w-full whitespace-nowrap overflow-hidden text-ellipsis">
+                <span className="font-medium text-[0.7rem] upperrcase text-slate-400 w-full whitespace-nowrap overflow-hidden text-ellipsis">
                   {sale?.transact_id}
                 </span>
               </div>
@@ -173,12 +173,12 @@ const Sale: FC<Props> = ({
                 className="h-full col-span-2 overflow-hidden hidden md:flex flex-col px-2 justify-center space-y-0 
           text-xs text-slate-600 font-semibold text-ellipsis whitespace-nowrap uppercase"
               >
-                <span className="font-normal text-xs capitalize w-full whitespace-nowrap overflow-hidden text-ellipsis">
+                <span className="font-medium text-xs capitalize w-full whitespace-nowrap overflow-hidden text-ellipsis">
                   {sale?.payment_method
                     ? sale?.payment_method + " payment"
                     : "no payment"}
                 </span>
-                <span className="font-normal text-[0.7rem] capitalize text-slate-400 w-full whitespace-nowrap overflow-hidden text-ellipsis">
+                <span className="font-medium text-[0.7rem] capitalize text-slate-400 w-full whitespace-nowrap overflow-hidden text-ellipsis">
                   {sale?.service} - {sale?.sale_channel}
                 </span>
               </div>
@@ -195,7 +195,7 @@ const Sale: FC<Props> = ({
                   }}
                   className={`h-6 w-24 pt-0.5 rounded-full 
         border flex items-center justify-center capitalize
-         text-[0.6rem] font-normal  ${
+         text-[0.6rem] font-medium  ${
            sale?.status === "paid"
              ? "text-green-600 bg-green-50 border-green-200"
              : sale?.status === "exchange"
@@ -212,7 +212,7 @@ const Sale: FC<Props> = ({
               </div>
               <div
                 className="h-full col-span-2 overflow-hidden px-2 flex items-center 
-          text-xs text-slate-600 font-medium text-ellipsis whitespace-nowrap uppercase"
+          text-xs text-slate-600 font-semibold text-ellipsis whitespace-nowrap uppercase"
               >
                 {selectedCurrency?.symbol}&nbsp;
                 {numberWithSpaces(

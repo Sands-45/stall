@@ -16,6 +16,7 @@ import {
   addStock_Orders,
   loadInventoryData,
   updateLocalInventory_Changes,
+  addVendors,
 } from "../Redux/Slices/InventorySlice";
 
 // init services for firestore =========================
@@ -33,6 +34,7 @@ export let org = workspace
 let inventoryRef: any =
   org && collection(db, `companies/${org}/inventory_data`);
 let stockOrderRef: any = org && collection(db, `companies/${org}/stock_orders`);
+let vendorsRef: any = org && collection(db, `companies/${org}/vendors`);
 
 //=================================== Invetory ===========================================
 export const addStock = async (obj: any) => {
@@ -102,6 +104,33 @@ export const deleteStockOrder = async (id: string) => {
   return await deleteDoc(docRef);
 };
 
+//Adding Vendor
+export const addVendor = async (obj: any) => {
+  return await addDoc(vendorsRef, {
+    ...obj,
+    isNew: false,
+    isDeleted: false,
+    edited: false,
+  });
+};
+
+//Updating Stock Order
+export const updateVendor = async (obj: any) => {
+  let docRef = doc(db, `companies/${org}/vendors`, obj?.id);
+  return await updateDoc(docRef, {
+    ...obj,
+    isNew: false,
+    isDeleted: false,
+    edited: false,
+  });
+};
+
+//Delete Stock Order
+export const deleteVendor = async (id: string) => {
+  const docRef = doc(db, `companies/${org}/vendors`, id);
+  return await deleteDoc(docRef);
+};
+
 //Component ==================================
 const FirestoreFunc: FC = () => {
   const [onlineStatus, isOnline] = useState<boolean>(navigator.onLine);
@@ -115,6 +144,7 @@ const FirestoreFunc: FC = () => {
   const stock_orders = useSelector(
     (state: RootState) => state.Inventory.stock_orders
   );
+  const vendors = useSelector((state: RootState) => state.Inventory.vendors);
 
   //Listen For Offline and Online Changes
   useEffect(() => {
@@ -269,7 +299,7 @@ const FirestoreFunc: FC = () => {
     }
   }, [dispatch, inventory_data_queue, inventory_data, onlineStatus]);
 
-  //Add | Update | Delete Data Form Stock Order DB
+  //Add | Update | Delete Data Fromm Stock Order DB
   useEffect(() => {
     let dataQueue = [...stock_orders]?.filter(
       (data: any) => data?.isNew || data?.isDeleted || data?.edited
@@ -356,7 +386,98 @@ const FirestoreFunc: FC = () => {
         }
       });
     }
-  }, [onlineStatus, stock_orders,dispatch]);
+  }, [onlineStatus, stock_orders, dispatch]);
+
+  //Add | Update | Delete Data from Vendors Collection
+  useEffect(() => {
+    let dataQueue = [...vendors]?.filter(
+      (data: any) => data?.isNew || data?.isDeleted || data?.edited
+    );
+
+    //Check if User Is Online
+    if (onlineStatus && dataQueue?.length >= 1) {
+      dataQueue?.forEach((item: any) => {
+        let localStoredData = () => {
+          let data = window.localStorage.getItem("vendors");
+          return data ? JSON.parse(data) : null;
+        };
+        //Clean Function
+        const cleanUp = (item: any, type?: any) => {
+          if (type === "delete") {
+            dataQueue = [
+              ...dataQueue?.filter(
+                (data: any) => data?.id_two !== item?.id_two
+              ),
+            ];
+            dispatch(
+              addVendors([
+                ...(localStoredData()
+                  ? localStoredData()?.filter(
+                      (data: any) => data?.id_two !== item?.id_two
+                    )
+                  : []),
+              ])
+            );
+            window.localStorage.setItem(
+              "vendors",
+              JSON.stringify([
+                ...(localStoredData()
+                  ? localStoredData()?.filter(
+                      (data: any) => data?.id_two !== item?.id_two
+                    )
+                  : []),
+              ])
+            );
+          } else {
+            dataQueue = [
+              ...dataQueue?.filter(
+                (data: any) => data?.id_two !== item?.id_two
+              ),
+            ];
+            dispatch(
+              addVendors([
+                ...(localStoredData()
+                  ? localStoredData()?.filter(
+                      (data: any) => data?.id_two !== item?.id_two
+                    )
+                  : []),
+                { ...item, isNew: false, isDeleted: false, edited: false },
+              ])
+            );
+            window.localStorage.setItem(
+              "vendors",
+              JSON.stringify([
+                ...(localStoredData()
+                  ? localStoredData()?.filter(
+                      (data: any) => data?.id_two !== item?.id_two
+                    )
+                  : []),
+                { ...item, isNew: false, isDeleted: false, edited: false },
+              ])
+            );
+          }
+        };
+
+        if (item?.isDeleted && item?.id) {
+          deleteVendor(item?.id).then(() => {
+            cleanUp(item, "delete");
+          });
+        } else if (item?.isDeleted) {
+          cleanUp(item, "delete");
+        } else if (item?.edited) {
+          updateVendor(item).then(() => {
+            cleanUp(item);
+          });
+        } else if (item?.isNew) {
+          addVendor(item).then(() => {
+            cleanUp(item);
+          });
+        }
+      });
+    }
+  }, [onlineStatus,vendors, dispatch]);
+
+  //===================Fetch Data ============================
 
   //Fetch Inventory Data
   useEffect((): any => {
@@ -423,6 +544,31 @@ const FirestoreFunc: FC = () => {
       }
     });
   }, [dispatch, onlineStatus]);
+
+    //Fetch Stock Order Data
+    useEffect((): any => {
+      return onSnapshot(vendorsRef, (snapshot: { docs: any[] }) => {
+        if (onlineStatus) {
+          dispatch(
+            addVendors(
+              snapshot.docs.map((doc: { data: () => any; id: any }) => ({
+                ...doc.data(),
+                id: doc.id,
+              }))
+            )
+          );
+          window.localStorage.setItem(
+            "vendors",
+            JSON.stringify(
+              snapshot.docs.map((doc: { data: () => any; id: any }) => ({
+                ...doc.data(),
+                id: doc.id,
+              }))
+            )
+          );
+        }
+      });
+    }, [dispatch, onlineStatus]);
 
   return <></>;
 };

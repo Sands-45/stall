@@ -242,7 +242,7 @@ const Sales: FC<Props> = () => {
            border border-slate-200 hover:border-cyan-750 transition-all
             flex items-center justify-between px-3 text-xs text-slate-500 font-medium cursor-pointer group"
           >
-            <span className="uppercase text-xs">{currentView}</span>
+            <span className="uppercase text-[0.65rem]">{currentView}</span>
             <TbCaretDown className="text-lg group-hover:-rotate-180 transition-all" />
             <div
               className="absolute bg-slate-50 border border-slate-300
@@ -256,7 +256,7 @@ const Sales: FC<Props> = () => {
                     JSON.stringify("all sales")
                   );
                 }}
-                className="w-full h-8 outline-none focus:outline-none px-1 text-xs text-slate-500 font-medium
+                className="w-full h-8 outline-none focus:outline-none px-1 text-[0.65rem] text-slate-500 font-medium
             hover:transition-all hover:bg-white border-b border-slate-300 text-left"
               >
                 All Sales
@@ -269,7 +269,7 @@ const Sales: FC<Props> = () => {
                     JSON.stringify("parked sales")
                   );
                 }}
-                className="w-full h-8 outline-none focus:outline-none px-1 text-xs text-slate-500 font-medium
+                className="w-full h-8 outline-none focus:outline-none px-1 text-[0.65rem] text-slate-500 font-medium
             hover:transition-all hover:bg-white text-left"
               >
                 Parked Sales
@@ -280,9 +280,9 @@ const Sales: FC<Props> = () => {
           <div
             className="rounded h-full col-span-1 bg-white relative 
            border border-slate-200 hover:border-cyan-750 transition-all
-            hidden lg:flex items-center justify-between px-3 text-xs text-slate-500 font-medium cursor-pointer group"
+            hidden lg:flex items-center justify-between px-3 text-[0.65rem] text-slate-500 font-medium cursor-pointer group"
           >
-            <span className="uppercase text-xs">User</span>
+            <span className="uppercase text-[0.65rem]">User</span>
             <TbCaretDown className="text-lg group-hover:-rotate-180 transition-all" />
             <div
               className="absolute bg-slate-50 border border-slate-300
@@ -290,7 +290,7 @@ const Sales: FC<Props> = () => {
             >
               <button
                 onClick={() => {}}
-                className="w-full h-8 outline-none focus:outline-none px-1 text-xs text-slate-500 font-medium
+                className="w-full h-8 outline-none focus:outline-none px-1 text-[0.65rem] text-slate-500 font-medium
             hover:transition-all hover:bg-white last:border-0 border-b border-slate-300 text-left capitalize"
               >
                 test user
@@ -301,9 +301,9 @@ const Sales: FC<Props> = () => {
           <div
             className="rounded h-full col-span-1 bg-white relative 
            border border-slate-200 hover:border-cyan-750 transition-all
-            hidden lg:flex items-center justify-between px-3 text-xs text-slate-500 font-medium cursor-pointer group"
+            hidden lg:flex items-center justify-between px-3 text-[0.65rem] text-slate-500 font-medium cursor-pointer group"
           >
-            <span className="uppercase text-xs">one day</span>
+            <span className="uppercase text-[0.65rem]">one day</span>
             <TbCaretDown className="text-lg group-hover:-rotate-180 transition-all" />
             <div
               className="absolute bg-slate-50 border border-slate-300
@@ -311,21 +311,21 @@ const Sales: FC<Props> = () => {
             >
               <button
                 onClick={() => {}}
-                className="w-full h-8 outline-none focus:outline-none px-1 text-xs text-slate-500 font-medium
+                className="w-full h-8 outline-none focus:outline-none px-1 text-[0.65rem] text-slate-500 font-medium
             hover:transition-all hover:bg-white last:border-0 border-b border-slate-300 text-left capitalize"
               >
                 one week
               </button>
               <button
                 onClick={() => {}}
-                className="w-full h-8 outline-none focus:outline-none px-1 text-xs text-slate-500 font-medium
+                className="w-full h-8 outline-none focus:outline-none px-1 text-[0.65rem] text-slate-500 font-medium
             hover:transition-all hover:bg-white last:border-0 border-b border-slate-300 text-left capitalize"
               >
                 one month
               </button>
               <button
                 onClick={() => {}}
-                className="w-full h-8 outline-none focus:outline-none px-1 text-xs text-slate-500 font-medium
+                className="w-full h-8 outline-none focus:outline-none px-1 text-[0.65rem] text-slate-500 font-medium
             hover:transition-all hover:bg-white last:border-0 border-b border-slate-300 text-left capitalize"
               >
                 Custom Date
@@ -336,9 +336,9 @@ const Sales: FC<Props> = () => {
           <div
             className="rounded h-full col-span-1 bg-white relative 
            border border-slate-200 hover:border-cyan-750 transition-all
-            hidden lg:flex items-center justify-between px-3 text-xs text-slate-500 font-medium cursor-pointer group"
+            hidden lg:flex items-center justify-between px-3 text-[0.65rem] text-slate-500 font-medium cursor-pointer group"
           >
-            <span className="uppercase text-xs">
+            <span className="uppercase [0.65rem]">
               {sortBy === "date" && "Sort by"} {sortBy}
             </span>
             <TbSortDescending className="text-lg group-hover:-rotate-180 transition-all" />
@@ -422,7 +422,7 @@ const Sales: FC<Props> = () => {
             className="col-span-1 h-20 px-6 bg-white rounded border
            border-slate-200 p-4 flex flex-col justify-center space-y-0 overflow-hidden"
           >
-            <span className="text-base font-semibold text-slate-700">
+            <span className="text-base font-bold text-slate-700">
               {selectedCurrency?.symbol}&nbsp;
               {statsData?.sales_turnover
                 ? numberWithSpaces(
@@ -433,7 +433,7 @@ const Sales: FC<Props> = () => {
                   )
                 : "0.00"}
             </span>
-            <span className="text-xs uppercase font-medium text-slate-500">
+            <span className="text-xs uppercase font-semibold text-slate-500">
               Sales Turnover
             </span>
           </div>
@@ -441,11 +441,11 @@ const Sales: FC<Props> = () => {
             className="col-span-1 h-20 px-6 bg-white rounded border
            border-slate-200 p-4 flex flex-col justify-center space-y-0 overflow-hidden"
           >
-            <span className="text-base font-semibold text-slate-700">
+            <span className="text-base font-bold text-slate-700">
               {statsData?.sales_count < 10 ? "0" : ""}
               {statsData?.sales_count ?? "0"}
             </span>
-            <span className="text-xs uppercase font-medium text-slate-500">
+            <span className="text-xs uppercase font-semibold text-slate-500">
               Sales Count
             </span>
           </div>
@@ -453,7 +453,7 @@ const Sales: FC<Props> = () => {
             className="col-span-1 h-20 px-6 bg-white rounded border
            border-slate-200 p-4 flex flex-col justify-center space-y-0 overflow-hidden"
           >
-            <span className="text-base font-semibold text-slate-700">
+            <span className="text-base font-bold text-slate-700">
               {selectedCurrency?.symbol}&nbsp;
               {statsData?.net_profit
                 ? numberWithSpaces(
@@ -464,7 +464,7 @@ const Sales: FC<Props> = () => {
                   )
                 : "0.00"}
             </span>
-            <span className="text-xs uppercase font-medium text-slate-500">
+            <span className="text-xs uppercase font-semibold text-slate-500">
               Net Profit
             </span>
           </div>
@@ -472,7 +472,7 @@ const Sales: FC<Props> = () => {
             className="col-span-1 h-20 px-6 bg-white rounded border
            border-slate-200 p-4 flex flex-col justify-center space-y-0 overflow-hidden"
           >
-            <span className="text-base font-semibold text-slate-700">
+            <span className="text-base font-bold text-slate-700">
               {selectedCurrency?.symbol}&nbsp;
               {statsData?.tips_amount
                 ? numberWithSpaces(
@@ -483,7 +483,7 @@ const Sales: FC<Props> = () => {
                   )
                 : "0.00"}
             </span>
-            <span className="text-xs uppercase font-medium text-slate-500">
+            <span className="text-xs uppercase font-semibold text-slate-500">
               Tips Amount
             </span>
           </div>
@@ -491,7 +491,7 @@ const Sales: FC<Props> = () => {
             className="col-span-1 h-20 px-6 bg-white rounded border
            border-slate-200 p-4 flex flex-col justify-center space-y-0 overflow-hidden"
           >
-            <span className="text-base font-semibold text-slate-700">
+            <span className="text-base font-bold text-slate-700">
               {selectedCurrency?.symbol}&nbsp;
               {statsData?.refunds_amount
                 ? numberWithSpaces(
@@ -502,7 +502,7 @@ const Sales: FC<Props> = () => {
                   )
                 : "0.00"}
             </span>
-            <span className="text-xs uppercase font-medium text-slate-500">
+            <span className="text-xs uppercase font-semibold text-slate-500">
               Refunds Amount
             </span>
           </div>
@@ -510,11 +510,11 @@ const Sales: FC<Props> = () => {
             className="col-span-1 h-20 px-6 bg-white rounded border
            border-slate-200 p-4 flex flex-col justify-center space-y-0 overflow-hidden"
           >
-            <span className="text-base font-semibold text-slate-700">
+            <span className="text-base font-bold text-slate-700">
               {statsData?.refunds_count < 10 ? "0" : ""}
               {statsData?.refunds_count ?? "0"}
             </span>
-            <span className="text-xs uppercase font-medium text-slate-500">
+            <span className="text-xs uppercase font-semibold text-slate-500">
               Refunds Count
             </span>
           </div>
@@ -546,31 +546,31 @@ const Sales: FC<Props> = () => {
             </div>
             <div
               className="h-full col-span-2 overflow-hidden px-1 flex items-center 
-          text-xs font-semibold text-ellipsis whitespace-nowrap uppercase"
+          text-xs font-bold text-ellipsis whitespace-nowrap uppercase"
             >
               customer's Name
             </div>
             <div
               className="h-full col-span-3 overflow-hidden px-1 hidden md:flex items-center 
-          text-xs font-semibold text-ellipsis whitespace-nowrap uppercase"
+          text-xs font-bold text-ellipsis whitespace-nowrap uppercase"
             >
               payment date
             </div>
             <div
               className="h-full col-span-2 overflow-hidden hidden md:flex items-center 
-          text-xs font-semibold text-ellipsis whitespace-nowrap uppercase"
+          text-xs font-bold text-ellipsis whitespace-nowrap uppercase"
             >
               Payment Method
             </div>
             <div
               className="h-full col-span-2 overflow-hidden hidden md:flex items-center 
-          text-xs font-semibold text-ellipsis whitespace-nowrap uppercase"
+          text-xs font-bold text-ellipsis whitespace-nowrap uppercase"
             >
               Status
             </div>
             <div
               className="h-full col-span-2 overflow-hidden flex items-center 
-          text-xs font-semibold text-ellipsis whitespace-nowrap uppercase"
+          text-xs font-bold text-ellipsis whitespace-nowrap uppercase"
             >
               Amount
             </div>

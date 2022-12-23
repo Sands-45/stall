@@ -481,17 +481,17 @@ const CrudInventory: FC<Props> = ({
                 }}
               ></textarea>
             </label>
-            <label htmlFor="In-Stock">
+            <label htmlFor="In-Stock" className="hidden">
               <span className="text-xs text-slate-500 font-medium uppercase">
                 In-Stock
               </span>
               <input
-                required
+                disabled
                 type="number"
                 name="In-Stock"
                 id="In-Stock"
                 placeholder="In-Stock ..."
-                className="inventory_input"
+                className="inventory_input !hidden"
                 value={stockObj?.in_stock}
                 onChange={(e) => {
                   setStockObj((prev: any) => ({

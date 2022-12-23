@@ -43,10 +43,30 @@ const CrudVendor: FC<Props> = ({
       return combined?.replace(/\s/g, "");
     };
     if (actionType === "new") {
-      dispatch(addVendors([...vendors, { ...vendorObject, id_two: uniqueID() ,isNew:true}]));
+      dispatch(
+        addVendors([
+          ...vendors,
+          {
+            ...vendorObject,
+            id_two: uniqueID(),
+            isNew: true,
+            isDelete: false,
+            edited: false,
+          },
+        ])
+      );
       window.localStorage.setItem(
         "vendors",
-        JSON.stringify([...vendors, { ...vendorObject, id_two: uniqueID(),isNew:true }])
+        JSON.stringify([
+          ...vendors,
+          {
+            ...vendorObject,
+            id_two: uniqueID(),
+            isNew: true,
+            isDelete: false,
+            edited: false,
+          },
+        ])
       );
       setAction("new");
       setOpenCrud(false);
@@ -63,7 +83,13 @@ const CrudVendor: FC<Props> = ({
           ...vendors?.filter(
             (data: any) => data?.id_two !== vendorObject?.id_two
           ),
-          { ...vendorObject, id_two: uniqueID() ,isNew:false,edited:true},
+          {
+            ...vendorObject,
+            id_two: uniqueID(),
+            isNew: false,
+            edited: true,
+            isDeleted: false,
+          },
         ])
       );
       window.localStorage.setItem(
@@ -72,7 +98,13 @@ const CrudVendor: FC<Props> = ({
           ...vendors?.filter(
             (data: any) => data?.id_two !== vendorObject?.id_two
           ),
-          { ...vendorObject, id_two: uniqueID(),isNew:false,edited:true },
+          {
+            ...vendorObject,
+            id_two: uniqueID(),
+            isNew: false,
+            edited: true,
+            isDeleted: false,
+          },
         ])
       );
       setAction("new");
