@@ -10,7 +10,6 @@ onmessage = (e) => {
     sales
     ?.map((sale) => sale?.tip_amount??0)
     ?.reduce((value, accum) => Number(value) + Number(accum), 0),
-  sales_count: sales.length,
     refunds_amount: sales
       ?.map((sale) => (sale?.status === "refund" ? sale?.refund_amount : 0))
       ?.reduce((value, accum) => Number(value) + Number(accum), 0),

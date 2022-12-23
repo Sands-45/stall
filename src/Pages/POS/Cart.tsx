@@ -50,7 +50,7 @@ const Cart: FC<Props> = ({
             )
             ?.reduce((acc: any, value: any) => Number(acc) + Number(value), 0)
       : 0.0;
-  }, [cart]);
+  }, [cart,total]);
   const tax = useMemo((): any => {
     return cart?.products?.length >= 1 ? ((15 / 100) * total).toFixed(2) : 0.0;
   }, [total, cart]);

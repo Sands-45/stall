@@ -1,13 +1,9 @@
 import { FC, useState } from "react";
-import { TbEdit, TbTrash } from "react-icons/tb";
+import { TbEdit} from "react-icons/tb";
 import no_gallery from "../../../Assets/no_gallery.png";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../Redux/store";
 import { numberWithSpaces } from "../../../Reusable Functions/Functions";
-import {
-  loadInventoryData,
-  updateLocalInventory_Changes,
-} from "../../../Redux/Slices/InventorySlice";
 import { updateAlert } from "../../../Redux/Slices/NotificationsSlice";
 import Authorize from "../../../Components/Authorize/Authorize";
 
