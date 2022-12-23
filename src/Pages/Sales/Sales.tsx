@@ -42,85 +42,89 @@ const Sales: FC<Props> = () => {
     return [
       ...data?.filter(
         (data: any) =>
-          data?.customers_details?.name
+          !data?.isDeleted &&
+          (data?.customers_details?.name
             ?.toString()
             ?.toLowerCase()
             ?.replace(/\s/gim, "")
             ?.includes(
               searchValue?.toString()?.toLowerCase()?.replace(/\s/gim, "")
             ) ||
-          data?.customers_details?.email
-            ?.toString()
-            ?.toLowerCase()
-            ?.replace(/\s/gim, "")
-            ?.includes(
-              searchValue?.toString()?.toLowerCase()?.replace(/\s/gim, "")
-            ) ||
-          data?.sale_channel
-            ?.toString()
-            ?.toLowerCase()
-            ?.replace(/\s/gim, "")
-            ?.includes(
-              searchValue?.toString()?.toLowerCase()?.replace(/\s/gim, "")
-            ) ||
-          data?.status
-            ?.toString()
-            ?.toLowerCase()
-            ?.replace(/\s/gim, "")
-            ?.includes(
-              searchValue?.toString()?.toLowerCase()?.replace(/\s/gim, "")
-            ) ||
-          data?.service
-            ?.toString()
-            ?.toLowerCase()
-            ?.replace(/\s/gim, "")
-            ?.includes(
-              searchValue?.toString()?.toLowerCase()?.replace(/\s/gim, "") ||
-                data?.status
+            data?.customers_details?.email
+              ?.toString()
+              ?.toLowerCase()
+              ?.replace(/\s/gim, "")
+              ?.includes(
+                searchValue?.toString()?.toLowerCase()?.replace(/\s/gim, "")
+              ) ||
+            data?.sale_channel
+              ?.toString()
+              ?.toLowerCase()
+              ?.replace(/\s/gim, "")
+              ?.includes(
+                searchValue?.toString()?.toLowerCase()?.replace(/\s/gim, "")
+              ) ||
+            data?.status
+              ?.toString()
+              ?.toLowerCase()
+              ?.replace(/\s/gim, "")
+              ?.includes(
+                searchValue?.toString()?.toLowerCase()?.replace(/\s/gim, "")
+              ) ||
+            data?.service
+              ?.toString()
+              ?.toLowerCase()
+              ?.replace(/\s/gim, "")
+              ?.includes(
+                searchValue?.toString()?.toLowerCase()?.replace(/\s/gim, "") ||
+                  data?.status
+                    ?.toString()
+                    ?.toLowerCase()
+                    ?.replace(/\s/gim, "")
+                    ?.includes(
+                      searchValue
+                        ?.toString()
+                        ?.toLowerCase()
+                        ?.replace(/\s/gim, "")
+                    )
+              ) ||
+            data?.transact_id
+              ?.toString()
+              ?.toLowerCase()
+              ?.replace(/\s/gim, "")
+              ?.includes(
+                searchValue?.toString()?.toLowerCase()?.replace(/\s/gim, "")
+              ) ||
+            data?.products
+              ?.map((prod: any) =>
+                prod?.prod_obj?.name
                   ?.toString()
                   ?.toLowerCase()
                   ?.replace(/\s/gim, "")
-                  ?.includes(
-                    searchValue?.toString()?.toLowerCase()?.replace(/\s/gim, "")
-                  )
-            ) ||
-          data?.transact_id
-            ?.toString()
-            ?.toLowerCase()
-            ?.replace(/\s/gim, "")
-            ?.includes(
-              searchValue?.toString()?.toLowerCase()?.replace(/\s/gim, "")
-            ) ||
-          data?.products
-            ?.map((prod: any) =>
-              prod?.prod_obj?.name
-                ?.toString()
-                ?.toLowerCase()
-                ?.replace(/\s/gim, "")
-            )
-            ?.includes(
-              searchValue?.toString()?.toLowerCase()?.replace(/\s/gim, "")
-            ) ||
-          data?.products
-            ?.map((prod: any) =>
-              prod?.prod_obj?.category
-                ?.toString()
-                ?.toLowerCase()
-                ?.replace(/\s/gim, "")
-            )
-            ?.includes(
-              searchValue?.toString()?.toLowerCase()?.replace(/\s/gim, "")
-            ) ||
-          data?.products
-            ?.map((prod: any) =>
-              prod?.prod_obj?.payment_method
-                ?.toString()
-                ?.toLowerCase()
-                ?.replace(/\s/gim, "")
-            )
-            ?.includes(
-              searchValue?.toString()?.toLowerCase()?.replace(/\s/gim, "")
-            )
+              )
+              ?.includes(
+                searchValue?.toString()?.toLowerCase()?.replace(/\s/gim, "")
+              ) ||
+            data?.products
+              ?.map((prod: any) =>
+                prod?.prod_obj?.category
+                  ?.toString()
+                  ?.toLowerCase()
+                  ?.replace(/\s/gim, "")
+              )
+              ?.includes(
+                searchValue?.toString()?.toLowerCase()?.replace(/\s/gim, "")
+              ) ||
+            data?.products
+              ?.map((prod: any) =>
+                prod?.prod_obj?.payment_method
+                  ?.toString()
+                  ?.toLowerCase()
+                  ?.replace(/\s/gim, "")
+              )
+              ?.includes(
+                searchValue?.toString()?.toLowerCase()?.replace(/\s/gim, "")
+              ))
       ),
     ]?.sort((a: any, b: any) => (a[sortBy] > b[sortBy] ? -1 : 1));
   }, [fetched_sales, parked_sales, searchValue, currentView, sortBy]);

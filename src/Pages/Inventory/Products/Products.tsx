@@ -2,7 +2,6 @@ import { FC, useState, useEffect, useMemo } from "react";
 import { TbDotsVertical, TbTrash } from "react-icons/tb";
 import ProductsList from "./ProductsList";
 import pos_empty from "../../../Assets/pos_empty.png";
-import { Link } from "react-router-dom";
 import CrudInventory from "./CrudInventory";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../Redux/store";
@@ -162,12 +161,12 @@ const Products: FC<Props> = () => {
       <div className="h-full w-full">
         <div className="h-full w-full rounded bg-white border border-slate-200 p-4 flex flex-col space-y-4">
           <div className="h-9 w-full overflow-hidden flex justify-between">
-            <span className="text-lg font-semibold text-slate-700">
+            <span className="text-lg font-bold text-slate-700">
               Products
             </span>
             <button
               className="h-8 w-9 flex items-center justify-center 
-          space-x-2 font-medium uppercase text-xs text-slate-600 outline-none 
+          space-x-2 font-semibold uppercase text-xs text-slate-600 outline-none 
           focus:outline-none hover:opacity-80 hover:bg-cyan-50 transition-all"
             >
               <TbDotsVertical className="text-lg" />
@@ -214,7 +213,7 @@ const Products: FC<Props> = () => {
                     setAuthorize(true);
                   }}
                   className="h-9 w-32 flex items-center justify-center 
-          space-x-2 rounded-sm bg-cyan-750 font-medium uppercase text-xs text-white outline-none focus:outline-none 
+          space-x-2 rounded-sm bg-cyan-750 font-semibold uppercase text-xs text-white outline-none focus:outline-none 
           hover:opacity-80 hover:bg-cyan-700 transition-all"
                 >
                   <span>Add product</span>
@@ -310,21 +309,12 @@ const Products: FC<Props> = () => {
                 <img
                   src={pos_empty}
                   alt="no_data"
-                  className="h-[5rem] w-[5.5rem] opacity-40 overflow-hidden object-center objct-fit"
+                  className="h-[4rem] w-[3.5rem] opacity-40 overflow-hidden object-center objct-fit"
                 />
                 <p className="text-sm font-medium text-slate-400 text-center">
                   There's no data to display, you either out of stock
                   <br /> or searched product doesn't exit
                 </p>
-                <Link to="/app/inventory">
-                  <div
-                    className="h-9 w-36 px-6 whitespace-nowrap bg-cyan-750 hover:bg-cyan-800 transition-all 
-              text-white text-xs text-center font-medium
-               capitalize flex items-center justify-center rounded-sm"
-                  >
-                    add stock
-                  </div>
-                </Link>
               </div>
             )}
           </div>

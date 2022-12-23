@@ -10,11 +10,12 @@ import {
   MdLoyalty,
   MdOutlineStackedBarChart,
   MdAssignment,
-  MdLocalMall,MdSupervisorAccount
+  MdLocalMall,
+  MdSupervisorAccount,
 } from "react-icons/md";
-import {AiFillSetting} from "react-icons/ai"
+import { AiFillSetting } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import { changeLocation } from "../../Redux/Slices/UserSlice";
+import { changeLocation, updateUserData } from "../../Redux/Slices/UserSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
 import Tooltip from "../../Components/Profile Tooltip/Tooltip";
@@ -56,7 +57,7 @@ const Portal: FC<Props> = () => {
               alt="user"
               className="h-10 object-fit object-center object-cover"
             />
-            <Tooltip position="top-14 right-0"/>
+            <Tooltip position="top-14 right-0" />
           </div>
         </div>
       </nav>
@@ -81,7 +82,10 @@ const Portal: FC<Props> = () => {
         </div>
         {/**Sales */}
         <div className="col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all duration-200 saturate-200 bg-cyan-50/60 overflow-hidden">
-          <Link to="/app/sales" className="h-fit w-full outline-none focus:outline-none">
+          <Link
+            to="/app/sales"
+            className="h-fit w-full outline-none focus:outline-none"
+          >
             <div className="w-full h-full flex flex-col items-center justify-center space-y-4">
               <div className="h-10 w-10 flex items-center justify-center rounded bg-cyan-700 text-white text-xl">
                 <MdReceipt />
@@ -94,7 +98,10 @@ const Portal: FC<Props> = () => {
         </div>
         {/**Campaigns */}
         <div className="col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all duration-200 saturate-200 bg-cyan-50/60 overflow-hidden">
-          <Link to="/app/campaigns" className="h-fit w-full outline-none focus:outline-none">
+          <Link
+            to="/app/campaigns"
+            className="h-fit w-full outline-none focus:outline-none"
+          >
             <div className="w-full h-full flex flex-col items-center justify-center space-y-4">
               <div className="h-10 w-10 flex items-center justify-center rounded bg-teal-600 text-white text-xl">
                 <MdLoyalty />
@@ -107,7 +114,10 @@ const Portal: FC<Props> = () => {
         </div>
         {/**Reports */}
         <div className="col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all duration-200 saturate-200 bg-cyan-50/60 overflow-hidden">
-          <Link to="/app/reports" className="h-fit w-full outline-none focus:outline-none">
+          <Link
+            to="/app/reports"
+            className="h-fit w-full outline-none focus:outline-none"
+          >
             <div className="w-full h-full flex flex-col items-center justify-center space-y-4">
               <div className="h-10 w-10 flex items-center justify-center rounded bg-blue-600 text-white text-xl">
                 <MdOutlineStackedBarChart />
@@ -121,7 +131,10 @@ const Portal: FC<Props> = () => {
 
         {/**Customers */}
         <div className="col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all duration-200 saturate-200 bg-cyan-50/60 overflow-hidden">
-          <Link to="/app/customers" className="h-fit w-full outline-none focus:outline-none">
+          <Link
+            to="/app/customers"
+            className="h-fit w-full outline-none focus:outline-none"
+          >
             <div className="w-full h-full flex flex-col items-center justify-center space-y-4">
               <div className="h-10 w-10 flex items-center justify-center rounded bg-teal-800 text-white text-xl">
                 <MdSupervisorAccount className="text-2xl" />
@@ -135,7 +148,10 @@ const Portal: FC<Props> = () => {
 
         {/**Inventory */}
         <div className="col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all duration-200 saturate-200 bg-cyan-50/60 overflow-hidden">
-          <Link to="/app/inventory" className="h-fit w-full outline-none focus:outline-none">
+          <Link
+            to="/app/inventory"
+            className="h-fit w-full outline-none focus:outline-none"
+          >
             <div className="w-full h-full flex flex-col items-center justify-center space-y-4">
               <div className="h-10 w-10 flex items-center justify-center rounded bg-blue-600 text-white text-xl">
                 <MdAssignment />
@@ -149,7 +165,10 @@ const Portal: FC<Props> = () => {
 
         {/**Online Store */}
         <div className="col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all duration-200 saturate-200 bg-cyan-50/60 overflow-hidden">
-          <Link to="/app/online-store" className="h-fit w-full outline-none focus:outline-none">
+          <Link
+            to="/app/online-store"
+            className="h-fit w-full outline-none focus:outline-none"
+          >
             <div className="w-full h-full flex flex-col items-center justify-center space-y-4">
               <div className="h-10 w-10 flex items-center justify-center rounded bg-slate-600 text-white text-xl">
                 <MdLocalMall />
@@ -163,7 +182,10 @@ const Portal: FC<Props> = () => {
 
         {/**Settings */}
         <div className="col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all duration-200 saturate-200 bg-cyan-50/60 overflow-hidden">
-          <Link to="/app/settings" className="h-fit w-full outline-none focus:outline-none">
+          <Link
+            to="/app/settings"
+            className="h-fit w-full outline-none focus:outline-none"
+          >
             <div className="w-full h-full flex flex-col items-center justify-center space-y-4">
               <div className="h-10 w-10 flex items-center justify-center rounded bg-cyan-800 text-white text-xl">
                 <AiFillSetting />
@@ -181,6 +203,7 @@ const Portal: FC<Props> = () => {
         <button
           onClick={() => {
             dispatch(changeLocation("Stall"));
+            dispatch(updateUserData(null));
             signOut(auth).then(() => {
               window.localStorage.clear();
               document.title = "Stall";

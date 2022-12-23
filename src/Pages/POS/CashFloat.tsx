@@ -79,6 +79,9 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
             ],
             date: new Date()?.getTime(),
             id_two: id,
+            isNew: true,
+            isDeleted: false,
+            edited: false,
           },
         ])
       );
@@ -111,6 +114,9 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
             ],
             date: new Date()?.getTime(),
             id_two: id,
+            isNew: true,
+            isDeleted: false,
+            edited: false,
           },
         ])
       );
@@ -150,6 +156,8 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
                 },
               ],
               edited: true,
+              isNew: false,
+              isDeleted: false,
             },
           ])
         );
@@ -184,6 +192,8 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
                 },
               ],
               edited: true,
+              isNew: false,
+              isDeleted: false,
             },
           ])
         );
@@ -220,6 +230,8 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
                 },
               ],
               edited: true,
+              isNew: false,
+              isDeleted: false,
             },
           ])
         );
@@ -252,6 +264,8 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
                 },
               ],
               edited: true,
+              isNew: false,
+              isDeleted: false,
             },
           ])
         );

@@ -2,12 +2,11 @@ import { FC, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
 import { numberWithSpaces } from "../../Reusable Functions/Functions";
-import { addSales } from "../../Redux/Slices/SalesSlice";
+import { addSales, updateFloat } from "../../Redux/Slices/SalesSlice";
 import {
   loadInventoryData,
   updateLocalInventory_Changes,
 } from "../../Redux/Slices/InventorySlice";
-import { updateFloat } from "../../Redux/Slices/SalesSlice";
 import Authorize from "../../Components/Authorize/Authorize";
 
 type Props = {
@@ -131,6 +130,9 @@ const Refund: FC<Props> = ({
             products: tempProduct_Array,
             refunded_products: letRefunded_Array,
             status: "refund",
+            isDeleted: false,
+            edited: true,
+            isNew: false,
           };
 
           //Update State
@@ -144,6 +146,9 @@ const Refund: FC<Props> = ({
                 : []),
               {
                 ...newCart,
+                isDeleted: false,
+                edited: true,
+                isNew: false,
               },
             ])
           );
@@ -160,6 +165,9 @@ const Refund: FC<Props> = ({
                 : []),
               {
                 ...newCart,
+                isDeleted: false,
+                edited: true,
+                isNew: false,
               },
             ])
           );
@@ -267,7 +275,9 @@ const Refund: FC<Props> = ({
                       currency: selectedCurrency?.name,
                     },
                   ],
+                  isDeleted: false,
                   edited: true,
+                  isNew: false,
                 },
               ])
             );
@@ -291,7 +301,9 @@ const Refund: FC<Props> = ({
                       time: new Date()?.getTime(),
                     },
                   ],
+                  isDeleted: false,
                   edited: true,
+                  isNew: false,
                 },
               ])
             );
@@ -311,15 +323,20 @@ const Refund: FC<Props> = ({
           //New Sale Object with updated values
           let newCart = {
             ...currentSale,
-            profit: currentSale?.profit - (refundAmount / selectedCurrency?.rate_multiplier),
+            profit:
+              currentSale?.profit -
+              refundAmount / selectedCurrency?.rate_multiplier,
             total:
               currentSale?.total -
-              (refundAmount / selectedCurrency?.rate_multiplier),
-            refund_amount: (refundAmount / selectedCurrency?.rate_multiplier),
+              refundAmount / selectedCurrency?.rate_multiplier,
+            refund_amount: refundAmount / selectedCurrency?.rate_multiplier,
             refund_date: new Date()?.getTime(),
             not_eligable_for_refund: true,
             refund_reason: reason,
             status: "refund",
+            isDeleted: false,
+            edited: true,
+            isNew: false,
           };
 
           //Update State
@@ -333,6 +350,9 @@ const Refund: FC<Props> = ({
                 : []),
               {
                 ...newCart,
+                isDeleted: false,
+                edited: true,
+                isNew: false,
               },
             ])
           );
@@ -349,6 +369,9 @@ const Refund: FC<Props> = ({
                 : []),
               {
                 ...newCart,
+                isDeleted: false,
+                edited: true,
+                isNew: false,
               },
             ])
           );
@@ -382,6 +405,8 @@ const Refund: FC<Props> = ({
                     },
                   ],
                   edited: true,
+                  isNew: false,
+                  isDeleted: false,
                 },
               ])
             );
@@ -411,6 +436,8 @@ const Refund: FC<Props> = ({
                     },
                   ],
                   edited: true,
+                  isNew: false,
+                  isDeleted: false,
                 },
               ])
             );

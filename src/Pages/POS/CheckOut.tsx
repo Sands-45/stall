@@ -42,7 +42,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
   const selectedCurrency = useSelector(
     (state: RootState) => state.SettingsData.selectedCurrency
   );
-  const user = useSelector((state:RootState)=>state.UserInfo.user)
+  const user = useSelector((state: RootState) => state.UserInfo.user);
   const cash_float = useSelector((state: RootState) => state.Sales.cash_float);
   const [paymentMethods, setMethod] = useState<any>([
     { method: "card", selected: true },
@@ -92,7 +92,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
             : []),
           {
             ...cart,
-            user:user,
+            user: user,
             service: "collection",
             status: "paid",
             date: new Date().getTime(),
@@ -101,6 +101,9 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
             payment_method: paymentMethods?.filter(
               (methods: any) => methods?.selected
             )[0]?.method,
+            isNew: true,
+            isDeleted: false,
+            edited: false,
           },
         ])
       );
@@ -115,7 +118,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
             : []),
           {
             ...cart,
-            user:user,
+            user: user,
             service: "collection",
             status: "paid",
             date: new Date().getTime(),
@@ -124,6 +127,9 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
             payment_method: paymentMethods?.filter(
               (methods: any) => methods?.selected
             )[0]?.method,
+            isNew: true,
+            isDeleted: false,
+            edited: false,
           },
         ])
       );
@@ -229,7 +235,9 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
                   currency: selectedCurrency?.name,
                 },
               ],
+              isDeleted: false,
               edited: true,
+              isNew: false,
             },
           ])
         );
@@ -254,7 +262,9 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
                   currency: selectedCurrency?.name,
                 },
               ],
+              isDeleted: false,
               edited: true,
+              isNew: false,
             },
           ])
         );
@@ -280,7 +290,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
           Number(discountObj?.value) / selectedCurrency?.rate_multiplier;
         setCart((prev: any) => ({
           ...prev,
-          profit:prev?.profit - value,
+          profit: prev?.profit - value,
           total: prev?.total - value,
           discount_type: discountObj?.type,
           discount_amount: value,
@@ -298,7 +308,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
         let value = (Number(discountObj?.value) / 100) * cart?.total;
         setCart((prev: any) => ({
           ...prev,
-          profit:prev?.profit - value,
+          profit: prev?.profit - value,
           total: prev?.total - value,
           discount_type: discountObj?.type,
           discount_amount: value,
@@ -318,7 +328,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
     setDiscount({
       type: "amount",
       value: "",
-    })
+    });
   };
 
   //Component ========

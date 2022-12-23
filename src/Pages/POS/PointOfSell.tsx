@@ -265,7 +265,7 @@ const PointOfSell: FC<Props> = () => {
                 <img
                   src={pos_empty}
                   alt="no_data"
-                  className="h-[7rem] w-[6.5rem] opacity-40 overflow-hidden object-center objct-fit"
+                  className="h-[4rem] w-[3.5rem] opacity-40 overflow-hidden object-center objct-fit"
                 />
                 <p className="text-sm font-medium text-slate-400 text-center">
                   There's no data to display, you either out of stock

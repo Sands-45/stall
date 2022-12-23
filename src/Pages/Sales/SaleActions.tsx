@@ -62,6 +62,7 @@ const SaleActions: FC<Props> = ({
                     record?.transact_id !== currentSale.transact_id
                 )
               : []),
+            { ...currentSale, isDeleted: true, edited: false, isNew: false },
           ])
         );
         //Save Data Locally
@@ -74,6 +75,7 @@ const SaleActions: FC<Props> = ({
                     record?.transact_id !== currentSale.transact_id
                 )
               : []),
+              { ...currentSale, isDeleted: true, edited: false, isNew: false }
           ])
         );
 
@@ -123,6 +125,8 @@ const SaleActions: FC<Props> = ({
                   },
                 ],
                 edited: true,
+                isNew:false,
+                isDeleted:false,
               },
             ])
           );
@@ -147,6 +151,8 @@ const SaleActions: FC<Props> = ({
                   },
                 ],
                 edited: true,
+                isNew:false,
+                isDeleted:false,
               },
             ])
           );

@@ -18,6 +18,7 @@ import {
   updateLocalInventory_Changes,
   addVendors,
 } from "../Redux/Slices/InventorySlice";
+import { addSales, updateFloat } from "../Redux/Slices/SalesSlice";
 
 // init services for firestore =========================
 export const db = getFirestore();
@@ -35,6 +36,8 @@ let inventoryRef: any =
   org && collection(db, `companies/${org}/inventory_data`);
 let stockOrderRef: any = org && collection(db, `companies/${org}/stock_orders`);
 let vendorsRef: any = org && collection(db, `companies/${org}/vendors`);
+let salesRef: any = org && collection(db, `companies/${org}/completed_sales`);
+let cash_floatRef: any = org && collection(db, `companies/${org}/cash_float`);
 
 //=================================== Invetory ===========================================
 export const addStock = async (obj: any) => {
@@ -131,6 +134,61 @@ export const deleteVendor = async (id: string) => {
   return await deleteDoc(docRef);
 };
 
+//===================================Sales / Transactions ===========================================
+//Adding Vendor
+export const addSale = async (obj: any) => {
+  return await addDoc(salesRef, {
+    ...obj,
+    isNew: false,
+    isDeleted: false,
+    edited: false,
+  });
+};
+
+//Updating Sales/Transactions
+export const updateSale = async (obj: any) => {
+  let docRef = doc(db, `companies/${org}/completed_sales`, obj?.id);
+  return await updateDoc(docRef, {
+    ...obj,
+    isNew: false,
+    isDeleted: false,
+    edited: false,
+  });
+};
+
+//Delete Sales/Transactions
+export const deleteSale = async (id: string) => {
+  const docRef = doc(db, `companies/${org}/completed_sales`, id);
+  return await deleteDoc(docRef);
+};
+
+//Add Cash Float
+export const addFloat = async (obj: any) => {
+  return await addDoc(cash_floatRef, {
+    ...obj,
+    isNew: false,
+    isDeleted: false,
+    edited: false,
+  });
+};
+
+//Updating Float
+export const updateFloats = async (obj: any) => {
+  let docRef = doc(db, `companies/${org}/cash_float`, obj?.id);
+  return await updateDoc(docRef, {
+    ...obj,
+    isNew: false,
+    isDeleted: false,
+    edited: false,
+  });
+};
+
+//Delete Float
+export const deleteFloat = async (id: string) => {
+  const docRef = doc(db, `companies/${org}/cash_float`, id);
+  return await deleteDoc(docRef);
+};
+
 //Component ==================================
 const FirestoreFunc: FC = () => {
   const [onlineStatus, isOnline] = useState<boolean>(navigator.onLine);
@@ -145,6 +203,8 @@ const FirestoreFunc: FC = () => {
     (state: RootState) => state.Inventory.stock_orders
   );
   const vendors = useSelector((state: RootState) => state.Inventory.vendors);
+  const sales = useSelector((state: RootState) => state.Sales.completed_sales);
+  const cash_float = useSelector((state: RootState) => state.Sales.cash_float);
 
   //Listen For Offline and Online Changes
   useEffect(() => {
@@ -304,7 +364,6 @@ const FirestoreFunc: FC = () => {
     let dataQueue = [...stock_orders]?.filter(
       (data: any) => data?.isNew || data?.isDeleted || data?.edited
     );
-
     //Check if User Is Online
     if (onlineStatus && dataQueue?.length >= 1) {
       dataQueue?.forEach((item: any) => {
@@ -373,10 +432,14 @@ const FirestoreFunc: FC = () => {
           deleteStockOrder(item?.id).then(() => {
             cleanUp(item, "delete");
           });
-        } else if (item?.isDeleted) {
+        } else if (item?.isDeleted && !item?.id) {
           cleanUp(item, "delete");
-        } else if (item?.edited) {
+        } else if (item?.edited && item?.id) {
           updateStockOrder(item).then(() => {
+            cleanUp(item);
+          });
+        } else if (item?.edited && !item?.id) {
+          addStockOrder(item).then(() => {
             cleanUp(item);
           });
         } else if (item?.isNew) {
@@ -393,7 +456,6 @@ const FirestoreFunc: FC = () => {
     let dataQueue = [...vendors]?.filter(
       (data: any) => data?.isNew || data?.isDeleted || data?.edited
     );
-
     //Check if User Is Online
     if (onlineStatus && dataQueue?.length >= 1) {
       dataQueue?.forEach((item: any) => {
@@ -464,8 +526,12 @@ const FirestoreFunc: FC = () => {
           });
         } else if (item?.isDeleted) {
           cleanUp(item, "delete");
-        } else if (item?.edited) {
+        } else if (item?.edited && item?.id) {
           updateVendor(item).then(() => {
+            cleanUp(item);
+          });
+        } else if (item?.edited && !item?.id) {
+          addVendor(item).then(() => {
             cleanUp(item);
           });
         } else if (item?.isNew) {
@@ -475,7 +541,191 @@ const FirestoreFunc: FC = () => {
         }
       });
     }
-  }, [onlineStatus,vendors, dispatch]);
+  }, [onlineStatus, vendors, dispatch]);
+
+  //Add | Update | Delete Data from Sales/Transactions Collection
+  useEffect(() => {
+    let dataQueue = [...sales]?.filter(
+      (data: any) => data?.isNew || data?.isDeleted || data?.edited
+    );
+    //Check if User Is Online
+    if (onlineStatus && dataQueue?.length >= 1) {
+      dataQueue?.forEach((item: any) => {
+        let localStoredData = () => {
+          let data = window.localStorage.getItem("completed_sales");
+          return data ? JSON.parse(data) : null;
+        };
+        //Clean Function
+        const cleanUp = (item: any, type?: any) => {
+          if (type === "delete") {
+            dataQueue = [
+              ...dataQueue?.filter(
+                (data: any) => data?.transact_id !== item?.transact_id
+              ),
+            ];
+            dispatch(
+              addSales([
+                ...(localStoredData()
+                  ? localStoredData()?.filter(
+                      (data: any) => data?.transact_id !== item?.transact_id
+                    )
+                  : []),
+              ])
+            );
+            window.localStorage.setItem(
+              "completed_sales",
+              JSON.stringify([
+                ...(localStoredData()
+                  ? localStoredData()?.filter(
+                      (data: any) => data?.transact_id !== item?.transact_id
+                    )
+                  : []),
+              ])
+            );
+          } else {
+            dataQueue = [
+              ...dataQueue?.filter(
+                (data: any) => data?.transact_id !== item?.transact_id
+              ),
+            ];
+            dispatch(
+              addSales([
+                ...(localStoredData()
+                  ? localStoredData()?.filter(
+                      (data: any) => data?.transact_id !== item?.transact_id
+                    )
+                  : []),
+                { ...item, isNew: false, isDeleted: false, edited: false },
+              ])
+            );
+            window.localStorage.setItem(
+              "completed_sales",
+              JSON.stringify([
+                ...(localStoredData()
+                  ? localStoredData()?.filter(
+                      (data: any) => data?.transact_id !== item?.transact_id
+                    )
+                  : []),
+                { ...item, isNew: false, isDeleted: false, edited: false },
+              ])
+            );
+          }
+        };
+
+        if (item?.isDeleted && item?.id) {
+          deleteSale(item?.id).then(() => {
+            cleanUp(item, "delete");
+          });
+        } else if (item?.isDeleted) {
+          cleanUp(item, "delete");
+        } else if (item?.edited && item?.id) {
+          updateSale(item).then(() => {
+            cleanUp(item);
+          });
+        } else if (item?.edited && !item?.id) {
+          addSale(item).then(() => {
+            cleanUp(item);
+          });
+        } else if (item?.isNew) {
+          addSale(item).then(() => {
+            cleanUp(item);
+          });
+        }
+      });
+    }
+  }, [onlineStatus, sales, dispatch]);
+
+  //Add | Update | Delete Data from Cash Float Collection
+  useEffect(() => {
+    let dataQueue = [...cash_float]?.filter(
+      (data: any) => data?.isNew || data?.isDeleted || data?.edited
+    );
+    //Check if User Is Online
+    if (onlineStatus && dataQueue?.length >= 1) {
+      dataQueue?.forEach((item: any) => {
+        let localStoredData = () => {
+          let data = window.localStorage.getItem("cash_float");
+          return data ? JSON.parse(data) : null;
+        };
+        //Clean Function
+        const cleanUp = (item: any, type?: any) => {
+          if (type === "delete") {
+            dataQueue = [
+              ...dataQueue?.filter(
+                (data: any) => data?.id_two !== item?.id_two
+              ),
+            ];
+            dispatch(
+              updateFloat([
+                ...(localStoredData()
+                  ? localStoredData()?.filter(
+                      (data: any) => data?.id_two !== item?.id_two
+                    )
+                  : []),
+              ])
+            );
+            window.localStorage.setItem(
+              "cash_float",
+              JSON.stringify([
+                ...(localStoredData()
+                  ? localStoredData()?.filter(
+                      (data: any) => data?.id_two !== item?.id_two
+                    )
+                  : []),
+              ])
+            );
+          } else {
+            dataQueue = [
+              ...dataQueue?.filter(
+                (data: any) => data?.id_two !== item?.id_two
+              ),
+            ];
+            dispatch(
+              updateFloat([
+                ...(localStoredData()
+                  ? localStoredData()?.filter(
+                      (data: any) => data?.id_two !== item?.id_two
+                    )
+                  : []),
+                { ...item, isNew: false, isDeleted: false, edited: false },
+              ])
+            );
+            window.localStorage.setItem(
+              "cash_float",
+              JSON.stringify([
+                ...(localStoredData()
+                  ? localStoredData()?.filter(
+                      (data: any) => data?.id_two !== item?.id_two
+                    )
+                  : []),
+                { ...item, isNew: false, isDeleted: false, edited: false },
+              ])
+            );
+          }
+        };
+
+        if (item?.isDeleted && item?.id) {
+          deleteFloat(item?.id).then(() => {
+            cleanUp(item, "delete");
+          });
+        } else if (item?.isDeleted) {
+          cleanUp(item, "delete");
+        } else if (item?.edited && item?.id) {
+          updateFloats(item).then(() => {
+            cleanUp(item);
+          });
+        } else if (item?.edited && !item?.id) {
+          addFloat(item).then(() => {
+            cleanUp(item);
+          });
+        } else if (item?.isNew) {
+          addFloat(item).then(() => {
+            cleanUp(item);
+          });
+        }
+      });
+    }
+  }, [onlineStatus, cash_float, dispatch]);
 
   //===================Fetch Data ============================
 
@@ -545,30 +795,80 @@ const FirestoreFunc: FC = () => {
     });
   }, [dispatch, onlineStatus]);
 
-    //Fetch Stock Order Data
-    useEffect((): any => {
-      return onSnapshot(vendorsRef, (snapshot: { docs: any[] }) => {
-        if (onlineStatus) {
-          dispatch(
-            addVendors(
-              snapshot.docs.map((doc: { data: () => any; id: any }) => ({
-                ...doc.data(),
-                id: doc.id,
-              }))
-            )
-          );
-          window.localStorage.setItem(
-            "vendors",
-            JSON.stringify(
-              snapshot.docs.map((doc: { data: () => any; id: any }) => ({
-                ...doc.data(),
-                id: doc.id,
-              }))
-            )
-          );
-        }
-      });
-    }, [dispatch, onlineStatus]);
+  //Fetch Stock Order Data
+  useEffect((): any => {
+    return onSnapshot(vendorsRef, (snapshot: { docs: any[] }) => {
+      if (onlineStatus) {
+        dispatch(
+          addVendors(
+            snapshot.docs.map((doc: { data: () => any; id: any }) => ({
+              ...doc.data(),
+              id: doc.id,
+            }))
+          )
+        );
+        window.localStorage.setItem(
+          "vendors",
+          JSON.stringify(
+            snapshot.docs.map((doc: { data: () => any; id: any }) => ({
+              ...doc.data(),
+              id: doc.id,
+            }))
+          )
+        );
+      }
+    });
+  }, [dispatch, onlineStatus]);
+
+  //Fetch Sales Order Data
+  useEffect((): any => {
+    return onSnapshot(salesRef, (snapshot: { docs: any[] }) => {
+      if (onlineStatus) {
+        dispatch(
+          addSales(
+            snapshot.docs.map((doc: { data: () => any; id: any }) => ({
+              ...doc.data(),
+              id: doc.id,
+            }))
+          )
+        );
+        window.localStorage.setItem(
+          "completed_sales",
+          JSON.stringify(
+            snapshot.docs.map((doc: { data: () => any; id: any }) => ({
+              ...doc.data(),
+              id: doc.id,
+            }))
+          )
+        );
+      }
+    });
+  }, [dispatch, onlineStatus]);
+
+  //Fetch Cash Float Data
+  useEffect((): any => {
+    return onSnapshot(cash_floatRef, (snapshot: { docs: any[] }) => {
+      if (onlineStatus) {
+        dispatch(
+          updateFloat(
+            snapshot.docs.map((doc: { data: () => any; id: any }) => ({
+              ...doc.data(),
+              id: doc.id,
+            }))
+          )
+        );
+        window.localStorage.setItem(
+          "cash_float",
+          JSON.stringify(
+            snapshot.docs.map((doc: { data: () => any; id: any }) => ({
+              ...doc.data(),
+              id: doc.id,
+            }))
+          )
+        );
+      }
+    });
+  }, [dispatch, onlineStatus]);
 
   return <></>;
 };
