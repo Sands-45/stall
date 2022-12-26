@@ -24,7 +24,7 @@
     transition: background-color 5000s ease-in-out 0s;
   }
 
-  .login_input{
+  .login_input {
     border: inherit inherit inherit;
     -webkit-text-fill-color: #fff !important;
     color: inherit;
@@ -151,6 +151,12 @@
     to {
       margin-left: 200%;
     }
+  }
+
+  /*Custom bow shadow*/
+  .box-shadow-one {
+    box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%),
+      0 1px 3px 1px rgb(60 64 67 / 15%) !important;
   }
 
   /* Hide scrollbar for Chrome, Safari and Opera */

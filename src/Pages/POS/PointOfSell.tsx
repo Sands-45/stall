@@ -1,4 +1,4 @@
-import { FC, useState, useMemo, useEffect } from "react";
+import { FC, useState, useMemo, useEffect, useRef } from "react";
 import {
   TbSearch,
   TbScan,
@@ -63,6 +63,7 @@ const PointOfSell: FC<Props> = () => {
       ?.sort((a: any, b: any) => (a?.name < b?.name ? -1 : 1));
   }, [selectedCategory, productSearch, fetched_inventory_data]);
   const localCart = window.localStorage.getItem("cart");
+  const categoryContainerRef = useRef<HTMLDivElement>(null);
   const [cart, setCart] = useState<any>(localCart ? JSON.parse(localCart) : {});
   const [prod_cart, setProduct] = useState<any>({
     prod_cart_uid: new Date()?.getTime(),
@@ -150,7 +151,8 @@ const PointOfSell: FC<Props> = () => {
              relative"
             >
               <div
-                className="flex items-center space-x-1 h-full w-full overflow-hidden overflow-x-scroll
+                ref={categoryContainerRef}
+                className="flex items-center space-x-1 h-full w-[calc(100%-5rem)] overflow-hidden overflow-x-scroll
               no-scrollbar no-scrollbar::-webkit-scrollbar"
               >
                 {Array.from(
@@ -200,7 +202,7 @@ const PointOfSell: FC<Props> = () => {
                           }
                         }}
                         key={cat}
-                        className={`h-full w-fit px-3 bg-white rounded border text-[0.65rem]
+                        className={`h-full w-fit px-3 bg-white rounded border text-[0.6rem]
               uppercase font-medium ${
                 selectedCategory?.some((data: any) =>
                   data
@@ -229,12 +231,22 @@ const PointOfSell: FC<Props> = () => {
                absolute right-0 bg-slate-100"
               >
                 <button
+                  onClick={() => {
+                    if (categoryContainerRef && categoryContainerRef?.current) {
+                      categoryContainerRef.current.scrollLeft -= 30;
+                    }
+                  }}
                   className="h-6 w-8 text-sm text-slate-500 bg-slate-50 rounded
                  border border-slate-300 flex items-center justify-center"
                 >
                   <TbChevronLeft />
                 </button>
                 <button
+                  onClick={() => {
+                    if (categoryContainerRef && categoryContainerRef?.current) {
+                      categoryContainerRef.current.scrollLeft += 30;
+                    }
+                  }}
                   className="h-6 w-8 text-sm text-slate-500 bg-slate-50 rounded
                  border border-slate-300 flex items-center justify-center"
                 >
@@ -245,7 +257,7 @@ const PointOfSell: FC<Props> = () => {
             {/** Products */}
             {inventory_data?.length >= 1 ? (
               <div
-                className="w-fill h-[calc(100%-5.5rem)] rounded bg-slate-50 border border-slate-300 p-4 
+                className="w-fill h-[calc(100%-5.5rem)] rounded bg-white border border-slate-300 p-4 
           overflow-hidden overflow-y-scroll no-scrollbar no-scrollbar::-webkit-scrollbar grid
            grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 gap-4 auto-rows-min"
               >

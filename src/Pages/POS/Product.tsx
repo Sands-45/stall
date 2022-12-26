@@ -40,12 +40,12 @@ const Product: FC<Props> = ({
             });
             setPreview(true);
           }}
-          className={`col-span-1 h-[8.5rem] bg-white rounded border border-cyan-750/30 group cursor-pointer
-            hover:border-cyan-750 transition-all hover:shadow-md flex flex-col justify-between p-3 select-none ${
+          className={`col-span-1 h-[8.5rem] bg-white rounded hover:border group cursor-pointer box-shadow-one
+            hover:border-cyan-750 transition-all flex flex-col justify-between p-3 select-none ${
               Number(prod?.in_stock) <= 0 ? "!pointer-events-none" : ""
             }`}
         >
-          <div className="w-full h-fit flex flex-col space-y-1 pt-2 px-2">
+          <div className="w-full h-fit flex flex-col space-y-1.5 pt-2 px-2">
             <span
               className="text-xs font-semibold text-slate-700
                      uppercase w-full whitespace-nowrap overflow-hidden text-ellipsis"
@@ -59,7 +59,7 @@ const Product: FC<Props> = ({
               IN-STOCK : <strong>{prod?.in_stock}</strong>
             </p>
             <span
-              className="text-sm font-semibold text-slate-600 capitalize w-full
+              className="text-xs font-semibold text-slate-600 uppercase w-full
                    whitespace-nowrap overflow-hidden text-ellipsis text-left"
             >
               {selectedCurrency?.symbol}&nbsp;

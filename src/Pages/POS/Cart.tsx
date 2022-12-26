@@ -217,7 +217,7 @@ const Cart: FC<Props> = ({
           <ul className="w-full h-[calc(100%-2.75rem)] grid grid-rows-5 p-2 border-y border-slate-200">
             <li className="row-span-1 w-full flex items-center justify-between">
               <span className="text-xs text-slate-400 font-semibold">Tip</span>
-              <span className="text-xs text-slate-600 font-semibold">
+              <span className="text-xs text-slate-600 font-semibold uppercase">
                 {selectedCurrency?.symbol}&nbsp;0.00
               </span>
             </li>
@@ -225,7 +225,7 @@ const Cart: FC<Props> = ({
               <span className="text-xs text-slate-400 font-semibold">
                 Discount
               </span>
-              <span className="text-xs text-slate-600 font-semibold">
+              <span className="text-xs text-slate-600 font-semibold uppercase">
                 {selectedCurrency?.symbol}&nbsp;0.00
               </span>
             </li>
@@ -233,7 +233,7 @@ const Cart: FC<Props> = ({
               <span className="text-xs text-slate-400 font-semibold">
                 Tax (15%)
               </span>
-              <span className="text-xs text-slate-600 font-semibold">
+              <span className="text-xs text-slate-600 font-semibold uppercase">
                 {selectedCurrency?.symbol}&nbsp;
                 {cart?.products?.length >= 1
                   ? numberWithSpaces(
@@ -246,7 +246,7 @@ const Cart: FC<Props> = ({
               <span className="text-xs text-slate-400 font-semibold">
                 Subtotal
               </span>
-              <span className="text-xs text-slate-600 font-semibold">
+              <span className="text-xs text-slate-600 font-semibold uppercase">
                 {selectedCurrency?.symbol}&nbsp;
                 {cart?.products?.length >= 1
                   ? numberWithSpaces(
@@ -262,7 +262,7 @@ const Cart: FC<Props> = ({
               <span className="text-xs text-slate-400 font-semibold">
                 Overall Total
               </span>
-              <span className="text-xs text-slate-600 font-semibold">
+              <span className="text-xs text-slate-600 font-semibold uppercase">
                 {selectedCurrency?.symbol}&nbsp;
                 {cart?.products?.length >= 1
                   ? numberWithSpaces(
