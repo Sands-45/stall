@@ -38,20 +38,19 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
 
   //Update Selected Float On change
   useEffect(() => {
-    if (cash_float?.length >= 1) {
-      setActiveFloat((prev: any) => ({
-        ...(prev
+    if (cash_float?.length >= 1||activeFloat) {
+      setActiveFloat((prev: any) => ((prev
           ? cash_float.filter((data: any) => data.id_two === prev?.id_two)[0]
-          : cash_float[0]),
-      }));
+          : cash_float[0])));
     }
-  }, [cash_float]);
+  }, [cash_float,activeFloat]);
+  console.log(cash_float)
 
   //Handle Submit
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    let id = new Date().getTime() + activityObj?.note?.replace(/\s/gim, "");
+    let id = new Date().getTime() + Math.random();
     if (activityObj?.new) {
       dispatch(
         updateFloat([
@@ -464,7 +463,7 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
                         onClick={() => {
                           setActiveFloat(float);
                         }}
-                        key={float?.id_two}
+                        key={float?.id??float?.id_two}
                         className={`w-full h-16 ${
                           float?.id_two === activeFloat?.id_two
                             ? "border-l-cyan-750 border-l-2 bg-slate-50"

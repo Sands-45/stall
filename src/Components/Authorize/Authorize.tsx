@@ -58,7 +58,7 @@ const Authorize: FC<Props> = ({
             setReason&&setReason("");
             setValue("");
           }}
-          className="h-7 w-7 bg-white border rounded text-slate-700 text-xl
+          className="h-7 w-7 bg-white border rounded text-slate-700 text-base
          absolute -top-4 -right-8 hover:bg-red-50 transition-all"
         >
           &times;
@@ -69,7 +69,7 @@ const Authorize: FC<Props> = ({
             <div className={`h-7 w-7 rounded ${changeBorder?"bg-red-700":"bg-teal-700"}  text-white text-lg flex justify-center items-center`}>
               <TbShieldLock />
             </div>
-            <span className="text-sm text-slate-600 font-medium uppercase">
+            <span className="text-sm text-slate-600 font-semibold uppercase">
               Authorization required
             </span>
           </div>

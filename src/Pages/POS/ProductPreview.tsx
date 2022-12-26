@@ -184,7 +184,7 @@ const ProductPreview: FC<Props> = ({
             >
               <div
                 className="text-xs h-6 w-full font-semibold text-slate-500 flex items-center justify-between 
-                whitepsace-nowrap overflow-hidden text-ellipsis uppercase border-b border-slate-200"
+                whitepsace-nowrap overflow-hidden text-ellipsis uppercase"
               >
                <span>Customization</span>
               <small
@@ -340,7 +340,7 @@ const ProductPreview: FC<Props> = ({
                 setCustomization([]);
                 setPreview(false);
               }}
-              className="h-9 w-32 rounded flex items-center justify-center space-x-2
+              className="h-9 w-40 rounded flex items-center justify-center space-x-2
            bg-cyan-750 text-white text-xs font-semibold uppercase hover:bg-cyan-800 transition-all"
             >
              <span> Add to cart</span> <TbShoppingCartPlus className="text-base" />

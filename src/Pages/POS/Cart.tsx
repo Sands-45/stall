@@ -51,9 +51,7 @@ const Cart: FC<Props> = ({
             ?.reduce((acc: any, value: any) => Number(acc) + Number(value), 0)
       : 0.0;
   }, [cart,total]);
-  const tax = useMemo((): any => {
-    return cart?.products?.length >= 1 ? ((15 / 100) * total).toFixed(2) : 0.0;
-  }, [total, cart]);
+  const tax = 0
 
   //Component
   return (
@@ -296,8 +294,8 @@ const Cart: FC<Props> = ({
                   ...prev,
                   profit: profit,
                   total: total,
-                  tax_percentage: 15,
-                  tax_in_usd: tax,
+                  tax_percentage: 0,
+                  tax_in_usd: 0,
                   transact_id: uniqueID(),
                   sale_channel: "counter",
                 }));

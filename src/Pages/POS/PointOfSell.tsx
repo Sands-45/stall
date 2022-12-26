@@ -98,7 +98,7 @@ const PointOfSell: FC<Props> = () => {
   return (
     <>
       <div
-        className="w-full h-full flex justify-between
+        className="w-full h-full print:hidden flex justify-between
      overflow-hidden pl-[2.5%] space-x-4 bg-slate-100"
       >
         <div className="h-full w-[calc(100%-25rem)] py-4">

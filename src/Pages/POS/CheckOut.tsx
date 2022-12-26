@@ -338,7 +338,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
         className={`fixed right-0 left-0
        h-screen min-w-screen bg-cyan-750/40 z-[9999] ${
          isCheckout ? "top-0 bottom-0" : "top-[200%]"
-       } lg:flex lg:justify-center
+       }  print:hidden lg:flex lg:justify-center
       space-y-4 lg:space-y-0 lg:space-x-4 pt-24 p-4 overflow-hidden overflow-y-scroll transition-all`}
       >
         {/**Close Button */}
@@ -702,7 +702,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
                   </li>
                   <li className="h-8 w-full flex items-center justify-between">
                     <span className="text-xs text-slate-400 font-semibold">
-                      Tax (15%)
+                      Tax (0%)
                     </span>
                     <span className="text-xs text-slate-600 font-semibold">
                       {selectedCurrency?.symbol}&nbsp;
