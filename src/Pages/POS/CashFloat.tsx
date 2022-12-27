@@ -883,9 +883,9 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
                         <div className="flex items-center justify-between w-full h-fit">
                           <span
                             className="text-xs capitalize text-slate-500 font-semibold w-[60%]
-                 overflow-hidden whitespace-nowrap text-ellipsis"
+                 overflow-hidden whitespace-nowrap text-ellipsis cursor-default"
                           >
-                            {log?.note}
+                          <abbr title={log?.note}>{log?.note}</abbr>  
                           </span>
                           <span
                             className="text-xs capitalize text-slate-600 font-bold w-[60%]
