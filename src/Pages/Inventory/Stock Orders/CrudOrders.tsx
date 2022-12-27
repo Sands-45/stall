@@ -60,26 +60,36 @@ const CrudOrders: FC<Props> = ({
     return [...fetched_inventory_data]
       .filter(
         (data: any) =>
-          data?.name
+          (data?.name)?.toString()
             ?.toLowerCase()
             ?.replace(/\s/gim, "")
-            ?.includes(searchProduct?.toLowerCase()?.replace(/\s/gim, "")) ||
-          data?.product_id
+            ?.includes(
+              searchProduct?.toString()?.toLowerCase()?.replace(/\s/gim, "")
+            ) ||
+          (data?.product_id)?.toString()
             ?.toLowerCase()
             ?.replace(/\s/gim, "")
-            ?.includes(searchProduct?.toLowerCase()?.replace(/\s/gim, "")) ||
-          data?.category
+            ?.includes(
+              searchProduct?.toString()?.toLowerCase()?.replace(/\s/gim, "")
+            ) ||
+          (data?.category)?.toString()
             ?.toLowerCase()
             ?.replace(/\s/gim, "")
-            ?.includes(searchProduct?.toLowerCase()?.replace(/\s/gim, "")) ||
-          data?.description
+            ?.includes(
+              searchProduct?.toString()?.toLowerCase()?.replace(/\s/gim, "")
+            ) ||
+          (data?.description)?.toString()
             ?.toLowerCase()
             ?.replace(/\s/gim, "")
-            ?.includes(searchProduct?.toLowerCase()?.replace(/\s/gim, "")) ||
-          data?.price_in_usd
+            ?.includes(
+              searchProduct?.toString()?.toLowerCase()?.replace(/\s/gim, "")
+            ) ||
+          (data?.price_in_usd)?.toString()
             ?.toLowerCase()
             ?.replace(/\s/gim, "")
-            ?.includes(searchProduct?.toLowerCase()?.replace(/\s/gim, ""))
+            ?.includes(
+              searchProduct?.toString()?.toLowerCase()?.replace(/\s/gim, "")
+            )
       )
       ?.slice(0, 3);
   }, [searchProduct, fetched_inventory_data]);
