@@ -140,7 +140,7 @@ const StockOrder: FC<Props> = () => {
             </div>
             <div className="col-span-2 h-full overflow-hidden">
               <div className="h-full w-full flex items-center p-2 font-semibold">
-                Vendor
+                Supplier
               </div>
             </div>
             <div className="col-span-2 h-full overflow-hidden">

@@ -1,7 +1,8 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 //import logo from "../../Assets/Full Logo Tranparent Short.png";
 import userImg from "../../Assets/portal images/user.png";
 import { TbBell } from "react-icons/tb";
+import { MdOutlineCloudOff, MdOutlineCloudDone } from "react-icons/md";
 import Tooltip from "../../Components/Profile Tooltip/Tooltip";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router";
@@ -14,7 +15,8 @@ import {
   MdAnalytics,
   MdAssignment,
   MdLocalMall,
-  MdTv,MdSupervisorAccount
+  MdTv,
+  MdSupervisorAccount,
 } from "react-icons/md";
 import { AiFillSetting } from "react-icons/ai";
 import { setCurrency } from "../../Redux/Slices/SettingsSlice";
@@ -41,6 +43,38 @@ const AppShell: FC<Props> = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
+  const inventory_data_queue = useSelector(
+    (state: RootState) => state.Inventory.inventory_changes_data
+  );
+  const stock_orders = useSelector(
+    (state: RootState) => state.Inventory.stock_orders
+  );
+  const vendors = useSelector((state: RootState) => state.Inventory.vendors);
+  const sales = useSelector((state: RootState) => state.Sales.completed_sales);
+  const cash_float = useSelector((state: RootState) => state.Sales.cash_float);
+  const isDataSync = useMemo(() => {
+    if (
+      inventory_data_queue?.length >= 1 ||
+      cash_float?.filter(
+        (data: any) => !data?.isNew && !data?.isDeleted && !data?.edited
+      )?.length >= 1 ||
+      stock_orders?.filter(
+        (data: any) => !data?.isNew && !data?.isDeleted && !data?.edited
+      )?.length >= 1 ||
+      vendors?.filter(
+        (data: any) => !data?.isNew && !data?.isDeleted && !data?.edited
+      )?.length >= 1 ||
+      sales?.filter(
+        (data: any) => !data?.isNew && !data?.isDeleted && !data?.edited
+      )?.length >= 1
+    ) {
+      window.localStorage.setItem("dataSynced", "false");
+      return false;
+    } else {
+      window.localStorage.setItem("dataSynced", "true");
+      return true;
+    }
+  }, [inventory_data_queue, stock_orders, cash_float, vendors, sales]);
 
   //Update Title On route change
   useEffect(() => {
@@ -81,8 +115,10 @@ const AppShell: FC<Props> = () => {
 
   //Component
   return (
-    <div className="w-screen h-screen overflow-hidden no-scrollbar
-     no-scrollbar::-webkit-scrollbar bg-slate-200">
+    <div
+      className="w-screen h-screen overflow-hidden no-scrollbar
+     no-scrollbar::-webkit-scrollbar bg-slate-200"
+    >
       {/**FireStore */}
       <FirestoreFunc />
       {/**FireStore */}
@@ -101,14 +137,14 @@ const AppShell: FC<Props> = () => {
             </div>
           </Link>
         </div>
-        <div className="flex items-center space-x-3 w-fit">
+        <div className="flex items-center space-x-2 w-fit">
           <select
             onChange={(e: any) => {
               dispatch(setCurrency(JSON.parse(e.target.value)));
               window.localStorage.setItem("selectedCurrency", e.target.value);
             }}
-            className="h-8 w-[7rem] bg-inherit text-gray-700 focus:outline-none
-              uppercase text-xs font-semibold rounded border-slate-400 focus:ring-0 focus:border-cyan-750"
+            className="h-8 w-[7rem] text-gray-500 focus:outline-none
+              uppercase text-xs font-semibold rounded-sm bg-slate-50 border-slate-200 focus:ring-0 focus:border-cyan-750"
           >
             <option value={selectedCurrency}>{selectedCurrency.name}</option>
             {currencies?.map((cur: any) => {
@@ -119,8 +155,13 @@ const AppShell: FC<Props> = () => {
               );
             })}
           </select>
-          <div className="h-8 w-8 rounded border border-slate-400 flex items-center justify-center text-lg text-slate-600">
+          <div className="h-8 w-8 rounded bg-slate-50 border border-slate-200 flex items-center justify-center text-lg text-slate-500">
             <TbBell />
+          </div>
+          <div className="h-8 w-8 rounded bg-slate-50 border border-slate-200 flex items-center justify-center text-lg text-slate-500">
+            <abbr title={isDataSync ? "Data synced" : "Data not synced"}>
+              {!isDataSync ? <MdOutlineCloudOff /> : <MdOutlineCloudDone />}
+            </abbr>
           </div>
           <div
             className="h-10 2 w-10 group cursor-pointer rounded-full border border-slate-400
@@ -142,8 +183,10 @@ const AppShell: FC<Props> = () => {
       </div>
 
       {/**Nav list */}
-      <nav className="w-full min-w-[50rem] h-12 border-y border-slate-200 bg-white hidden md:grid grid-cols-8 px-[2.5%] overflow-hidden
-      overflow-x-scroll no-scrollbar no-scrollbar::-webkit-scrollbar">
+      <nav
+        className="w-full min-w-[50rem] h-12 border-y border-slate-200 bg-white hidden md:grid grid-cols-8 px-[2.5%] overflow-hidden
+      overflow-x-scroll no-scrollbar no-scrollbar::-webkit-scrollbar"
+      >
         <NavLink
           to="/app"
           className={`navLinks border-l border-slate-200

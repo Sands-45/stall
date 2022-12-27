@@ -75,7 +75,7 @@ const SaleActions: FC<Props> = ({
                     record?.transact_id !== currentSale.transact_id
                 )
               : []),
-              { ...currentSale, isDeleted: true, edited: false, isNew: false }
+            { ...currentSale, isDeleted: true, edited: false, isNew: false },
           ])
         );
 
@@ -125,8 +125,8 @@ const SaleActions: FC<Props> = ({
                   },
                 ],
                 edited: true,
-                isNew:false,
-                isDeleted:false,
+                isNew: false,
+                isDeleted: false,
               },
             ])
           );
@@ -151,8 +151,8 @@ const SaleActions: FC<Props> = ({
                   },
                 ],
                 edited: true,
-                isNew:false,
-                isDeleted:false,
+                isNew: false,
+                isDeleted: false,
               },
             ])
           );
@@ -160,81 +160,83 @@ const SaleActions: FC<Props> = ({
 
         //Deduct Stock From Inventory
         currentSale.products?.forEach((prod: any) => {
-          window.localStorage.setItem(
-            "inventory_data",
-            JSON.stringify([
-              ...inventory_data?.filter(
-                (data: any) => data?.id_two !== prod?.prod_obj?.id_two
-              ),
-              {
-                ...prod?.prod_obj,
-                in_stock:
-                  Number(
-                    [...inventory_data]?.filter(
-                      (data: any) => data?.id_two === prod?.prod_obj?.id_two
-                    )[0]?.in_stock
-                  ) + Number(prod?.quantity) ?? 0,
-                last_editedAt: new Date().getTime(),
-              },
-            ])
-          );
+          if (prod?.has_stock_count) {
+            window.localStorage.setItem(
+              "inventory_data",
+              JSON.stringify([
+                ...inventory_data?.filter(
+                  (data: any) => data?.id_two !== prod?.prod_obj?.id_two
+                ),
+                {
+                  ...prod?.prod_obj,
+                  in_stock:
+                    Number(
+                      [...inventory_data]?.filter(
+                        (data: any) => data?.id_two === prod?.prod_obj?.id_two
+                      )[0]?.in_stock
+                    ) + Number(prod?.quantity) ?? 0,
+                  last_editedAt: new Date().getTime(),
+                },
+              ])
+            );
 
-          window.localStorage.setItem(
-            "inventory_changes_data",
-            JSON.stringify([
-              ...inventory_data_queue?.filter(
-                (data: any) => data?.id_two !== prod?.prod_obj?.id_two
-              ),
-              {
-                ...prod?.prod_obj,
-                in_stock:
-                  Number(
-                    [...inventory_data]?.filter(
-                      (data: any) => data?.id_two === prod?.prod_obj?.id_two
-                    )[0]?.in_stock
-                  ) + Number(prod?.quantity) ?? 0,
-                last_editedAt: new Date().getTime(),
-                edit: true,
-              },
-            ])
-          );
+            window.localStorage.setItem(
+              "inventory_changes_data",
+              JSON.stringify([
+                ...inventory_data_queue?.filter(
+                  (data: any) => data?.id_two !== prod?.prod_obj?.id_two
+                ),
+                {
+                  ...prod?.prod_obj,
+                  in_stock:
+                    Number(
+                      [...inventory_data]?.filter(
+                        (data: any) => data?.id_two === prod?.prod_obj?.id_two
+                      )[0]?.in_stock
+                    ) + Number(prod?.quantity) ?? 0,
+                  last_editedAt: new Date().getTime(),
+                  edit: true,
+                },
+              ])
+            );
 
-          dispatch(
-            loadInventoryData([
-              ...inventory_data?.filter(
-                (data: any) => data?.id_two !== prod?.prod_obj?.id_two
-              ),
-              {
-                ...prod?.prod_obj,
-                in_stock:
-                  Number(
-                    [...inventory_data]?.filter(
-                      (data: any) => data?.id_two === prod?.prod_obj?.id_two
-                    )[0]?.in_stock
-                  ) + Number(prod?.quantity) ?? 0,
-                last_editedAt: new Date().getTime(),
-              },
-            ])
-          );
+            dispatch(
+              loadInventoryData([
+                ...inventory_data?.filter(
+                  (data: any) => data?.id_two !== prod?.prod_obj?.id_two
+                ),
+                {
+                  ...prod?.prod_obj,
+                  in_stock:
+                    Number(
+                      [...inventory_data]?.filter(
+                        (data: any) => data?.id_two === prod?.prod_obj?.id_two
+                      )[0]?.in_stock
+                    ) + Number(prod?.quantity) ?? 0,
+                  last_editedAt: new Date().getTime(),
+                },
+              ])
+            );
 
-          dispatch(
-            updateLocalInventory_Changes([
-              ...inventory_data_queue?.filter(
-                (data: any) => data?.id_two !== prod?.prod_obj?.id_two
-              ),
-              {
-                ...prod?.prod_obj,
-                in_stock:
-                  Number(
-                    [...inventory_data]?.filter(
-                      (data: any) => data?.id_two === prod?.prod_obj?.id_two
-                    )[0]?.in_stock
-                  ) + Number(prod?.quantity) ?? 0,
-                last_editedAt: new Date().getTime(),
-                edit: true,
-              },
-            ])
-          );
+            dispatch(
+              updateLocalInventory_Changes([
+                ...inventory_data_queue?.filter(
+                  (data: any) => data?.id_two !== prod?.prod_obj?.id_two
+                ),
+                {
+                  ...prod?.prod_obj,
+                  in_stock:
+                    Number(
+                      [...inventory_data]?.filter(
+                        (data: any) => data?.id_two === prod?.prod_obj?.id_two
+                      )[0]?.in_stock
+                    ) + Number(prod?.quantity) ?? 0,
+                  last_editedAt: new Date().getTime(),
+                  edit: true,
+                },
+              ])
+            );
+          }
         });
         setReason("");
         setAuthorize(false);

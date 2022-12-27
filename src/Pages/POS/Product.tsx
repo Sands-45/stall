@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { TbShoppingCartPlus } from "react-icons/tb";
+import { TbShoppingCartPlus,TbInfinity } from "react-icons/tb";
 import { useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
 import { numberWithSpaces } from "../../Reusable Functions/Functions";
@@ -28,7 +28,7 @@ const Product: FC<Props> = ({
     inventory_data?.map((prod: any) => {
       return (
         <div
-        key={prod?.id_two}
+          key={prod?.id_two}
           onClick={() => {
             setProObj(prod);
             setImg(prod?.gallery?.length >= 1 ? prod?.gallery[0]?.url : "");
@@ -42,7 +42,9 @@ const Product: FC<Props> = ({
           }}
           className={`col-span-1 h-[8.5rem] bg-white rounded hover:border group cursor-pointer box-shadow-one
             hover:border-cyan-750 transition-all flex flex-col justify-between p-3 select-none ${
-              Number(prod?.in_stock) <= 0 ? "!pointer-events-none" : ""
+              Number(prod?.in_stock) <= 0 && prod?.has_stock_count
+                ? "!pointer-events-none"
+                : ""
             }`}
         >
           <div className="w-full h-fit flex flex-col space-y-1.5 pt-2 px-2">
@@ -54,9 +56,9 @@ const Product: FC<Props> = ({
             </span>
             <p
               className="mt-2 text-[0.65rem] font-medium text-slate-500 w-full
-                  whitespace-nowrap  overflow-hidden text-ellipsis"
+                  whitespace-nowrap  overflow-hidden text-ellipsis flex items-center space-x-1"
             >
-              IN-STOCK : <strong>{prod?.in_stock}</strong>
+             <span> IN-STOCK :</span> {prod?.has_stock_count?<strong>{prod?.in_stock}</strong>:<TbInfinity className="text-lg"/>}
             </p>
             <span
               className="text-xs font-semibold text-slate-600 uppercase w-full
@@ -85,7 +87,8 @@ const Product: FC<Props> = ({
             className="h-8 w-full rounded-sm border border-cyan-750/20 group-hover:text-cyan-800 bg-slate-50 transition-all text-cyan-750 
                   text-base flex items-center justify-between px-2"
           >
-            <span className="text-xs font-semibold uppercase">Add item</span><TbShoppingCartPlus className="stroke-[2.5]" />
+            <span className="text-xs font-semibold uppercase">Add item</span>
+            <TbShoppingCartPlus className="stroke-[2.5]" />
           </button>
         </div>
       );

@@ -186,21 +186,22 @@ const ProductPreview: FC<Props> = ({
                 className="text-xs h-6 w-full font-semibold text-slate-500 flex items-center justify-between 
                 whitepsace-nowrap overflow-hidden text-ellipsis uppercase"
               >
-               <span>Customization</span>
-              <small
-                className="text-[0.7rem] font-medium text-slate-500 
+                <span>Customization</span>
+                <small
+                  className="text-[0.7rem] font-medium text-slate-500 
                 whitepsace-nowrap  w-[40%] text-end overflow-hidden text-ellipsis"
-              >
-                In Stock :&nbsp;
-                <span className="text-cyan-750 text-xs font-semibold">
-                  {Number(currentProd[0]?.in_stock??0)}
-                </span>
-              </small>
-              </div>
-                <div
-                  className="w-full h-[11.5rem] flex flex-col space-y-2 pt-2 px-2 mt-2 overflow-hidden overflow-y-scroll"
                 >
-                  {product_obj?.customization_option?.length >= 1 &&product_obj?.customization_option?.map((cust: any) => {
+                  In Stock :&nbsp;
+                  <span className="text-cyan-750 text-xs font-semibold">
+                    {currentProd[0]?.has_stock_count
+                      ? Number(currentProd[0]?.in_stock)
+                      : "Unlimited" ?? 0}
+                  </span>
+                </small>
+              </div>
+              <div className="w-full h-[11.5rem] flex flex-col space-y-2 pt-2 px-2 mt-2 overflow-hidden overflow-y-scroll">
+                {product_obj?.customization_option?.length >= 1 &&
+                  product_obj?.customization_option?.map((cust: any) => {
                     return (
                       <div
                         key={cust?.id}
@@ -266,7 +267,7 @@ const ProductPreview: FC<Props> = ({
                       </div>
                     );
                   })}
-                </div>
+              </div>
             </div>
           </div>
 
@@ -343,7 +344,8 @@ const ProductPreview: FC<Props> = ({
               className="h-9 w-40 rounded flex items-center justify-center space-x-2
            bg-cyan-750 text-white text-xs font-semibold uppercase hover:bg-cyan-800 transition-all"
             >
-             <span> Add to cart</span> <TbShoppingCartPlus className="text-base" />
+              <span> Add to cart</span>{" "}
+              <TbShoppingCartPlus className="text-base" />
             </button>
           </div>
         </div>

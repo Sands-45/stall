@@ -44,7 +44,6 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
           : cash_float[0])));
     }
   }, [cash_float,activeFloat]);
-  console.log(cash_float)
 
   //Handle Submit
   const handleSubmit = (e: React.SyntheticEvent) => {

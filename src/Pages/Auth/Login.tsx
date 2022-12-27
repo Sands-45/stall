@@ -27,7 +27,7 @@ import {
 } from "../../Redux/Slices/UserSlice";
 import { AppDispatch, RootState } from "../../Redux/store";
 import { crypt } from "../../Custom Functions/Functions";
-import {TbSearch} from "react-icons/tb";
+import { TbSearch } from "react-icons/tb";
 
 // Initialize Firebase for auth======================
 initializeApp(firebaseConfig);
@@ -133,7 +133,7 @@ const Login: FC<Props> = () => {
     } else if (user && !window.localStorage.getItem("current_workspace")) {
       setOverlay(true);
     }
-  }, [navigate,user]);
+  }, [navigate, user]);
 
   //component
   return (
@@ -262,7 +262,7 @@ const Login: FC<Props> = () => {
               rounded-full bg-white border border-cyan-900/50 focus:border-cyan-900/80 focus:ring-0 focus:outline-none"
             />
           </label>
-          <TbSearch className="absolute right-4 top-3 text-slate-500 text-lg"/>
+          <TbSearch className="absolute right-4 top-3 text-slate-500 text-lg" />
         </div>
         <ul className="h-[20rem] w-[27rem] p-2 space-y-3 overflow-hidden overflow-y-scroll no-scrollbar no-scrollbar::-webkit-scrollbar">
           {saved_workspaces?.length >= 1 &&
@@ -307,7 +307,7 @@ const Login: FC<Props> = () => {
                               crypt("savedLocal", JSON.stringify(user))
                             )
                           );
-
+                          window.localStorage.setItem("dataSynced", "true");
                           window.location.reload();
                           setOverlay(false);
                           navigate("/portal");

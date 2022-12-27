@@ -201,6 +201,9 @@ const Portal: FC<Props> = () => {
 
       <div className="h-14 w-full flex items-center justify-end">
         <button
+          disabled={
+            window.localStorage.getItem("dataSynced") === "true" ? false : true
+          }
           onClick={() => {
             dispatch(changeLocation("Stall"));
             dispatch(updateUserData(null));

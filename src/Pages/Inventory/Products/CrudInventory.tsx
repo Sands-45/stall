@@ -73,6 +73,7 @@ const CrudInventory: FC<Props> = ({
       description: "",
       price_in_usd: "",
       buying_price_in_usd: "",
+      has_stock_count:true,
       in_stock: 0,
       customization_option: [],
       gallery: [],
@@ -421,7 +422,7 @@ const CrudInventory: FC<Props> = ({
             </label>
             <label htmlFor="product_id">
               <span className="text-xs text-slate-500 font-medium uppercase">
-                Product UID/SKU
+                Product UID | SKU
               </span>
               <input
                 required
@@ -438,6 +439,26 @@ const CrudInventory: FC<Props> = ({
                   }));
                 }}
               />
+            </label>
+            <label htmlFor="has_stock_count">
+              <span className="text-xs text-slate-500 font-medium uppercase">
+                Has Stock Count
+              </span>
+              <select
+                    onChange={(e) => {
+                      setStockObj((prev: any) => ({
+                        ...prev,
+                        has_stock_count: e.target?.value === "true"?true:false,
+                      }));
+                    }}
+                    required
+                    name="has_stock_count"
+                    id="has_stock_count"
+                    className="inventory_input"
+                  >
+                        <option value="true">YES</option>
+                        <option value="false">NO</option>
+                  </select>
             </label>
             <label htmlFor="Category">
               <span className="text-xs text-slate-500 font-medium uppercase">
@@ -510,7 +531,7 @@ const CrudInventory: FC<Props> = ({
                 name="Expiry Date"
                 id="Expiry Date"
                 placeholder="Expiry Date ..."
-                className="inventory_input"
+                className="inventory_input uppercase"
                 onChange={(e) => {
                   setStockObj((prev: any) => ({
                     ...prev,

@@ -49,6 +49,7 @@ export const addStock = async (obj: any) => {
     description: obj?.description,
     price_in_usd: obj?.price_in_usd,
     buying_price_in_usd: obj?.buying_price_in_usd,
+    has_stock_count: obj?.has_stock_count,
     in_stock: obj?.in_stock ?? 0,
     customization_option: obj?.customization_option,
     gallery: obj?.gallery,
@@ -67,6 +68,7 @@ export const updateStock = async (obj: any) => {
     description: obj?.description,
     price_in_usd: obj?.price_in_usd,
     buying_price_in_usd: obj?.buying_price_in_usd,
+    has_stock_count: obj?.has_stock_count,
     in_stock: obj?.in_stock ?? 0,
     customization_option: obj?.customization_option,
     gallery: obj?.gallery,
@@ -139,6 +141,11 @@ export const deleteVendor = async (id: string) => {
 export const addSale = async (obj: any) => {
   return await addDoc(salesRef, {
     ...obj,
+    customers_details: {
+      name: obj?.customers_details?.name ?? "",
+      email: obj?.customers_details?.email ?? "",
+      address: obj?.customers_details?.address ?? "",
+    },
     isNew: false,
     isDeleted: false,
     edited: false,
@@ -150,6 +157,11 @@ export const updateSale = async (obj: any) => {
   let docRef = doc(db, `companies/${org}/completed_sales`, obj?.id);
   return await updateDoc(docRef, {
     ...obj,
+    customers_details: {
+      name: obj?.customers_details?.name ?? "",
+      email: obj?.customers_details?.email ?? "",
+      address: obj?.customers_details?.address ?? "",
+    },
     isNew: false,
     isDeleted: false,
     edited: false,

@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { TbEdit} from "react-icons/tb";
+import { TbEdit } from "react-icons/tb";
 import no_gallery from "../../../Assets/no_gallery.png";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../Redux/store";
@@ -38,7 +38,7 @@ const ProductsList: FC<Props> = ({
     if (verify) {
       setEdit(true);
       setCrud(true);
-      setStockObj(inven);
+      setStockObj((prev: any) => ({ ...prev, ...inven }));
       setAuthorize(false);
     }
   };
@@ -160,7 +160,7 @@ const ProductsList: FC<Props> = ({
                       className="text-xs uppercase text-slate-600 overflow-hidden
                    text-ellipsis w-full"
                     >
-                      {inven?.in_stock}
+                      {inven?.has_stock_count ? inven?.in_stock : "unlimited"}
                     </span>
                   </div>
                 </div>

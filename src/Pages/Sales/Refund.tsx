@@ -175,7 +175,7 @@ const Refund: FC<Props> = ({
           //Restore Stock to Inventory
           tempProduct_Array.length >= 1 &&
             tempProduct_Array?.forEach((prod: any) => {
-              window.localStorage.setItem(
+             if(prod?.has_stock_count) {window.localStorage.setItem(
                 "inventory_data",
                 JSON.stringify([
                   ...inventory_data?.filter(
@@ -249,7 +249,7 @@ const Refund: FC<Props> = ({
                     edit: true,
                   },
                 ])
-              );
+              );}
             });
 
           //Update Cash Float

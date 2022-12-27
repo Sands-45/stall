@@ -33,6 +33,7 @@ const Products: FC<Props> = () => {
     description: "",
     price_in_usd: "",
     buying_price_in_usd: "",
+    has_stock_count:true,
     in_stock: 0,
     customization_option: [],
     gallery: [],
@@ -211,6 +212,7 @@ const Products: FC<Props> = () => {
                 <button
                   onClick={() => {
                     setAuthorize(true);
+                    setAction("new")
                   }}
                   className="h-9 w-32 flex items-center justify-center 
           space-x-2 rounded-sm bg-cyan-750 font-semibold uppercase text-xs text-white outline-none focus:outline-none 
