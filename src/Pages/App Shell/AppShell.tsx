@@ -1,8 +1,7 @@
 import { FC, useEffect, useMemo, useState } from "react";
 //import logo from "../../Assets/Full Logo Tranparent Short.png";
 import userImg from "../../Assets/portal images/user.png";
-import { TbBell } from "react-icons/tb";
-import { MdOutlineCloudOff, MdOutlineCloudDone } from "react-icons/md";
+import { TbMessage2, TbCloudOff, TbCloudSnow } from "react-icons/tb";
 import Tooltip from "../../Components/Profile Tooltip/Tooltip";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router";
@@ -56,16 +55,16 @@ const AppShell: FC<Props> = () => {
     if (
       inventory_data_queue?.length >= 1 ||
       cash_float?.filter(
-        (data: any) => !data?.isNew && !data?.isDeleted && !data?.edited
+        (data: any) => data?.isNew || data?.isDeleted || data?.edited
       )?.length >= 1 ||
       stock_orders?.filter(
-        (data: any) => !data?.isNew && !data?.isDeleted && !data?.edited
+        (data: any) => data?.isNew || data?.isDeleted || data?.edited
       )?.length >= 1 ||
       vendors?.filter(
-        (data: any) => !data?.isNew && !data?.isDeleted && !data?.edited
+        (data: any) => data?.isNew || data?.isDeleted || data?.edited
       )?.length >= 1 ||
       sales?.filter(
-        (data: any) => !data?.isNew && !data?.isDeleted && !data?.edited
+        (data: any) => data?.isNew || data?.isDeleted || data?.edited
       )?.length >= 1
     ) {
       window.localStorage.setItem("dataSynced", "false");
@@ -75,7 +74,6 @@ const AppShell: FC<Props> = () => {
       return true;
     }
   }, [inventory_data_queue, stock_orders, cash_float, vendors, sales]);
-
   //Update Title On route change
   useEffect(() => {
     window.localStorage.setItem("locationPath", routeLocation);
@@ -156,11 +154,11 @@ const AppShell: FC<Props> = () => {
             })}
           </select>
           <div className="h-8 w-8 rounded bg-slate-50 border border-slate-200 flex items-center justify-center text-lg text-slate-500">
-            <TbBell />
+            <TbMessage2 />
           </div>
           <div className="h-8 w-8 rounded bg-slate-50 border border-slate-200 flex items-center justify-center text-lg text-slate-500">
             <abbr title={isDataSync ? "Data synced" : "Data not synced"}>
-              {!isDataSync ? <MdOutlineCloudOff /> : <MdOutlineCloudDone />}
+              {!isDataSync ? <TbCloudOff /> : <TbCloudSnow />}
             </abbr>
           </div>
           <div
