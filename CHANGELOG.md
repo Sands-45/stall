@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://github.com/Sands-45/stall/compare/v0.1.1...v0.1.2) (2022-12-28)
+
+
+### Features
+
+* discoutn and tip on check out is now available ([ada81e4](https://github.com/Sands-45/stall/commit/ada81e46300deef718635c3d2e915ea90b5a0fd0))
+* inventory revemp with ability to place stock order and more ([830c42a](https://github.com/Sands-45/stall/commit/830c42a16ee5481a2ebe30637777b8adca559dc2))
+* refunds are now available with a order or sale preview UI ([041562a](https://github.com/Sands-45/stall/commit/041562a2aa9a9b328b959f8487b1f85542d734b1))
+* sales now have stats at the top with summary of daily sales ([96b9a1b](https://github.com/Sands-45/stall/commit/96b9a1b50c8bc74559003d8a32c332ba909784d0))
+* stock Oorder now fully functional with vendow and cloud sync ([e61767e](https://github.com/Sands-45/stall/commit/e61767efe305224eb166c7cd3c9f0542a29c6c16))
+
+
+### Bug Fixes
+
+* enable cloud scynce for all inventory actions ([0fada13](https://github.com/Sands-45/stall/commit/0fada133f813c70902016d9abac744bdfc259c3b))
+* search Fields converts numbers to string to avoid "Not a string" error and minor fix" ([25812d9](https://github.com/Sands-45/stall/commit/25812d9f0d6836f80979224cd1c442342af45190))
+
 ### 0.1.1 (2022-12-17)
 
 
