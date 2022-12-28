@@ -211,13 +211,24 @@ const Sale: FC<Props> = ({
                 </div>
               </div>
               <div
-                className="h-full col-span-2 overflow-hidden px-2 flex items-center 
+                className="h-full col-span-1 overflow-hidden px-2 flex items-center 
           text-xs text-slate-600 font-semibold text-ellipsis whitespace-nowrap uppercase"
               >
                 {selectedCurrency?.symbol}&nbsp;
                 {numberWithSpaces(
                   (
                     selectedCurrency?.rate_multiplier * Number(sale?.total)
+                  ).toFixed(2)
+                )}
+              </div>
+              <div
+                className="h-full col-span-1 overflow-hidden px-2 flex items-center 
+          text-xs text-slate-600 font-semibold text-ellipsis whitespace-nowrap uppercase"
+              >
+                {selectedCurrency?.symbol}&nbsp;
+                {numberWithSpaces(
+                  (
+                    selectedCurrency?.rate_multiplier * Number(sale?.profit)
                   ).toFixed(2)
                 )}
               </div>

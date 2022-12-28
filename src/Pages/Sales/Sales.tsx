@@ -378,6 +378,19 @@ const Sales: FC<Props> = () => {
               </button>
               <button
                 onClick={() => {
+                  setSort("profit");
+                  window.localStorage.setItem(
+                    "salesSort",
+                    JSON.stringify("profit")
+                  );
+                }}
+                className="w-full h-8 outline-none focus:outline-none px-1 text-xs text-slate-500 font-medium
+            hover:transition-all hover:bg-white last:border-0 border-b border-slate-300 text-left capitalize"
+              >
+                profit
+              </button>
+              <button
+                onClick={() => {
                   setSort("status");
                   window.localStorage.setItem(
                     "salesSort",
@@ -573,10 +586,16 @@ const Sales: FC<Props> = () => {
               Status
             </div>
             <div
-              className="h-full col-span-2 overflow-hidden flex items-center 
+              className="h-full col-span-1 overflow-hidden flex items-center 
           text-xs font-bold text-ellipsis whitespace-nowrap uppercase"
             >
               Amount
+            </div>
+            <div
+              className="h-full col-span-1 overflow-hidden flex items-center 
+          text-xs font-bold text-ellipsis whitespace-nowrap uppercase"
+            >
+              Profit
             </div>
           </div>
           <div className="w-full h-[calc(100%-3rem)] overflow-hidden p-1 pl-0">
