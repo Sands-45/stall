@@ -44,23 +44,23 @@ const Products: FC<Props> = () => {
     return [...fetched_inventory_data]
       .filter(
         (data: any) =>
-          data?.name
+          data?.name?.toString()
             ?.toLowerCase()
             ?.replace(/\s/gim, "")
             ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
-          data?.product_id
+          data?.product_id?.toString()
             ?.toLowerCase()
             ?.replace(/\s/gim, "")
             ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
-          data?.category
+          data?.category?.toString()
             ?.toLowerCase()
             ?.replace(/\s/gim, "")
             ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
-          data?.description
+          data?.description?.toString()
             ?.toLowerCase()
             ?.replace(/\s/gim, "")
             ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
-          data?.price_in_usd
+          data?.price_in_usd?.toString()
             ?.toLowerCase()
             ?.replace(/\s/gim, "")
             ?.includes(search?.toLowerCase()?.replace(/\s/gim, ""))

@@ -42,27 +42,27 @@ const StockOrder: FC<Props> = () => {
           ?.filter(
             (data: any) =>
               !data?.isDeleted &&
-              (data?.name
+              (data?.name?.toString()
                 ?.toLowerCase()
                 ?.replace(/\s/gim, "")
                 ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
-                data?.order_id
+                data?.order_id?.toString()
                   ?.toLowerCase()
                   ?.replace(/\s/gim, "")
                   ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
-                data?.vendor[0]?.name
+                data?.vendor[0]?.name?.toString()
                   ?.toLowerCase()
                   ?.replace(/\s/gim, "")
                   ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
-                data?.notes
+                data?.notes?.toString()
                   ?.toLowerCase()
                   ?.replace(/\s/gim, "")
                   ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
-                data?.user?.name
+                data?.user?.name?.toString()
                   ?.toLowerCase()
                   ?.replace(/\s/gim, "")
                   ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
-                data?.status
+                data?.status?.toString()
                   ?.toLowerCase()
                   ?.replace(/\s/gim, "")
                   ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")))

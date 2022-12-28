@@ -73,7 +73,7 @@ const CrudInventory: FC<Props> = ({
       description: "",
       price_in_usd: "",
       buying_price_in_usd: "",
-      has_stock_count:true,
+      has_stock_count: true,
       in_stock: 0,
       customization_option: [],
       gallery: [],
@@ -445,20 +445,23 @@ const CrudInventory: FC<Props> = ({
                 Has Stock Count
               </span>
               <select
-                    onChange={(e) => {
-                      setStockObj((prev: any) => ({
-                        ...prev,
-                        has_stock_count: e.target?.value === "true"?true:false,
-                      }));
-                    }}
-                    required
-                    name="has_stock_count"
-                    id="has_stock_count"
-                    className="inventory_input"
-                  >
-                        <option value="true">YES</option>
-                        <option value="false">NO</option>
-                  </select>
+                onChange={(e) => {
+                  setStockObj((prev: any) => ({
+                    ...prev,
+                    has_stock_count: e.target?.value === "true" ? true : false,
+                  }));
+                }}
+                required
+                name="has_stock_count"
+                id="has_stock_count"
+                className="inventory_input"
+              >
+                <option value={stockObj?.has_stock_count?.toString()}>
+                  {stockObj?.has_stock_count ? "YES" : "NO"}
+                </option>
+                <option value="true">YES</option>
+                <option value="false">NO</option>
+              </select>
             </label>
             <label htmlFor="Category">
               <span className="text-xs text-slate-500 font-medium uppercase">

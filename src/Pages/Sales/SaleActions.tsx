@@ -115,6 +115,7 @@ const SaleActions: FC<Props> = ({
                 ...openFloat,
                 total: Number(openFloat?.total) - currentSale?.total,
                 refunds: Number(openFloat?.refunds) + currentSale?.total,
+                sales: Number(openFloat?.sales) - currentSale?.total,
                 activities: [
                   ...openFloat?.activities,
                   {
@@ -141,7 +142,8 @@ const SaleActions: FC<Props> = ({
               {
                 ...openFloat,
                 total: Number(openFloat?.total) - currentSale?.total,
-                gross: Number(openFloat?.gross) - currentSale?.total,
+                refunds: Number(openFloat?.refunds) + currentSale?.total,
+                sales: Number(openFloat?.sales) - currentSale?.total,
                 activities: [
                   ...openFloat?.activities,
                   {

@@ -109,19 +109,19 @@ const CrudOrders: FC<Props> = ({
           ?.filter(
             (data: any) =>
               !data?.isDeleted &&
-              (data?.name
+              (data?.name?.toString()
                 ?.toLowerCase()
                 ?.replace(/\s/gim, "")
                 ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
-                data?.notes
+                data?.notes?.toString()
                   ?.toLowerCase()
                   ?.replace(/\s/gim, "")
                   ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
-                data?.email
+                data?.email?.toString()
                   ?.toLowerCase()
                   ?.replace(/\s/gim, "")
                   ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")) ||
-                data?.phone
+                data?.phone?.toString()
                   ?.toLowerCase()
                   ?.replace(/\s/gim, "")
                   ?.includes(search?.toLowerCase()?.replace(/\s/gim, "")))
