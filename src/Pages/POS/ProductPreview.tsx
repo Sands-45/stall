@@ -71,7 +71,7 @@ const ProductPreview: FC<Props> = ({
   useEffect(() => {
     if (
       currentProd?.length >= 1 &&
-      Number(currentProd[0]?.in_stock) < quantity
+      Number(currentProd[0]?.in_stock) < quantity && currentProd[0]?.has_stock_count
     ) {
       setQuantity(Number(currentProd[0]?.in_stock));
     }
@@ -300,8 +300,10 @@ const ProductPreview: FC<Props> = ({
                 onClick={() => {
                   if (
                     currentProd?.length >= 1 &&
-                    Number(currentProd[0]?.in_stock) > quantity
+                    Number(currentProd[0]?.in_stock) > quantity && currentProd[0]?.has_stock_count
                   ) {
+                    setQuantity((prev: number) => prev + 1);
+                  }else if(!currentProd[0]?.has_stock_count){
                     setQuantity((prev: number) => prev + 1);
                   }
                 }}
