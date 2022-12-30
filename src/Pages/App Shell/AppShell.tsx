@@ -175,7 +175,7 @@ const AppShell: FC<Props> = () => {
                 onlineStatus ? "bg-green-600" : "bg-red-500"
               }`}
             ></div>
-            <Tooltip position="top-14 right-0" />
+            <Tooltip position="top-10 right-0" />
           </div>
         </div>
       </div>

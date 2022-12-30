@@ -137,103 +137,110 @@ const Login: FC<Props> = () => {
 
   //component
   return (
-    <div
-      style={{ background: `url(${logIn_background})` }}
-      className="w-screeen min-h-screen bg-contain bg-fixed bg-no-repeat bg-center bg-cyan-900 relative overflow-hidden"
-    >
-      <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center overflow-hidden">
-        <img
-          src={reportsDemoImg}
-          alt="background"
-          className="w-[60%] h-fit object-cover object-center"
-        />
-        <div className="absolute top-0 left-0 right-0 bottom-0 flex flex-col items-center justify-center bg-gradient-to-tr from-cyan-900 to-cyan-750/80 space-y-6">
-          <h1 className="text-white font-semibold text-[2rem]">
-            Hey, Let's Get You In
-          </h1>
-          <form
-            onSubmit={(e) => handleLogIn(e)}
-            className="flex flex-col items-center justify-center"
-          >
-            <label htmlFor="email">
-              <input
-                type="email"
-                name="email"
-                id="email"
-                className={`w-[20rem] h-11 text-xs text-cyan-50 placeholder:text-slate-300 rounded outline-none focus:ring-0 ${
-                  incorrectWarning ? "border-red-600" : "border-slate-300"
-                } focus:border-cyan-50 focus:outline-none p-2 px-4 bg-cyan-800/80 login_input`}
-                placeholder="Enter email ..."
-                value={logValues?.email}
-                onChange={(e) =>
-                  setValues((prev: any) => ({ ...prev, email: e.target.value }))
-                }
-              />
-            </label>
-            <label htmlFor="password">
-              <input
-                autoComplete="off"
-                type="password"
-                name="password"
-                id="password"
-                className={`mt-4 w-[20rem] h-11 text-xs text-cyan-50 placeholder:text-slate-300 rounded outline-none focus:ring-0 ${
-                  incorrectWarning ? "border-red-600" : "border-slate-300"
-                } focus:border-cyan-50 focus:outline-none p-2 px-4 bg-cyan-800/80 login_input`}
-                placeholder="Enter password ..."
-                value={logValues?.passwd}
-                onChange={(e) =>
-                  setValues((prev: any) => ({
-                    ...prev,
-                    passwd: e.target.value,
-                  }))
-                }
-              />
-            </label>
-            <span
-              className={`mt-4 text-xs text-red-500 font-medium ${
-                incorrectWarning ? "" : "hidden"
-              }`}
-            >
-              &#9888; Incorrect password or email
-            </span>
-            <div className="mt-8 h-fit w-[20rem] flex items-center justify-between">
-              <button
-                disabled={logging}
-                type="submit"
-                className="h-10 w-[47%] bg-cyan-750 text-sm text-white font-medium rounded flex items-center justify-center disabled:cursor-not-allowed disabled:opacity-80"
+    <>
+      {!window.localStorage.getItem("current_workspace") && !showOverlay && (
+        <div
+          style={{ background: `url(${logIn_background})` }}
+          className="w-screeen min-h-screen bg-contain bg-fixed bg-no-repeat bg-center bg-cyan-900 relative overflow-hidden"
+        >
+          <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center overflow-hidden">
+            <img
+              src={reportsDemoImg}
+              alt="background"
+              className="w-[60%] h-fit object-cover object-center"
+            />
+            <div className="absolute top-0 left-0 right-0 bottom-0 flex flex-col items-center justify-center bg-gradient-to-tr from-cyan-900 to-cyan-750/80 space-y-6">
+              <h1 className="text-white font-semibold text-[2rem]">
+                Hey, Let's Get You In
+              </h1>
+              <form
+                onSubmit={(e) => handleLogIn(e)}
+                className="flex flex-col items-center justify-center"
               >
-                {!logging ? (
-                  <span>Log In</span>
-                ) : (
-                  <div className="h-5 w-5 border-4 border-cyan-50 border-l-cyan-400 animate-spin rounded-full"></div>
-                )}
-              </button>
-              <button
-                type="button"
-                className="h-10 w-[47%] border-2 border-cyan-500 text-sm text-cyan-500 font-medium rounded"
-              >
-                Sign Up
-              </button>
-            </div>
-          </form>
-          <p className="text-xs text-center text-slate-300 font-medium">
-            © Stall {new Date().getFullYear()}. All rights reserved. <br />
-            Contact developer or support at{" "}
-            <span className="text-cyan-400">sandsqa@hotmail.com</span>
-          </p>
+                <label htmlFor="email">
+                  <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    className={`w-[20rem] h-11 text-xs text-cyan-50 placeholder:text-slate-300 rounded outline-none focus:ring-0 ${
+                      incorrectWarning ? "border-red-600" : "border-slate-300"
+                    } focus:border-cyan-50 focus:outline-none p-2 px-4 bg-cyan-800/80 login_input`}
+                    placeholder="Enter email ..."
+                    value={logValues?.email}
+                    onChange={(e) =>
+                      setValues((prev: any) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }))
+                    }
+                  />
+                </label>
+                <label htmlFor="password">
+                  <input
+                    autoComplete="off"
+                    type="password"
+                    name="password"
+                    id="password"
+                    className={`mt-4 w-[20rem] h-11 text-xs text-cyan-50 placeholder:text-slate-300 rounded outline-none focus:ring-0 ${
+                      incorrectWarning ? "border-red-600" : "border-slate-300"
+                    } focus:border-cyan-50 focus:outline-none p-2 px-4 bg-cyan-800/80 login_input`}
+                    placeholder="Enter password ..."
+                    value={logValues?.passwd}
+                    onChange={(e) =>
+                      setValues((prev: any) => ({
+                        ...prev,
+                        passwd: e.target.value,
+                      }))
+                    }
+                  />
+                </label>
+                <span
+                  className={`mt-4 text-xs text-red-500 font-medium ${
+                    incorrectWarning ? "" : "hidden"
+                  }`}
+                >
+                  &#9888; Incorrect password or email
+                </span>
+                <div className="mt-8 h-fit w-[20rem] flex items-center justify-between">
+                  <button
+                    disabled={logging}
+                    type="submit"
+                    className="h-10 w-[47%] bg-cyan-750 text-sm text-white font-medium rounded flex items-center justify-center disabled:cursor-not-allowed disabled:opacity-80"
+                  >
+                    {!logging ? (
+                      <span>Log In</span>
+                    ) : (
+                      <div className="h-5 w-5 border-4 border-cyan-50 border-l-cyan-400 animate-spin rounded-full"></div>
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    className="h-10 w-[47%] border-2 border-cyan-500 text-sm text-cyan-500 font-medium rounded"
+                  >
+                    Sign Up
+                  </button>
+                </div>
+              </form>
+              <p className="text-xs text-center text-slate-300 font-medium">
+                © Stall {new Date().getFullYear()}. All rights reserved. <br />
+                Contact developer or support at{" "}
+                <span className="text-cyan-400">sandsqa@hotmail.com</span>
+              </p>
 
-          {/**Logo */}
-          <Link to="/">
-            <div className="h-14 w-20 rounded-sm bg-transparent absolute top-4 left-4 p-1 flex items-center justify-center">
-              <img
-                src={logo}
-                alt="logo"
-                className="h-12 w-16 object-cover object-center"
-              />
+              {/**Logo */}
+              <Link to="/">
+                <div className="h-14 w-20 rounded-sm bg-transparent absolute top-4 left-4 p-1 flex items-center justify-center">
+                  <img
+                    src={logo}
+                    alt="logo"
+                    className="h-12 w-16 object-cover object-center"
+                  />
+                </div>
+              </Link>
             </div>
-          </Link>
+          </div>
         </div>
-      </div>
+      )}
 
       {/**Chose WorkSpace Overlay */}
       <div
@@ -323,7 +330,7 @@ const Login: FC<Props> = () => {
         </ul>
       </div>
       {/**Chose WorkSpace Overlay */}
-    </div>
+    </>
   );
 };
 

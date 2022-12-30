@@ -5,6 +5,8 @@ import { TbSearch } from "react-icons/tb";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../Redux/store";
 import { numberWithSpaces } from "../../../Reusable Functions/Functions";
+import DatePicker from "../../../Components/Date Picker/DatePicker";
+import { changeStockOrder } from "../../../Redux/Slices/InventorySlice";
 
 type Props = {};
 
@@ -27,6 +29,10 @@ const StockOrder: FC<Props> = () => {
           order_id: "",
           status: "pending",
         }
+  );
+  const [openDatePicker, setDateOpen] = useState<boolean>(false);
+  const stock_orders_date = useSelector(
+    (state: RootState) => state.Inventory.stock_orders_date
   );
   const [showAuthorize, setAuthorize] = useState<boolean>(false);
   const selectedCurrency = useSelector(
@@ -88,10 +94,7 @@ const StockOrder: FC<Props> = () => {
   return (
     <>
       <div className="w-full h-full bg-white p-4 border border-slate-200 rounded overflow-hidden">
-        <div className="h-9 w-full overflow-hidden flex justify-between items-center">
-          <span className="text-lg font-semibold text-slate-700">
-            Stock Orders
-          </span>
+        <div className="h-9 w-full flex justify-between items-center">
           <div className="flex items-center space-x-4">
             <label htmlFor="filterOrders" className="relative w-fit h-fit">
               <TbSearch className="absolute right-2 top-2.5 text-base text-slate-500" />
@@ -108,6 +111,17 @@ const StockOrder: FC<Props> = () => {
                text-xs text-slate-500 placeholder:text-slate-500 px-2 pr-8 focus:ring-0 focus:border-cyan-750"
               />
             </label>
+            <DatePicker
+            
+            openDatePicker={openDatePicker}
+            setDateOpen={setDateOpen}
+            dates={stock_orders_date}
+            additionalStyles={`h-9 w-[14rem] bg-white rounded-sm border ${
+              openDatePicker ? "border-cyan-750" : "border-slate-300"
+            } text-xs text-slate-600`}
+            localName="stock_orders_date"
+            changeDate={changeStockOrder}
+            parentWidth="w-fit"/>
             <button
               onClick={() => {
                 setOption("new");

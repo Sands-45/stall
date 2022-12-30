@@ -11,6 +11,8 @@ import {
   updateDoc,
   enableIndexedDbPersistence,
   getFirestore,
+  query,
+  where,
 } from "firebase/firestore";
 import {
   addStock_Orders,
@@ -178,6 +180,7 @@ export const deleteSale = async (id: string) => {
 export const addFloat = async (obj: any) => {
   return await addDoc(cash_floatRef, {
     ...obj,
+    note:obj?.note??"",
     isNew: false,
     isDeleted: false,
     edited: false,
@@ -189,6 +192,7 @@ export const updateFloats = async (obj: any) => {
   let docRef = doc(db, `companies/${org}/cash_float`, obj?.id);
   return await updateDoc(docRef, {
     ...obj,
+    note:obj?.note??"",
     isNew: false,
     isDeleted: false,
     edited: false,
@@ -204,6 +208,7 @@ export const deleteFloat = async (id: string) => {
 //Component ==================================
 const FirestoreFunc: FC = () => {
   const [onlineStatus, isOnline] = useState<boolean>(navigator.onLine);
+  const user = useSelector((state: RootState) => state.UserInfo.user);
   const dispatch: AppDispatch = useDispatch();
   const inventory_data_queue = useSelector(
     (state: RootState) => state.Inventory.inventory_changes_data
@@ -216,7 +221,14 @@ const FirestoreFunc: FC = () => {
   );
   const vendors = useSelector((state: RootState) => state.Inventory.vendors);
   const sales = useSelector((state: RootState) => state.Sales.completed_sales);
+  const sales_date = useSelector((state: RootState) => state.Sales.sales_date);
   const cash_float = useSelector((state: RootState) => state.Sales.cash_float);
+  const cash_float_date = useSelector(
+    (state: RootState) => state.Sales.cash_float_date
+  );
+  const stock_orders_date = useSelector(
+    (state: RootState) => state.Inventory.stock_orders_date
+  );
 
   //Listen For Offline and Online Changes
   useEffect(() => {
@@ -238,98 +250,53 @@ const FirestoreFunc: FC = () => {
 
   //Add | Update | Delete Data To Inventory if online
   useEffect(() => {
-    if (onlineStatus && inventory_data_queue.length >= 1) {
-      inventory_data_queue?.forEach((stock: any) => {
-        if (stock.edit && !stock.deleted && stock.id) {
-          updateStock(stock).then(() => {
-            window.localStorage.setItem(
-              "inventory_changes_data",
-              JSON.stringify([
-                ...inventory_data_queue?.filter(
-                  (data: any) => data?.id_two !== stock?.id_two
-                ),
-              ])
-            );
-            dispatch(
-              updateLocalInventory_Changes([
-                ...inventory_data_queue?.filter(
-                  (data: any) => data?.id_two !== stock?.id_two
-                ),
-              ])
-            );
-          });
-        } else if (
-          stock.edit &&
-          !stock.deleted &&
-          !stock.id &&
-          inventory_data?.filter(
-            (data: any) => data?.id_two === stock?.id_two && data.id
-          ).length <= 0
-        ) {
-          addStock(stock).then(() => {
-            window.localStorage.setItem(
-              "inventory_changes_data",
-              JSON.stringify([
-                ...inventory_data_queue?.filter(
-                  (data: any) => data?.id_two !== stock?.id_two
-                ),
-              ])
-            );
-            dispatch(
-              updateLocalInventory_Changes([
-                ...inventory_data_queue?.filter(
-                  (data: any) => data?.id_two !== stock?.id_two
-                ),
-              ])
-            );
-          });
-        } else if (!stock.id && stock.deleted) {
-          window.localStorage.setItem(
-            "inventory_changes_data",
-            JSON.stringify([
-              ...inventory_data_queue?.filter(
-                (data: any) => data?.id_two !== stock?.id_two
-              ),
-            ])
-          );
-          dispatch(
-            updateLocalInventory_Changes([
-              ...inventory_data_queue?.filter(
-                (data: any) => data?.id_two !== stock?.id_two
-              ),
-            ])
-          );
-        } else if (stock?.deleted && stock?.id) {
-          deleteStock(stock?.id).then(() => {
-            window.localStorage.setItem(
-              "inventory_changes_data",
-              JSON.stringify([
-                ...inventory_data_queue?.filter(
-                  (data: any) => data?.id_two !== stock?.id_two
-                ),
-              ])
-            );
-            dispatch(
-              updateLocalInventory_Changes([
-                ...inventory_data_queue?.filter(
-                  (data: any) => data?.id_two !== stock?.id_two
-                ),
-              ])
-            );
-          });
-        } else if (
-          (!stock.edit &&
+    const syncData = () => {
+      if (onlineStatus && inventory_data_queue.length >= 1) {
+        inventory_data_queue?.forEach((stock: any) => {
+          if (stock.edit && !stock.deleted && stock.id) {
+            updateStock(stock).then(() => {
+              window.localStorage.setItem(
+                "inventory_changes_data",
+                JSON.stringify([
+                  ...inventory_data_queue?.filter(
+                    (data: any) => data?.id_two !== stock?.id_two
+                  ),
+                ])
+              );
+              dispatch(
+                updateLocalInventory_Changes([
+                  ...inventory_data_queue?.filter(
+                    (data: any) => data?.id_two !== stock?.id_two
+                  ),
+                ])
+              );
+            });
+          } else if (
+            stock.edit &&
+            !stock.deleted &&
             !stock.id &&
             inventory_data?.filter(
               (data: any) => data?.id_two === stock?.id_two && data.id
-            ).length <= 0) ||
-          (!stock.deleted &&
-            !stock.id &&
-            inventory_data?.filter(
-              (data: any) => data?.id_two === stock?.id_two && data.id
-            ).length <= 0)
-        ) {
-          addStock(stock).then(() => {
+            ).length <= 0
+          ) {
+            addStock(stock).then(() => {
+              window.localStorage.setItem(
+                "inventory_changes_data",
+                JSON.stringify([
+                  ...inventory_data_queue?.filter(
+                    (data: any) => data?.id_two !== stock?.id_two
+                  ),
+                ])
+              );
+              dispatch(
+                updateLocalInventory_Changes([
+                  ...inventory_data_queue?.filter(
+                    (data: any) => data?.id_two !== stock?.id_two
+                  ),
+                ])
+              );
+            });
+          } else if (!stock.id && stock.deleted) {
             window.localStorage.setItem(
               "inventory_changes_data",
               JSON.stringify([
@@ -345,363 +312,380 @@ const FirestoreFunc: FC = () => {
                 ),
               ])
             );
-          });
-        } else if (
-          inventory_data?.filter(
-            (data: any) => data?.id_two === stock?.id_two && data.id
-          ).length === 1
-        ) {
-          window.localStorage.setItem(
-            "inventory_changes_data",
-            JSON.stringify([
-              ...inventory_data_queue?.filter(
-                (data: any) => data?.id_two !== stock?.id_two
-              ),
-            ])
-          );
-          dispatch(
-            updateLocalInventory_Changes([
-              ...inventory_data_queue?.filter(
-                (data: any) => data?.id_two !== stock?.id_two
-              ),
-            ])
-          );
-        }
-      });
-    }
+          } else if (stock?.deleted && stock?.id) {
+            deleteStock(stock?.id).then(() => {
+              window.localStorage.setItem(
+                "inventory_changes_data",
+                JSON.stringify([
+                  ...inventory_data_queue?.filter(
+                    (data: any) => data?.id_two !== stock?.id_two
+                  ),
+                ])
+              );
+              dispatch(
+                updateLocalInventory_Changes([
+                  ...inventory_data_queue?.filter(
+                    (data: any) => data?.id_two !== stock?.id_two
+                  ),
+                ])
+              );
+            });
+          } else if (
+            (!stock.edit &&
+              !stock.id &&
+              inventory_data?.filter(
+                (data: any) => data?.id_two === stock?.id_two && data.id
+              ).length <= 0) ||
+            (!stock.deleted &&
+              !stock.id &&
+              inventory_data?.filter(
+                (data: any) => data?.id_two === stock?.id_two && data.id
+              ).length <= 0)
+          ) {
+            addStock(stock).then(() => {
+              window.localStorage.setItem(
+                "inventory_changes_data",
+                JSON.stringify([
+                  ...inventory_data_queue?.filter(
+                    (data: any) => data?.id_two !== stock?.id_two
+                  ),
+                ])
+              );
+              dispatch(
+                updateLocalInventory_Changes([
+                  ...inventory_data_queue?.filter(
+                    (data: any) => data?.id_two !== stock?.id_two
+                  ),
+                ])
+              );
+            });
+          } else if (
+            inventory_data?.filter(
+              (data: any) => data?.id_two === stock?.id_two && data.id
+            ).length === 1
+          ) {
+            window.localStorage.setItem(
+              "inventory_changes_data",
+              JSON.stringify([
+                ...inventory_data_queue?.filter(
+                  (data: any) => data?.id_two !== stock?.id_two
+                ),
+              ])
+            );
+            dispatch(
+              updateLocalInventory_Changes([
+                ...inventory_data_queue?.filter(
+                  (data: any) => data?.id_two !== stock?.id_two
+                ),
+              ])
+            );
+          }
+        });
+      }
+    };
+    return syncData();
   }, [dispatch, inventory_data_queue, inventory_data, onlineStatus]);
 
   //Add | Update | Delete Data Fromm Stock Order DB
   useEffect(() => {
-    let dataQueue = [...stock_orders]?.filter(
-      (data: any) => data?.isNew || data?.isDeleted || data?.edited
-    );
-    //Check if User Is Online
-    if (onlineStatus && dataQueue?.length >= 1) {
-      dataQueue?.forEach((item: any) => {
-        let localStoredData = () => {
-          let data = window.localStorage.getItem("stock_orders");
-          return data ? JSON.parse(data) : null;
-        };
-        //Clean Function
-        const cleanUp = (item: any, type?: any) => {
-          if (type === "delete") {
-            dataQueue = [
-              ...dataQueue?.filter(
-                (data: any) => data?.order_id !== item?.order_id
-              ),
-            ];
-            dispatch(
-              addStock_Orders([
-                ...(localStoredData()
-                  ? localStoredData()?.filter(
-                      (data: any) => data?.order_id !== item?.order_id
-                    )
-                  : []),
-              ])
-            );
-            window.localStorage.setItem(
-              "stock_orders",
-              JSON.stringify([
-                ...(localStoredData()
-                  ? localStoredData()?.filter(
-                      (data: any) => data?.order_id !== item?.order_id
-                    )
-                  : []),
-              ])
-            );
-          } else {
-            dataQueue = [
-              ...dataQueue?.filter(
-                (data: any) => data?.order_id !== item?.order_id
-              ),
-            ];
-            dispatch(
-              addStock_Orders([
-                ...(localStoredData()
-                  ? localStoredData()?.filter(
-                      (data: any) => data?.order_id !== item?.order_id
-                    )
-                  : []),
-                { ...item, isNew: false, isDeleted: false, edited: false },
-              ])
-            );
-            window.localStorage.setItem(
-              "stock_orders",
-              JSON.stringify([
-                ...(localStoredData()
-                  ? localStoredData()?.filter(
-                      (data: any) => data?.order_id !== item?.order_id
-                    )
-                  : []),
-                { ...item, isNew: false, isDeleted: false, edited: false },
-              ])
-            );
-          }
-        };
+    const syncData = () => {
+      let dataQueue = [...stock_orders]?.filter(
+        (data: any) => data?.isNew || data?.isDeleted || data?.edited
+      );
+      //Check if User Is Online
+      if (onlineStatus && dataQueue?.length >= 1) {
+        dataQueue?.forEach((item: any) => {
+          let localStoredData = () => {
+            let data = window.localStorage.getItem("stock_orders");
+            return data ? JSON.parse(data) : null;
+          };
+          //Clean Function
+          const cleanUp = (item: any, type?: any) => {
+            if (type === "delete") {
+              dataQueue = [
+                ...dataQueue?.filter(
+                  (data: any) => data?.order_id !== item?.order_id
+                ),
+              ];
+              dispatch(
+                addStock_Orders([
+                  ...(localStoredData()
+                    ? localStoredData()?.filter(
+                        (data: any) => data?.order_id !== item?.order_id
+                      )
+                    : []),
+                ])
+              );
+              window.localStorage.setItem(
+                "stock_orders",
+                JSON.stringify([
+                  ...(localStoredData()
+                    ? localStoredData()?.filter(
+                        (data: any) => data?.order_id !== item?.order_id
+                      )
+                    : []),
+                ])
+              );
+            } else {
+              dataQueue = [
+                ...dataQueue?.filter(
+                  (data: any) => data?.order_id !== item?.order_id
+                ),
+              ];
+              dispatch(
+                addStock_Orders([
+                  ...(localStoredData()
+                    ? localStoredData()?.filter(
+                        (data: any) => data?.order_id !== item?.order_id
+                      )
+                    : []),
+                  { ...item, isNew: false, isDeleted: false, edited: false },
+                ])
+              );
+              window.localStorage.setItem(
+                "stock_orders",
+                JSON.stringify([
+                  ...(localStoredData()
+                    ? localStoredData()?.filter(
+                        (data: any) => data?.order_id !== item?.order_id
+                      )
+                    : []),
+                  { ...item, isNew: false, isDeleted: false, edited: false },
+                ])
+              );
+            }
+          };
 
-        if (item?.isDeleted && item?.id) {
-          deleteStockOrder(item?.id).then(() => {
+          if (item?.isDeleted && item?.id) {
+            deleteStockOrder(item?.id).then(() => {
+              cleanUp(item, "delete");
+            });
+          } else if (item?.isDeleted && !item?.id) {
             cleanUp(item, "delete");
-          });
-        } else if (item?.isDeleted && !item?.id) {
-          cleanUp(item, "delete");
-        } else if (item?.edited && item?.id) {
-          updateStockOrder(item).then(() => {
-            cleanUp(item);
-          });
-        } else if (item?.edited && !item?.id) {
-          addStockOrder(item).then(() => {
-            cleanUp(item);
-          });
-        } else if (item?.isNew) {
-          addStockOrder(item).then(() => {
-            cleanUp(item);
-          });
-        }
-      });
-    }
+          } else if (item?.edited && item?.id) {
+            updateStockOrder(item).then(() => {
+              cleanUp(item);
+            });
+          } else if (item?.edited && !item?.id) {
+            addStockOrder(item).then(() => {
+              cleanUp(item);
+            });
+          } else if (item?.isNew) {
+            addStockOrder(item).then(() => {
+              cleanUp(item);
+            });
+          }
+        });
+      }
+    };
+    return syncData();
   }, [onlineStatus, stock_orders, dispatch]);
 
   //Add | Update | Delete Data from Vendors Collection
   useEffect(() => {
-    let dataQueue = [...vendors]?.filter(
-      (data: any) => data?.isNew || data?.isDeleted || data?.edited
-    );
-    //Check if User Is Online
-    if (onlineStatus && dataQueue?.length >= 1) {
-      dataQueue?.forEach((item: any) => {
-        let localStoredData = () => {
-          let data = window.localStorage.getItem("vendors");
-          return data ? JSON.parse(data) : null;
-        };
-        //Clean Function
-        const cleanUp = (item: any, type?: any) => {
-          if (type === "delete") {
-            dataQueue = [
-              ...dataQueue?.filter(
-                (data: any) => data?.id_two !== item?.id_two
-              ),
-            ];
-            dispatch(
-              addVendors([
-                ...(localStoredData()
-                  ? localStoredData()?.filter(
-                      (data: any) => data?.id_two !== item?.id_two
-                    )
-                  : []),
-              ])
-            );
-            window.localStorage.setItem(
-              "vendors",
-              JSON.stringify([
-                ...(localStoredData()
-                  ? localStoredData()?.filter(
-                      (data: any) => data?.id_two !== item?.id_two
-                    )
-                  : []),
-              ])
-            );
-          } else {
-            dataQueue = [
-              ...dataQueue?.filter(
-                (data: any) => data?.id_two !== item?.id_two
-              ),
-            ];
-            dispatch(
-              addVendors([
-                ...(localStoredData()
-                  ? localStoredData()?.filter(
-                      (data: any) => data?.id_two !== item?.id_two
-                    )
-                  : []),
-                { ...item, isNew: false, isDeleted: false, edited: false },
-              ])
-            );
-            window.localStorage.setItem(
-              "vendors",
-              JSON.stringify([
-                ...(localStoredData()
-                  ? localStoredData()?.filter(
-                      (data: any) => data?.id_two !== item?.id_two
-                    )
-                  : []),
-                { ...item, isNew: false, isDeleted: false, edited: false },
-              ])
-            );
-          }
-        };
+    const syncData = () => {
+      let dataQueue = [...vendors]?.filter(
+        (data: any) => data?.isNew || data?.isDeleted || data?.edited
+      );
+      //Check if User Is Online
+      if (onlineStatus && dataQueue?.length >= 1) {
+        dataQueue?.forEach((item: any) => {
+          let localStoredData = () => {
+            let data = window.localStorage.getItem("vendors");
+            return data ? JSON.parse(data) : null;
+          };
+          //Clean Function
+          const cleanUp = (item: any, type?: any) => {
+            if (type === "delete") {
+              dataQueue = [
+                ...dataQueue?.filter(
+                  (data: any) => data?.id_two !== item?.id_two
+                ),
+              ];
+              dispatch(
+                addVendors([
+                  ...(localStoredData()
+                    ? localStoredData()?.filter(
+                        (data: any) => data?.id_two !== item?.id_two
+                      )
+                    : []),
+                ])
+              );
+              window.localStorage.setItem(
+                "vendors",
+                JSON.stringify([
+                  ...(localStoredData()
+                    ? localStoredData()?.filter(
+                        (data: any) => data?.id_two !== item?.id_two
+                      )
+                    : []),
+                ])
+              );
+            } else {
+              dataQueue = [
+                ...dataQueue?.filter(
+                  (data: any) => data?.id_two !== item?.id_two
+                ),
+              ];
+              dispatch(
+                addVendors([
+                  ...(localStoredData()
+                    ? localStoredData()?.filter(
+                        (data: any) => data?.id_two !== item?.id_two
+                      )
+                    : []),
+                  { ...item, isNew: false, isDeleted: false, edited: false },
+                ])
+              );
+              window.localStorage.setItem(
+                "vendors",
+                JSON.stringify([
+                  ...(localStoredData()
+                    ? localStoredData()?.filter(
+                        (data: any) => data?.id_two !== item?.id_two
+                      )
+                    : []),
+                  { ...item, isNew: false, isDeleted: false, edited: false },
+                ])
+              );
+            }
+          };
 
-        if (item?.isDeleted && item?.id) {
-          deleteVendor(item?.id).then(() => {
+          if (item?.isDeleted && item?.id) {
+            deleteVendor(item?.id).then(() => {
+              cleanUp(item, "delete");
+            });
+          } else if (item?.isDeleted) {
             cleanUp(item, "delete");
-          });
-        } else if (item?.isDeleted) {
-          cleanUp(item, "delete");
-        } else if (item?.edited && item?.id) {
-          updateVendor(item).then(() => {
-            cleanUp(item);
-          });
-        } else if (item?.edited && !item?.id) {
-          addVendor(item).then(() => {
-            cleanUp(item);
-          });
-        } else if (item?.isNew) {
-          addVendor(item).then(() => {
-            cleanUp(item);
-          });
-        }
-      });
-    }
+          } else if (item?.edited && item?.id) {
+            updateVendor(item).then(() => {
+              cleanUp(item);
+            });
+          } else if (item?.edited && !item?.id) {
+            addVendor(item).then(() => {
+              cleanUp(item);
+            });
+          } else if (item?.isNew) {
+            addVendor(item).then(() => {
+              cleanUp(item);
+            });
+          }
+        });
+      }
+    };
+    return syncData();
   }, [onlineStatus, vendors, dispatch]);
 
   //Add | Update | Delete Data from Sales/Transactions Collection
   useEffect(() => {
-    let dataQueue = [...sales]?.filter(
-      (data: any) => data?.isNew || data?.isDeleted || data?.edited
-    );
-    //Check if User Is Online
-    if (onlineStatus && dataQueue?.length >= 1) {
-      dataQueue?.forEach((item: any) => {
-        let localStoredData = () => {
-          let data = window.localStorage.getItem("completed_sales");
-          return data ? JSON.parse(data) : null;
-        };
-        //Clean Function
-        const cleanUp = (item: any, type?: any) => {
-          if (type === "delete") {
-            dataQueue = [
-              ...dataQueue?.filter(
-                (data: any) => data?.transact_id !== item?.transact_id
-              ),
-            ];
-            dispatch(
-              addSales([
-                ...(localStoredData()
-                  ? localStoredData()?.filter(
-                      (data: any) => data?.transact_id !== item?.transact_id
-                    )
-                  : []),
-              ])
-            );
-            window.localStorage.setItem(
-              "completed_sales",
-              JSON.stringify([
-                ...(localStoredData()
-                  ? localStoredData()?.filter(
-                      (data: any) => data?.transact_id !== item?.transact_id
-                    )
-                  : []),
-              ])
-            );
-          } else {
-            dataQueue = [
-              ...dataQueue?.filter(
-                (data: any) => data?.transact_id !== item?.transact_id
-              ),
-            ];
-            dispatch(
-              addSales([
-                ...(localStoredData()
-                  ? localStoredData()?.filter(
-                      (data: any) => data?.transact_id !== item?.transact_id
-                    )
-                  : []),
-                { ...item, isNew: false, isDeleted: false, edited: false },
-              ])
-            );
-            window.localStorage.setItem(
-              "completed_sales",
-              JSON.stringify([
-                ...(localStoredData()
-                  ? localStoredData()?.filter(
-                      (data: any) => data?.transact_id !== item?.transact_id
-                    )
-                  : []),
-                { ...item, isNew: false, isDeleted: false, edited: false },
-              ])
-            );
-          }
-        };
+    const syncData = () => {
+      let dataQueue = [...sales]?.filter(
+        (data: any) => data?.isNew || data?.isDeleted || data?.edited
+      );
+      //Check if User Is Online
+      if (onlineStatus && dataQueue?.length >= 1) {
+        dataQueue?.forEach((item: any) => {
+          let localStoredData = () => {
+            let data = window.localStorage.getItem("completed_sales");
+            return data ? JSON.parse(data) : null;
+          };
+          //Clean Function
+          const cleanUp = (item: any, type?: any) => {
+            if (type === "delete") {
+              dataQueue = [
+                ...dataQueue?.filter(
+                  (data: any) => data?.transact_id !== item?.transact_id
+                ),
+              ];
+              dispatch(
+                addSales([
+                  ...(localStoredData()
+                    ? localStoredData()?.filter(
+                        (data: any) => data?.transact_id !== item?.transact_id
+                      )
+                    : []),
+                ])
+              );
+              window.localStorage.setItem(
+                "completed_sales",
+                JSON.stringify([
+                  ...(localStoredData()
+                    ? localStoredData()?.filter(
+                        (data: any) => data?.transact_id !== item?.transact_id
+                      )
+                    : []),
+                ])
+              );
+            } else {
+              dataQueue = [
+                ...dataQueue?.filter(
+                  (data: any) => data?.transact_id !== item?.transact_id
+                ),
+              ];
+              dispatch(
+                addSales([
+                  ...(localStoredData()
+                    ? localStoredData()?.filter(
+                        (data: any) => data?.transact_id !== item?.transact_id
+                      )
+                    : []),
+                  { ...item, isNew: false, isDeleted: false, edited: false },
+                ])
+              );
+              window.localStorage.setItem(
+                "completed_sales",
+                JSON.stringify([
+                  ...(localStoredData()
+                    ? localStoredData()?.filter(
+                        (data: any) => data?.transact_id !== item?.transact_id
+                      )
+                    : []),
+                  { ...item, isNew: false, isDeleted: false, edited: false },
+                ])
+              );
+            }
+          };
 
-        if (item?.isDeleted && item?.id) {
-          deleteSale(item?.id).then(() => {
+          if (item?.isDeleted && item?.id) {
+            deleteSale(item?.id).then(() => {
+              cleanUp(item, "delete");
+            });
+          } else if (item?.isDeleted) {
             cleanUp(item, "delete");
-          });
-        } else if (item?.isDeleted) {
-          cleanUp(item, "delete");
-        } else if (item?.edited && item?.id) {
-          updateSale(item).then(() => {
-            cleanUp(item);
-          });
-        } else if (item?.edited && !item?.id) {
-          addSale(item).then(() => {
-            cleanUp(item);
-          });
-        } else if (item?.isNew) {
-          addSale(item).then(() => {
-            cleanUp(item);
-          });
-        }
-      });
-    }
+          } else if (item?.edited && item?.id) {
+            updateSale(item).then(() => {
+              cleanUp(item);
+            });
+          } else if (item?.edited && !item?.id) {
+            addSale(item).then(() => {
+              cleanUp(item);
+            });
+          } else if (item?.isNew) {
+            addSale(item).then(() => {
+              cleanUp(item);
+            });
+          }
+        });
+      }
+    };
+    return syncData();
   }, [onlineStatus, sales, dispatch]);
 
   //Add | Update | Delete Data from Cash Float Collection
   useEffect(() => {
-    let dataQueue = [...cash_float]?.filter(
-      (data: any) => data?.isNew || data?.isDeleted || data?.edited
-    );
-    //Check if User Is Online
-    if (onlineStatus && dataQueue?.length >= 1) {
-      dataQueue?.forEach((item: any) => {
-        let localStoredData = () => {
-          let data = window.localStorage.getItem("cash_float");
-          return data ? JSON.parse(data) : null;
-        };
-        //Clean Function
-        const cleanUp = (item: any, type?: any) => {
-          if (type === "delete") {
-            dataQueue = [
-              ...dataQueue?.filter(
-                (data: any) => data?.id_two !== item?.id_two
-              ),
-            ];
-            dispatch(
-              updateFloat([
-                ...(localStoredData()
-                  ? localStoredData()?.filter(
-                      (data: any) => data?.id_two !== item?.id_two
-                    )
-                  : []),
-              ])
-            );
-            window.localStorage.setItem(
-              "cash_float",
-              JSON.stringify([
-                ...(localStoredData()
-                  ? localStoredData()?.filter(
-                      (data: any) => data?.id_two !== item?.id_two
-                    )
-                  : []),
-              ])
-            );
-          } else {
-            dataQueue = [
-              ...dataQueue?.filter(
-                (data: any) => data?.id_two !== item?.id_two
-              ),
-            ];
-            dispatch(
-              updateFloat([
-                ...(localStoredData()
-                  ? localStoredData()?.filter(
-                      (data: any) => data?.id_two !== item?.id_two
-                    )
-                  : []),
-                { ...item, isNew: false, isDeleted: false, edited: false },
-              ])
-            );
+    const syncData = () => {
+      let dataQueue = [...cash_float]?.filter(
+        (data: any) => data?.isNew || data?.isDeleted || data?.edited
+      );
+      //Check if User Is Online
+      if (onlineStatus && dataQueue?.length >= 1) {
+        dataQueue?.forEach((item: any) => {
+          let localStoredData = () => {
+            let data = window.localStorage.getItem("cash_float");
+            return data ? JSON.parse(data) : null;
+          };
+          //Clean Function
+          const cleanUp = (item: any) => {
             window.localStorage.setItem(
               "cash_float",
               JSON.stringify([
@@ -713,30 +697,40 @@ const FirestoreFunc: FC = () => {
                 { ...item, isNew: false, isDeleted: false, edited: false },
               ])
             );
-          }
-        };
+            dispatch(
+              updateFloat([
+                ...(localStoredData()
+                  ? localStoredData()?.filter(
+                      (data: any) => data?.id_two !== item?.id_two
+                    )
+                  : []),
+                { ...item, isNew: false, isDeleted: false, edited: false },
+              ])
+            );
+            dataQueue = [
+              ...dataQueue?.filter(
+                (data: any) => data?.id_two !== item?.id_two
+              ),
+            ];
+          };
 
-        if (item?.isDeleted && item?.id) {
-          deleteFloat(item?.id).then(() => {
-            cleanUp(item, "delete");
-          });
-        } else if (item?.isDeleted) {
-          cleanUp(item, "delete");
-        } else if (item?.edited && item?.id) {
-          updateFloats(item).then(() => {
-            cleanUp(item);
-          });
-        } else if (item?.edited && !item?.id) {
-          addFloat(item).then(() => {
-            cleanUp(item);
-          });
-        } else if (item?.isNew) {
-          addFloat(item).then(() => {
-            cleanUp(item);
-          });
-        }
-      });
-    }
+          if (item?.edited && item?.id) {
+            updateFloats(item).then(() => {
+              cleanUp(item);
+            });
+          } else if (item?.edited && !item?.id) {
+            addFloat(item).then(() => {
+              cleanUp(item);
+            });
+          } else if (item?.isNew) {
+            addFloat(item).then(() => {
+              cleanUp(item);
+            });
+          }
+        });
+      }
+    };
+    return syncData();
   }, [onlineStatus, cash_float, dispatch]);
 
   //===================Fetch Data ============================
@@ -784,30 +778,52 @@ const FirestoreFunc: FC = () => {
 
   //Fetch Stock Order Data
   useEffect((): any => {
-    return onSnapshot(stockOrderRef, (snapshot: { docs: any[] }) => {
-      if (onlineStatus) {
-        dispatch(
-          addStock_Orders(
-            snapshot.docs.map((doc: { data: () => any; id: any }) => ({
-              ...doc.data(),
-              id: doc.id,
-            }))
+    return onSnapshot(
+      user?.access === "admin"
+        ? query(
+            stockOrderRef,
+            where("date", ">=", new Date(stock_orders_date?.start).getTime()),
+            where(
+              "date",
+              "<=",
+              new Date(Number(stock_orders_date?.end) + 86400000).getTime()
+            )
           )
-        );
-        window.localStorage.setItem(
-          "stock_orders",
-          JSON.stringify(
-            snapshot.docs.map((doc: { data: () => any; id: any }) => ({
-              ...doc.data(),
-              id: doc.id,
-            }))
-          )
-        );
+        : query(
+            stockOrderRef,
+            where("user.email", "==", user?.email),
+            where("date", ">=", new Date(stock_orders_date?.start).getTime()),
+            where(
+              "date",
+              "<=",
+              new Date(Number(stock_orders_date?.end) + 86400000).getTime()
+            )
+          ),
+      (snapshot: { docs: any[] }) => {
+        if (onlineStatus) {
+          dispatch(
+            addStock_Orders(
+              snapshot.docs.map((doc: { data: () => any; id: any }) => ({
+                ...doc.data(),
+                id: doc.id,
+              }))
+            )
+          );
+          window.localStorage.setItem(
+            "stock_orders",
+            JSON.stringify(
+              snapshot.docs.map((doc: { data: () => any; id: any }) => ({
+                ...doc.data(),
+                id: doc.id,
+              }))
+            )
+          );
+        }
       }
-    });
-  }, [dispatch, onlineStatus]);
+    );
+  }, [dispatch, onlineStatus, stock_orders_date, user]);
 
-  //Fetch Stock Order Data
+  //Fetch Suppliers Data
   useEffect((): any => {
     return onSnapshot(vendorsRef, (snapshot: { docs: any[] }) => {
       if (onlineStatus) {
@@ -834,53 +850,97 @@ const FirestoreFunc: FC = () => {
 
   //Fetch Sales Order Data
   useEffect((): any => {
-    return onSnapshot(salesRef, (snapshot: { docs: any[] }) => {
-      if (onlineStatus) {
-        dispatch(
-          addSales(
-            snapshot.docs.map((doc: { data: () => any; id: any }) => ({
-              ...doc.data(),
-              id: doc.id,
-            }))
+    return onSnapshot(
+      user?.access === "admin"
+        ? query(
+            salesRef,
+            where("date", ">=", new Date(sales_date?.start).getTime()),
+            where(
+              "date",
+              "<=",
+              new Date(Number(sales_date?.end) + 86400000).getTime()
+            )
           )
-        );
-        window.localStorage.setItem(
-          "completed_sales",
-          JSON.stringify(
-            snapshot.docs.map((doc: { data: () => any; id: any }) => ({
-              ...doc.data(),
-              id: doc.id,
-            }))
-          )
-        );
+        : query(
+            salesRef,
+            where("user.email", "==", user?.email),
+            where("date", ">=", new Date(sales_date?.start).getTime()),
+            where(
+              "date",
+              "<=",
+              new Date(Number(sales_date?.end) + 86400000).getTime()
+            )
+          ),
+      (snapshot: { docs: any[] }) => {
+        if (onlineStatus) {
+          dispatch(
+            addSales(
+              snapshot.docs.map((doc: { data: () => any; id: any }) => ({
+                ...doc.data(),
+                id: doc.id,
+              }))
+            )
+          );
+          window.localStorage.setItem(
+            "completed_sales",
+            JSON.stringify(
+              snapshot.docs.map((doc: { data: () => any; id: any }) => ({
+                ...doc.data(),
+                id: doc.id,
+              }))
+            )
+          );
+        }
       }
-    });
-  }, [dispatch, onlineStatus]);
+    );
+  }, [dispatch, onlineStatus, sales_date, user]);
 
   //Fetch Cash Float Data
   useEffect((): any => {
-    return onSnapshot(cash_floatRef, (snapshot: { docs: any[] }) => {
-      if (onlineStatus) {
-        dispatch(
-          updateFloat(
-            snapshot.docs.map((doc: { data: () => any; id: any }) => ({
-              ...doc.data(),
-              id: doc.id,
-            }))
+    return onSnapshot(
+      user?.access === "admin" && cash_float
+        ? query(
+            cash_floatRef,
+            where("date", ">=", new Date(cash_float_date?.start).getTime()),
+            where(
+              "date",
+              "<=",
+              new Date(Number(cash_float_date?.end) + 86400000).getTime()
+            )
           )
-        );
-        window.localStorage.setItem(
-          "cash_float",
-          JSON.stringify(
-            snapshot.docs.map((doc: { data: () => any; id: any }) => ({
-              ...doc.data(),
-              id: doc.id,
-            }))
-          )
-        );
+        : query(
+            cash_floatRef,
+            where("user.email", "==", user?.email),
+            where("date", ">=", new Date(cash_float_date?.start).getTime()),
+            where(
+              "date",
+              "<=",
+              new Date(Number(cash_float_date?.end) + 86400000).getTime()
+            )
+          ),
+      (snapshot: { docs: any[] }) => {
+        if (onlineStatus) {
+          dispatch(
+            updateFloat(
+              snapshot.docs.map((doc: { data: () => any; id: any }) => ({
+                ...doc.data(),
+                id: doc.id,
+              }))
+            )
+          );
+          window.localStorage.setItem(
+            "cash_float",
+            JSON.stringify(
+              snapshot.docs.map((doc: { data: () => any; id: any }) => ({
+                ...doc.data(),
+                id: doc.id,
+              }))
+            )
+          );
+        }
       }
-    });
-  }, [dispatch, onlineStatus]);
+    );
+  }, [dispatch, onlineStatus, cash_float_date, user, cash_float]);
 
   return <></>;
 };

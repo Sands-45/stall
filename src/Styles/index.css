@@ -32,6 +32,10 @@
     transition: background-color 5000s ease-in-out 0s;
   }
 
+  .portal_cards {
+    @apply col-span-1 h-[10rem] rounded border border-cyan-900/30 hover:border-cyan-750 hover:drop-shadow-lg transition-all duration-150 bg-cyan-50/60 overflow-hidden;
+  }
+
   .navLinks {
     @apply flex items-center justify-center space-x-1 text-xs text-slate-800 font-medium
            h-full w-full col-span-1 border-r border-r-slate-200;

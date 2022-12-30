@@ -136,6 +136,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
 
       //Deduct Stock From Inventory
       cart?.products?.forEach((prod: any) => {
+        console.log(prod?.has_stock_count)
         if (prod?.has_stock_count) {
           window.localStorage.setItem(
             "inventory_data",

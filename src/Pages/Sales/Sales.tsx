@@ -15,6 +15,8 @@ import { parkSales } from "../../Redux/Slices/SalesSlice";
 import ActionPanel from "../../Components/Misc/ActionPanel";
 import SaleActions from "./SaleActions";
 import { numberWithSpaces } from "../../Reusable Functions/Functions";
+import DatePicker from "../../Components/Date Picker/DatePicker";
+import { changeSalesDate } from "../../Redux/Slices/SalesSlice";
 
 type Props = {};
 
@@ -36,6 +38,8 @@ const Sales: FC<Props> = () => {
   const [sortBy, setSort] = useState<string>(
     initialSort ? JSON.parse(initialSort) : "date"
   );
+  const sales_date = useSelector((state:RootState)=>state.Sales.sales_date)
+  const [openDatePicker, setDateOpen] = useState<boolean>(false);
   const [searchValue, setSearch] = useState<any>("");
   const sales = useMemo(() => {
     let data = currentView === "all sales" ? fetched_sales : parked_sales;
@@ -241,6 +245,18 @@ const Sales: FC<Props> = () => {
             </label>
           </div>
 
+          <DatePicker 
+          openDatePicker={openDatePicker}
+          setDateOpen={setDateOpen}
+          dates={sales_date}
+          additionalStyles={`h-10 w-full bg-white rounded border ${
+            openDatePicker ? "border-cyan-750" : "border-slate-200"
+          } text-xs text-slate-500 font-medium`}
+          localName="sales_date"
+          changeDate={changeSalesDate}
+          parentWidth="col-span-1"
+          />
+
           <div
             className="rounded h-full col-span-1 bg-white relative 
            border border-slate-200 hover:border-cyan-750 transition-all
@@ -298,41 +314,6 @@ const Sales: FC<Props> = () => {
             hover:transition-all hover:bg-white last:border-0 border-b border-slate-300 text-left capitalize"
               >
                 test user
-              </button>
-            </div>
-          </div>
-
-          <div
-            className="rounded h-full col-span-1 bg-white relative 
-           border border-slate-200 hover:border-cyan-750 transition-all
-            hidden lg:flex items-center justify-between px-3 text-[0.65rem] text-slate-500 font-medium cursor-pointer group"
-          >
-            <span className="uppercase text-[0.65rem]">one day</span>
-            <TbCaretDown className="text-lg group-hover:-rotate-180 transition-all" />
-            <div
-              className="absolute bg-slate-50 border border-slate-300
-          left-0 right-0 top-[2.45rem] rounded shadow-xl w-full h-fit p-2 z-[99] hidden group-hover:flex flex-col"
-            >
-              <button
-                onClick={() => {}}
-                className="w-full h-8 outline-none focus:outline-none px-1 text-[0.65rem] text-slate-500 font-medium
-            hover:transition-all hover:bg-white last:border-0 border-b border-slate-300 text-left capitalize"
-              >
-                one week
-              </button>
-              <button
-                onClick={() => {}}
-                className="w-full h-8 outline-none focus:outline-none px-1 text-[0.65rem] text-slate-500 font-medium
-            hover:transition-all hover:bg-white last:border-0 border-b border-slate-300 text-left capitalize"
-              >
-                one month
-              </button>
-              <button
-                onClick={() => {}}
-                className="w-full h-8 outline-none focus:outline-none px-1 text-[0.65rem] text-slate-500 font-medium
-            hover:transition-all hover:bg-white last:border-0 border-b border-slate-300 text-left capitalize"
-              >
-                Custom Date
               </button>
             </div>
           </div>

@@ -40,8 +40,8 @@ const Product: FC<Props> = ({
             });
             setPreview(true);
           }}
-          className={`col-span-1 h-[8.5rem] bg-white rounded hover:border group cursor-pointer box-shadow-one
-            hover:border-cyan-750 transition-all flex flex-col justify-between p-3 select-none ${
+          className={`col-span-1 h-[8.5rem] bg-slate-50/50 rounded hover:drop-shadow-xl group cursor-pointer box-shadow-one
+             transition-all flex flex-col justify-between p-3 select-none ${
               Number(prod?.in_stock) <= 0 && prod?.has_stock_count
                 ? "!pointer-events-none"
                 : ""
