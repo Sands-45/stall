@@ -316,656 +316,882 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
 
   //Component
   return (
-    <div
-      className={`fixed print:absolute ${
-        openFloat ? "bottom-0 top-0" : "bottom-[200%]"
-      } left-0 right-0 transition-all bg-slate-200 print:bg-white no-scrollbar no-scrollbar::webkit-scrollbar
-        flex flex-col items-center p-6 overflow-hidden overflow-y-scroll print:overflow-hidden print:h-fit`}
-    >
+    <>
       <div
-        className="container max-w-[60rem] print:max-w-screen flex flex-col items-center space-y-6 overflow-hidden overflow-y-scroll
-       no-scrollbar no-scrollbar::-webkit-scrollbar h-fit"
+        className={`fixed print:hidden print:-right-4 ${
+          openFloat ? "bottom-0 top-0" : "bottom-[200%]"
+        } left-0 right-0 transition-all bg-slate-200 print:bg-white no-scrollbar no-scrollbar::webkit-scrollbar
+        flex flex-col items-center p-6 overflow-hidden overflow-y-scroll print:overflow-hidden print:h-fit`}
       >
-        <div className="w-full h-10 print:hidden flex justify-between">
-          <DatePicker
-            openDatePicker={openDatePicker}
-            setDateOpen={setDateOpen}
-            dates={cash_float_date}
-            additionalStyles={`h-10 w-[15rem] bg-white rounded border ${
-              openDatePicker ? "border-cyan-750" : "border-slate-300"
-            } text-xs text-slate-600`}
-            localName="cash_float_date"
-            changeDate={changeFloatDate}
-            parentWidth="w-fit"
-          />
-          {/**Close Float Btn */}
-          <button
-            onClick={() => {
-              setFloatOpen(false);
-            }}
-            className="h-10 w-10 rounded bg-slate-50 outline-none text-base uppercase
+        <div
+          className="container max-w-[60rem] print:max-w-screen flex flex-col items-center space-y-6 overflow-hidden overflow-y-scroll
+       no-scrollbar no-scrollbar::-webkit-scrollbar h-fit"
+        >
+          <div className="w-full h-10 print:hidden flex justify-between">
+            <DatePicker
+              openDatePicker={openDatePicker}
+              setDateOpen={setDateOpen}
+              dates={cash_float_date}
+              additionalStyles={`h-10 w-[15rem] bg-white rounded border ${
+                openDatePicker ? "border-cyan-750" : "border-slate-300"
+              } text-xs text-slate-600`}
+              localName="cash_float_date"
+              changeDate={changeFloatDate}
+              parentWidth="w-fit"
+            />
+            {/**Close Float Btn */}
+            <button
+              onClick={() => {
+                setFloatOpen(false);
+              }}
+              className="h-10 w-10 rounded bg-slate-50 outline-none text-base uppercase
            text-slate-600 font-medium hover:bg-red-50 transition-all border border-slate-300"
-          >
-            &times;
-          </button>
-          {/**Close Float Btn */}
-        </div>
+            >
+              &times;
+            </button>
+            {/**Close Float Btn */}
+          </div>
 
-        <div className="flex justify-between w-full h-fit space-x-6">
-          <div className="w-1/2 h-fit print:hidden flex flex-col space-y-6">
-            <div className="w-full h-fit rounded bg-white border border-slate-300 p-4">
-              <form
-                onSubmit={(e) => handleSubmit(e)}
-                className="h-fit print-hidden grid grid-cols-2 gap-2 overflow-hidden"
-              >
-                <label
-                  htmlFor="float_add_amount"
-                  className="col-span-1 h-10 overflow-hidden relative"
+          <div className="flex justify-between w-full h-fit space-x-6">
+            <div className="w-1/2 h-fit print:hidden flex flex-col space-y-6">
+              <div className="w-full h-fit rounded bg-white border border-slate-300 p-4">
+                <form
+                  onSubmit={(e) => handleSubmit(e)}
+                  className="h-fit print-hidden grid grid-cols-2 gap-2 overflow-hidden"
                 >
-                  <span
-                    className="absolute top-2.5 left-4 text-sm text-slate-500 w-6 border-r overflow-hidden
-                 text-ellipsis whitespace-nowrap"
+                  <label
+                    htmlFor="float_add_amount"
+                    className="col-span-1 h-10 overflow-hidden relative"
                   >
-                    {selectedCurrency?.symbol}
-                  </span>
-                  <input
+                    <span
+                      className="absolute top-2.5 left-4 text-sm text-slate-500 w-6 border-r overflow-hidden
+                 text-ellipsis whitespace-nowrap"
+                    >
+                      {selectedCurrency?.symbol}
+                    </span>
+                    <input
+                      onChange={(e) => {
+                        setActivityObj((prev: any) => ({
+                          ...prev,
+                          amount: e.target.value,
+                        }));
+                      }}
+                      value={activityObj?.amount}
+                      type="text"
+                      name="float_add_amount"
+                      id="float_add_amount"
+                      placeholder="0.00"
+                      autoComplete="off"
+                      required
+                      className="w-full h-full bg-slate-50 rounded-sm border border-slate-300 overflow-hidden 
+                  focus:ring-0 focus:border-cyan-750 px-4 pl-12 text-sm text-slate-600 placeholder:text-slate-400"
+                    />
+                  </label>
+                  <div className="col-span-1 h-10 flex items-center justify-between">
+                    {cash_float?.length >= 1 &&
+                    cash_float?.filter(
+                      (data: any) => data?.status?.toLowerCase() === "open"
+                    )?.length >= 1 ? (
+                      <>
+                        <button
+                          onClick={() => {
+                            setFunction("add");
+                          }}
+                          type="submit"
+                          className="h-full w-[47%] rounded-sm focus:outline-none
+                 bg-cyan-750 hover:bg-cyan-800 transition-all text-white text-[0.65rem] uppercase font-semibold"
+                        >
+                          add
+                        </button>
+                        <button
+                          onClick={() => {
+                            setFunction("minus");
+                          }}
+                          type="submit"
+                          className="h-full w-[47%] rounded-sm focus:outline-none
+                 bg-cyan-750 hover:bg-cyan-800 transition-all text-white text-[0.65rem] uppercase font-semibold"
+                        >
+                          remove
+                        </button>
+                      </>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          setActivityObj((prev: any) => ({
+                            ...prev,
+                            new: true,
+                          }));
+                        }}
+                        type="submit"
+                        className="h-full w-full rounded-sm focus:outline-none  bg-cyan-750
+                     hover:bg-cyan-800 transition-all text-white text-xs uppercase font-medium"
+                      >
+                        new float
+                      </button>
+                    )}
+                  </div>
+                  <textarea
                     onChange={(e) => {
                       setActivityObj((prev: any) => ({
                         ...prev,
-                        amount: e.target.value,
+                        note: e.target.value,
                       }));
                     }}
-                    value={activityObj?.amount}
-                    type="text"
-                    name="float_add_amount"
-                    id="float_add_amount"
-                    placeholder="0.00"
-                    autoComplete="off"
+                    value={activityObj?.note}
+                    name="float_note"
+                    id="float_note"
+                    placeholder="Add note ..."
                     required
-                    className="w-full h-full bg-slate-50 rounded-sm border border-slate-300 overflow-hidden 
-                  focus:ring-0 focus:border-cyan-750 px-4 pl-12 text-sm text-slate-600 placeholder:text-slate-400"
-                  />
-                </label>
-                <div className="col-span-1 h-10 flex items-center justify-between">
-                  {cash_float?.length >= 1 &&
-                  cash_float?.filter(
-                    (data: any) => data?.status?.toLowerCase() === "open"
-                  )?.length >= 1 ? (
-                    <>
-                      <button
-                        onClick={() => {
-                          setFunction("add");
-                        }}
-                        type="submit"
-                        className="h-full w-[47%] rounded-sm focus:outline-none
-                 bg-cyan-750 hover:bg-cyan-800 transition-all text-white text-[0.65rem] uppercase font-semibold"
-                      >
-                        add
-                      </button>
-                      <button
-                        onClick={() => {
-                          setFunction("minus");
-                        }}
-                        type="submit"
-                        className="h-full w-[47%] rounded-sm focus:outline-none
-                 bg-cyan-750 hover:bg-cyan-800 transition-all text-white text-[0.65rem] uppercase font-semibold"
-                      >
-                        remove
-                      </button>
-                    </>
-                  ) : (
-                    <button
-                      onClick={() => {
-                        setActivityObj((prev: any) => ({
-                          ...prev,
-                          new: true,
-                        }));
-                      }}
-                      type="submit"
-                      className="h-full w-full rounded-sm focus:outline-none  bg-cyan-750
-                     hover:bg-cyan-800 transition-all text-white text-xs uppercase font-medium"
-                    >
-                      new float
-                    </button>
-                  )}
-                </div>
-                <textarea
-                  onChange={(e) => {
-                    setActivityObj((prev: any) => ({
-                      ...prev,
-                      note: e.target.value,
-                    }));
-                  }}
-                  value={activityObj?.note}
-                  name="float_note"
-                  id="float_note"
-                  placeholder="Add note ..."
-                  required
-                  className="col-span-2 h-[5rem] rounded-sm border-2 border-dashed border-slate-200 text-xs
+                    className="col-span-2 h-[5rem] rounded-sm border-2 border-dashed border-slate-200 text-xs
                  hover:border-ccyan-750 transition-all resize-none text-slate-600 placeholder:text-slate-400
                   focus:ring-0 focus:border-cyan-750 bg-slate-50"
-                ></textarea>
-              </form>
+                  ></textarea>
+                </form>
+              </div>
+
+              {/**List Of Floats Registered */}
+              <div className="rounded min-h-[20rem] bg-white border border-slate-300 p-4">
+                {cash_float?.length >= 1 && (
+                  <span
+                    className="mt-4 text-xs uppercase font-semibold
+             text-slate-600 w-full h-5 whitespace-nowrap overflow-hidden"
+                  >
+                    Floats list
+                  </span>
+                )}
+                <div
+                  className="mt-2 w-full h-[calc(100%-11rem)] overflow-hidden overflow-y-scroll space-y-3
+            no-scrollbar no-scrollbar::-webkit-scrollbar"
+                >
+                  {cash_float?.length <= 0 ? (
+                    <div className="w-full h-full flex flex-col items-center pt-16 space-y-4">
+                      <img
+                        src={no_float}
+                        alt="no_float"
+                        className="w-12 h-12 overflow-hidden object-center object-contain opacity-80"
+                      />
+                      <span className="text-xs font-medium text-slate-400 text-center px-4">
+                        No cash floats added yet, either add one above or change
+                        the date to see floats for specific dates.
+                      </span>
+                    </div>
+                  ) : (
+                    [...cash_float]
+                      ?.sort((a: any, b: any) => b.date - a.date)
+                      ?.map((float: any) => {
+                        return (
+                          <div
+                            onClick={() => {
+                              setActiveFloat(float);
+                            }}
+                            key={float?.id ?? float?.id_two}
+                            className={`w-full h-16 ${
+                              float?.id_two === activeFloat?.id_two
+                                ? "border-cyan-750"
+                                : "border-slate-300"
+                            } border  p-2 px-3 rounded bg-white
+                       flex flex-col justify-center space-y-1 cursor-pointer select-none`}
+                          >
+                            <div className="w-full flex items-center justify-between text-xs text-slate-500 font-medium">
+                              <span className="w-[60%] font-semibold whitespace-nowrap overflow-hidden text-ellipsis uppercase">
+                                {float?.user?.name}
+                              </span>
+                              <span className="w-[40%] font-semibold whitespace-nowrap overflow-hidden text-ellipsis text-end text-slate-600">
+                                {selectedCurrency?.symbol}&nbsp;
+                                {float?.total
+                                  ? numberWithSpaces(
+                                      (
+                                        selectedCurrency?.rate_multiplier *
+                                        Number(float?.total)
+                                      ).toFixed(2)
+                                    )
+                                  : "0.00"}
+                              </span>
+                            </div>
+                            <div className="w-full flex items-center justify-between text-xs text-slate-500 font-medium">
+                              <span className="w-[70%] whitespace-nowrap overflow-hidden text-ellipsis text-xs text-slate-400">
+                                {
+                                  new Date(float?.date)
+                                    .toString()
+                                    ?.split("(")[0]
+                                }
+                              </span>
+                              {float?.status === "open" ? (
+                                <button
+                                  onClick={() => {
+                                    dispatch(
+                                      updateFloat([
+                                        ...cash_float.filter(
+                                          (data: any) =>
+                                            data.id_two !== activeFloat?.id_two
+                                        ),
+                                        {
+                                          ...activeFloat,
+                                          status: "closed",
+                                          edited: true,
+                                        },
+                                      ])
+                                    );
+
+                                    //Save local
+                                    window.localStorage.setItem(
+                                      "cash_float",
+                                      JSON.stringify([
+                                        ...cash_float.filter(
+                                          (data: any) =>
+                                            data.id_two !== activeFloat?.id_two
+                                        ),
+                                        {
+                                          ...activeFloat,
+                                          status: "closed",
+                                          edited: true,
+                                        },
+                                      ])
+                                    );
+                                  }}
+                                  className="h-5 px-3 text-[0.6rem] focus:outline-none
+                         border border-slate-200 bg-slate-100 rounded-sm uppercase"
+                                >
+                                  close
+                                </button>
+                              ) : (
+                                <TbPrinter
+                                  onClick={() => {
+                                    setActiveFloat(float);
+                                    window.print();
+                                  }}
+                                  className="text-sm text-slate-600"
+                                />
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })
+                  )}
+                </div>
+              </div>
             </div>
 
-            {/**List Of Floats Registered */}
-            <div className="rounded min-h-[20rem] bg-white border border-slate-300 p-4">
-              {cash_float?.length >= 1 && (
-                <span
-                  className="mt-4 text-xs uppercase font-semibold
-             text-slate-600 w-full h-5 whitespace-nowrap overflow-hidden"
-                >
-                  Floats list
-                </span>
-              )}
+            <div className="w-1/2 print:w-full h-full print:h-fit flex flex-col">
+              {/**List Of Activitirs and Stats */}
               <div
-                className="mt-2 w-full h-[calc(100%-11rem)] overflow-hidden overflow-y-scroll space-y-3
-            no-scrollbar no-scrollbar::-webkit-scrollbar"
+                className="w-full h-fit print:h-fit flex flex-col space-y-6 items-center justify-between
+             print:border-0 border-l border-slate-200"
               >
-                {cash_float?.length <= 0 ? (
-                  <div className="w-full h-full flex flex-col items-center pt-16 space-y-4">
+                <div className="w-full h-40 print:hidden grid grid-cols-3 gap-2">
+                  <div
+                    className="h-full col-span-1 border border-slate-300 bg-white p-4 rounded
+              flex flex-col justify-center space-y-1 print:space-y-3 overflow-hidden"
+                  >
+                    <span
+                      className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                    >
+                      {selectedCurrency?.symbol}&nbsp;
+                      {activeFloat?.opening
+                        ? numberWithSpaces(
+                            (
+                              selectedCurrency?.rate_multiplier *
+                              parseFloat(activeFloat?.opening)
+                            ).toFixed(2)
+                          )
+                        : "0.00"}
+                    </span>
+                    <span
+                      className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                    >
+                      opening
+                    </span>
+                  </div>
+                  <div
+                    className="h-full col-span-1 border border-slate-300 bg-white p-4 rounded
+              flex flex-col justify-center space-y-1 print:space-y-3 overflow-hidden"
+                  >
+                    <span
+                      className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                    >
+                      {selectedCurrency?.symbol}&nbsp;
+                      {activeFloat?.expenses
+                        ? numberWithSpaces(
+                            (
+                              selectedCurrency?.rate_multiplier *
+                              parseFloat(activeFloat?.expenses)
+                            ).toFixed(2)
+                          )
+                        : "0.00"}
+                    </span>
+                    <span
+                      className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                    >
+                      Expenses
+                    </span>
+                  </div>
+                  <div
+                    className="h-full col-span-1 border border-slate-300 bg-white p-4 rounded
+              flex flex-col justify-center space-y-1 print:space-y-3 overflow-hidden"
+                  >
+                    <span
+                      className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                    >
+                      {selectedCurrency?.symbol}&nbsp;
+                      {activeFloat?.sales
+                        ? numberWithSpaces(
+                            (
+                              selectedCurrency?.rate_multiplier *
+                              parseFloat(activeFloat?.sales)
+                            ).toFixed(2)
+                          )
+                        : "0.00"}
+                    </span>
+                    <span
+                      className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                    >
+                      Sales
+                    </span>
+                  </div>
+                  <div
+                    className="h-full col-span-1 border border-slate-300 bg-white p-4 rounded
+              flex flex-col justify-center space-y-1 print:space-y-3 overflow-hidden"
+                  >
+                    <span
+                      className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                    >
+                      {selectedCurrency?.symbol}&nbsp;
+                      {activeFloat?.refunds
+                        ? numberWithSpaces(
+                            (
+                              selectedCurrency?.rate_multiplier *
+                              parseFloat(activeFloat?.refunds)
+                            ).toFixed(2)
+                          )
+                        : "0.00"}
+                    </span>
+                    <span
+                      className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                    >
+                      refunds
+                    </span>
+                  </div>
+                  <div
+                    className="h-full col-span-1 border border-slate-300 bg-white p-4 rounded
+              flex flex-col justify-center space-y-1 print:space-y-3 overflow-hidden"
+                  >
+                    <span
+                      className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                    >
+                      {selectedCurrency?.symbol}&nbsp;
+                      {activeFloat?.additional
+                        ? numberWithSpaces(
+                            (
+                              selectedCurrency?.rate_multiplier *
+                              parseFloat(activeFloat?.additional)
+                            ).toFixed(2)
+                          )
+                        : "0.00"}
+                    </span>
+                    <span
+                      className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                    >
+                      added
+                    </span>
+                  </div>
+                  <div
+                    className="h-full col-span-1 border border-slate-300 bg-white p-4 rounded
+              flex flex-col justify-center space-y-1 print:space-y-3 overflow-hidden"
+                  >
+                    <span
+                      className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                    >
+                      {selectedCurrency?.symbol}&nbsp;
+                      {activeFloat?.total
+                        ? numberWithSpaces(
+                            (
+                              selectedCurrency?.rate_multiplier *
+                              parseFloat(activeFloat?.total)
+                            ).toFixed(2)
+                          )
+                        : "0.00"}
+                    </span>
+                    <span
+                      className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                    >
+                      Total
+                    </span>
+                  </div>
+                </div>
+
+                {/**Activity Logs */}
+                {activeFloat &&
+                activeFloat?.activities?.length >= 1 &&
+                cash_float?.length >= 1 ? (
+                  <ul
+                    className="mt-4 w-full h-fit min-h-[20rem] border print:border-0 border-slate-300 bg-white rounded p-4 
+             flex flex-col space-y-2 print:space-y-4 print:bg-white print:!p-6
+             print:absolute print:-left-2 print:-right-2 print:z-[999999] "
+                  >
+                    <span
+                      className="mb-4 text-xs font-semibold
+             text-slate-600 w-full h-5 whitespace-nowrap
+              overflow-hidden hidden print:flex items-center justify-between capitalize"
+                    >
+                      <span className="uppercase">
+                        {activeFloat?.user?.name} Cash Float
+                      </span>
+                      <span>{new Date(activeFloat?.date)?.toDateString()}</span>
+                    </span>
+                    <div className="w-full h-32 print:h-fit hidden print:grid grid-cols-3 gap-2">
+                      <div
+                        className="h-20 col-span-1 border border-slate-300 bg-white p-4 rounded
+              flex flex-col justify-between space-y-2 overflow-hidden"
+                      >
+                        <span
+                          className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                        >
+                          {selectedCurrency?.symbol}&nbsp;
+                          {activeFloat?.opening
+                            ? numberWithSpaces(
+                                (
+                                  selectedCurrency?.rate_multiplier *
+                                  parseFloat(activeFloat?.opening)
+                                ).toFixed(2)
+                              )
+                            : "0.00"}
+                        </span>
+                        <span
+                          className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                        >
+                          opening
+                        </span>
+                      </div>
+                      <div
+                        className="h-20 col-span-1 border border-slate-300 bg-white p-4 rounded
+              flex flex-col justify-between space-y-2 overflow-hidden"
+                      >
+                        <span
+                          className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                        >
+                          {selectedCurrency?.symbol}&nbsp;
+                          {activeFloat?.expenses
+                            ? numberWithSpaces(
+                                (
+                                  selectedCurrency?.rate_multiplier *
+                                  parseFloat(activeFloat?.expenses)
+                                ).toFixed(2)
+                              )
+                            : "0.00"}
+                        </span>
+                        <span
+                          className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                        >
+                          Expenses
+                        </span>
+                      </div>
+                      <div
+                        className="h-20 col-span-1 border border-slate-300 bg-white p-4 rounded
+              flex flex-col justify-between space-y-2 overflow-hidden"
+                      >
+                        <span
+                          className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                        >
+                          {selectedCurrency?.symbol}&nbsp;
+                          {activeFloat?.sales
+                            ? numberWithSpaces(
+                                (
+                                  selectedCurrency?.rate_multiplier *
+                                  parseFloat(activeFloat?.sales)
+                                ).toFixed(2)
+                              )
+                            : "0.00"}
+                        </span>
+                        <span
+                          className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                        >
+                          Sales
+                        </span>
+                      </div>
+                      <div
+                        className="h-20 col-span-1 border border-slate-300 bg-white p-4 rounded
+              flex flex-col justify-between space-y-2 overflow-hidden"
+                      >
+                        <span
+                          className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                        >
+                          {selectedCurrency?.symbol}&nbsp;
+                          {activeFloat?.refunds
+                            ? numberWithSpaces(
+                                (
+                                  selectedCurrency?.rate_multiplier *
+                                  parseFloat(activeFloat?.refunds)
+                                ).toFixed(2)
+                              )
+                            : "0.00"}
+                        </span>
+                        <span
+                          className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                        >
+                          refunds
+                        </span>
+                      </div>
+                      <div
+                        className="h-20 col-span-1 border border-slate-300 bg-white p-4 rounded
+              flex flex-col justify-between space-y-2 overflow-hidden"
+                      >
+                        <span
+                          className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                        >
+                          {selectedCurrency?.symbol}&nbsp;
+                          {activeFloat?.additional
+                            ? numberWithSpaces(
+                                (
+                                  selectedCurrency?.rate_multiplier *
+                                  parseFloat(activeFloat?.additional)
+                                ).toFixed(2)
+                              )
+                            : "0.00"}
+                        </span>
+                        <span
+                          className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                        >
+                          added amount
+                        </span>
+                      </div>
+                      <div
+                        className="h-20 col-span-1 border border-slate-300 bg-white p-4 rounded
+              flex flex-col justify-between space-y-2 overflow-hidden"
+                      >
+                        <span
+                          className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                        >
+                          {selectedCurrency?.symbol}&nbsp;
+                          {activeFloat?.total
+                            ? numberWithSpaces(
+                                (
+                                  selectedCurrency?.rate_multiplier *
+                                  parseFloat(activeFloat?.total)
+                                ).toFixed(2)
+                              )
+                            : "0.00"}
+                        </span>
+                        <span
+                          className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                        >
+                          Total
+                        </span>
+                      </div>
+                    </div>
+                    {[...activeFloat?.activities]
+                      ?.sort((a: any, b: any) => b.time - a.time)
+                      ?.map((log: any, index: number) => {
+                        return (
+                          <li
+                            key={index + log?.time}
+                            className="w-full h-14 flex flex-col justify-center space-y-0.5 border-b first:border-t border-slate-100 px-1 py-2"
+                          >
+                            <div className="flex items-center justify-between w-full h-fit">
+                              <span
+                                className="text-xs capitalize text-slate-500 font-semibold w-[60%]
+                 overflow-hidden whitespace-nowrap text-ellipsis cursor-default"
+                              >
+                                <abbr title={log?.note}>{log?.note}</abbr>
+                              </span>
+                              <span
+                                className="text-xs capitalize text-slate-600 font-bold w-[60%]
+                 overflow-hidden whitespace-nowrap text-ellipsis text-end"
+                              >
+                                {selectedCurrency?.symbol}&nbsp;
+                                {log?.amount
+                                  ? numberWithSpaces(
+                                      (
+                                        selectedCurrency?.rate_multiplier *
+                                        parseFloat(log?.amount)
+                                      ).toFixed(2)
+                                    )
+                                  : "0.00"}
+                              </span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span
+                                className="text-xs capitalize text-slate-400 font-medium w-[60%]
+                 overflow-hidden whitespace-nowrap text-ellipsis"
+                              >
+                                {new Date(log?.time).toString()?.split("(")[0]}
+                              </span>
+                              <span
+                                className="text-xs text-end uppercase text-slate-400 font-medium w-[40%]
+                 overflow-hidden whitespace-nowrap text-ellipsis"
+                              >
+                                {log?.currency}
+                              </span>
+                            </div>
+                          </li>
+                        );
+                      })}
+                  </ul>
+                ) : (
+                  <div
+                    className="mt-4 w-full min-h-[20rem] border border-slate-300 bg-white rounded 
+            overflow-hidden print:hidden flex flex-col space-y-4 items-center justify-center pb-10"
+                  >
                     <img
-                      src={no_float}
+                      src={float_no_activity}
                       alt="no_float"
                       className="w-12 h-12 overflow-hidden object-center object-contain opacity-80"
                     />
                     <span className="text-xs font-medium text-slate-400 text-center px-4">
-                      No cash floats added yet, either add one above or change
-                      the date to see floats for specific dates.
+                      Activities list is empty, select the float you want to
+                      view on your left.
                     </span>
                   </div>
-                ) : (
-                  [...cash_float]
-                    ?.sort((a: any, b: any) => b.date - a.date)
-                    ?.map((float: any) => {
-                      return (
-                        <div
-                          onClick={() => {
-                            setActiveFloat(float);
-                          }}
-                          key={float?.id ?? float?.id_two}
-                          className={`w-full h-16 ${
-                            float?.id_two === activeFloat?.id_two
-                              ? "border-cyan-750"
-                              : "border-slate-300"
-                          } border  p-2 px-3 rounded bg-white
-                       flex flex-col justify-center space-y-1 cursor-pointer select-none`}
-                        >
-                          <div className="w-full flex items-center justify-between text-xs text-slate-500 font-medium">
-                            <span className="w-[60%] font-semibold whitespace-nowrap overflow-hidden text-ellipsis uppercase">
-                              {float?.user?.name}
-                            </span>
-                            <span className="w-[40%] font-semibold whitespace-nowrap overflow-hidden text-ellipsis text-end text-slate-600">
-                              {selectedCurrency?.symbol}&nbsp;
-                              {float?.total
-                                ? numberWithSpaces(
-                                    (
-                                      selectedCurrency?.rate_multiplier *
-                                      Number(float?.total)
-                                    ).toFixed(2)
-                                  )
-                                : "0.00"}
-                            </span>
-                          </div>
-                          <div className="w-full flex items-center justify-between text-xs text-slate-500 font-medium">
-                            <span className="w-[70%] whitespace-nowrap overflow-hidden text-ellipsis text-xs text-slate-400">
-                              {new Date(float?.date).toString()?.split("(")[0]}
-                            </span>
-                            {float?.status === "open" ? (
-                              <button
-                                onClick={() => {
-                                  dispatch(
-                                    updateFloat([
-                                      ...cash_float.filter(
-                                        (data: any) =>
-                                          data.id_two !== activeFloat?.id_two
-                                      ),
-                                      {
-                                        ...activeFloat,
-                                        status: "closed",
-                                        edited: true,
-                                      },
-                                    ])
-                                  );
-
-                                  //Save local
-                                  window.localStorage.setItem(
-                                    "cash_float",
-                                    JSON.stringify([
-                                      ...cash_float.filter(
-                                        (data: any) =>
-                                          data.id_two !== activeFloat?.id_two
-                                      ),
-                                      {
-                                        ...activeFloat,
-                                        status: "closed",
-                                        edited: true,
-                                      },
-                                    ])
-                                  );
-                                }}
-                                className="h-5 px-3 text-[0.6rem] focus:outline-none
-                         border border-slate-200 bg-slate-100 rounded-sm uppercase"
-                              >
-                                close
-                              </button>
-                            ) : (
-                              <TbPrinter
-                                onClick={() => {
-                                  setActiveFloat(float);
-                                  window.print();
-                                }}
-                                className="text-sm text-slate-600"
-                              />
-                            )}
-                          </div>
-                        </div>
-                      );
-                    })
                 )}
               </div>
             </div>
           </div>
-
-          <div className="w-1/2 print:w-full h-full print:h-fit flex flex-col">
-            {/**List Of Activitirs and Stats */}
-            <div
-              className="w-full h-fit print:h-fit flex flex-col space-y-6 items-center justify-between
-             print:border-0 border-l border-slate-200 overflow-hidden"
-            >
-              <div className="w-full h-40 print:hidden grid grid-cols-3 gap-2">
-                <div
-                  className="h-full col-span-1 border border-slate-300 bg-white p-4 rounded
-              flex flex-col justify-center space-y-1 print:space-y-3 overflow-hidden"
-                >
-                  <span
-                    className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
-                text-ellipsis"
-                  >
-                    {selectedCurrency?.symbol}&nbsp;
-                    {activeFloat?.opening
-                      ? numberWithSpaces(
-                          (
-                            selectedCurrency?.rate_multiplier *
-                            parseFloat(activeFloat?.opening)
-                          ).toFixed(2)
-                        )
-                      : "0.00"}
-                  </span>
-                  <span
-                    className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
-                text-ellipsis"
-                  >
-                    opening
-                  </span>
-                </div>
-                <div
-                  className="h-full col-span-1 border border-slate-300 bg-white p-4 rounded
-              flex flex-col justify-center space-y-1 print:space-y-3 overflow-hidden"
-                >
-                  <span
-                    className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
-                text-ellipsis"
-                  >
-                    {selectedCurrency?.symbol}&nbsp;
-                    {activeFloat?.expenses
-                      ? numberWithSpaces(
-                          (
-                            selectedCurrency?.rate_multiplier *
-                            parseFloat(activeFloat?.expenses)
-                          ).toFixed(2)
-                        )
-                      : "0.00"}
-                  </span>
-                  <span
-                    className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
-                text-ellipsis"
-                  >
-                    Expenses
-                  </span>
-                </div>
-                <div
-                  className="h-full col-span-1 border border-slate-300 bg-white p-4 rounded
-              flex flex-col justify-center space-y-1 print:space-y-3 overflow-hidden"
-                >
-                  <span
-                    className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
-                text-ellipsis"
-                  >
-                    {selectedCurrency?.symbol}&nbsp;
-                    {activeFloat?.sales
-                      ? numberWithSpaces(
-                          (
-                            selectedCurrency?.rate_multiplier *
-                            parseFloat(activeFloat?.sales)
-                          ).toFixed(2)
-                        )
-                      : "0.00"}
-                  </span>
-                  <span
-                    className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
-                text-ellipsis"
-                  >
-                    Sales
-                  </span>
-                </div>
-                <div
-                  className="h-full col-span-1 border border-slate-300 bg-white p-4 rounded
-              flex flex-col justify-center space-y-1 print:space-y-3 overflow-hidden"
-                >
-                  <span
-                    className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
-                text-ellipsis"
-                  >
-                    {selectedCurrency?.symbol}&nbsp;
-                    {activeFloat?.refunds
-                      ? numberWithSpaces(
-                          (
-                            selectedCurrency?.rate_multiplier *
-                            parseFloat(activeFloat?.refunds)
-                          ).toFixed(2)
-                        )
-                      : "0.00"}
-                  </span>
-                  <span
-                    className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
-                text-ellipsis"
-                  >
-                    refunds
-                  </span>
-                </div>
-                <div
-                  className="h-full col-span-1 border border-slate-300 bg-white p-4 rounded
-              flex flex-col justify-center space-y-1 print:space-y-3 overflow-hidden"
-                >
-                  <span
-                    className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
-                text-ellipsis"
-                  >
-                    {selectedCurrency?.symbol}&nbsp;
-                    {activeFloat?.additional
-                      ? numberWithSpaces(
-                          (
-                            selectedCurrency?.rate_multiplier *
-                            parseFloat(activeFloat?.additional)
-                          ).toFixed(2)
-                        )
-                      : "0.00"}
-                  </span>
-                  <span
-                    className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
-                text-ellipsis"
-                  >
-                    added
-                  </span>
-                </div>
-                <div
-                  className="h-full col-span-1 border border-slate-300 bg-white p-4 rounded
-              flex flex-col justify-center space-y-1 print:space-y-3 overflow-hidden"
-                >
-                  <span
-                    className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
-                text-ellipsis"
-                  >
-                    {selectedCurrency?.symbol}&nbsp;
-                    {activeFloat?.total
-                      ? numberWithSpaces(
-                          (
-                            selectedCurrency?.rate_multiplier *
-                            parseFloat(activeFloat?.total)
-                          ).toFixed(2)
-                        )
-                      : "0.00"}
-                  </span>
-                  <span
-                    className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
-                text-ellipsis"
-                  >
-                    Total
-                  </span>
-                </div>
-              </div>
-
-              {/**Activity Logs */}
-              {activeFloat &&
-              activeFloat?.activities?.length >= 1 &&
-              cash_float?.length >= 1 ? (
-                <ul
-                  className="mt-4 w-full h-fit min-h-[20rem] border print:border-0 border-slate-300 bg-white rounded p-4 
-             flex flex-col space-y-2 print:space-y-4 print:bg-white print:!p-6
-            print:absolute print:-left-2 print:-right-4 print:z-[999999] print:min-w-screen print:min-h-screen"
-                >
-                  <span
-                    className="mb-4 text-xs font-semibold
-             text-slate-600 w-full h-5 whitespace-nowrap
-              overflow-hidden hidden print:flex items-center justify-between capitalize"
-                  >
-                    <span className="uppercase">
-                      {activeFloat?.user?.name} Cash Float
-                    </span>
-                    <span>{new Date(activeFloat?.date)?.toDateString()}</span>
-                  </span>
-                  <div className="w-full h-32 print:h-62 mb-6 hidden print:grid grid-cols-3 gap-2">
-                    <div
-                      className="h-full col-span-1 border border-slate-300 bg-white p-4 rounded
-              flex flex-col justify-between overflow-hidden"
-                    >
-                      <span
-                        className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
-                text-ellipsis"
-                      >
-                        {selectedCurrency?.symbol}&nbsp;
-                        {activeFloat?.opening
-                          ? numberWithSpaces(
-                              (
-                                selectedCurrency?.rate_multiplier *
-                                parseFloat(activeFloat?.opening)
-                              ).toFixed(2)
-                            )
-                          : "0.00"}
-                      </span>
-                      <span
-                        className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
-                text-ellipsis"
-                      >
-                        opening
-                      </span>
-                    </div>
-                    <div
-                      className="h-full col-span-1 border border-slate-300 bg-white p-4 rounded
-              flex flex-col justify-between overflow-hidden"
-                    >
-                      <span
-                        className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
-                text-ellipsis"
-                      >
-                        {selectedCurrency?.symbol}&nbsp;
-                        {activeFloat?.expenses
-                          ? numberWithSpaces(
-                              (
-                                selectedCurrency?.rate_multiplier *
-                                parseFloat(activeFloat?.expenses)
-                              ).toFixed(2)
-                            )
-                          : "0.00"}
-                      </span>
-                      <span
-                        className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
-                text-ellipsis"
-                      >
-                        Expenses
-                      </span>
-                    </div>
-                    <div
-                      className="h-full col-span-1 border border-slate-300 bg-white p-4 rounded
-              flex flex-col justify-between overflow-hidden"
-                    >
-                      <span
-                        className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
-                text-ellipsis"
-                      >
-                        {selectedCurrency?.symbol}&nbsp;
-                        {activeFloat?.sales
-                          ? numberWithSpaces(
-                              (
-                                selectedCurrency?.rate_multiplier *
-                                parseFloat(activeFloat?.sales)
-                              ).toFixed(2)
-                            )
-                          : "0.00"}
-                      </span>
-                      <span
-                        className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
-                text-ellipsis"
-                      >
-                        Sales
-                      </span>
-                    </div>
-                    <div
-                      className="h-full col-span-1 border border-slate-300 bg-white p-4 rounded
-              flex flex-col justify-between overflow-hidden"
-                    >
-                      <span
-                        className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
-                text-ellipsis"
-                      >
-                        {selectedCurrency?.symbol}&nbsp;
-                        {activeFloat?.refunds
-                          ? numberWithSpaces(
-                              (
-                                selectedCurrency?.rate_multiplier *
-                                parseFloat(activeFloat?.refunds)
-                              ).toFixed(2)
-                            )
-                          : "0.00"}
-                      </span>
-                      <span
-                        className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
-                text-ellipsis"
-                      >
-                        refunds
-                      </span>
-                    </div>
-                    <div
-                      className="h-full col-span-1 border border-slate-300 bg-white p-4 rounded
-              flex flex-col justify-between overflow-hidden"
-                    >
-                      <span
-                        className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
-                text-ellipsis"
-                      >
-                        {selectedCurrency?.symbol}&nbsp;
-                        {activeFloat?.additional
-                          ? numberWithSpaces(
-                              (
-                                selectedCurrency?.rate_multiplier *
-                                parseFloat(activeFloat?.additional)
-                              ).toFixed(2)
-                            )
-                          : "0.00"}
-                      </span>
-                      <span
-                        className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
-                text-ellipsis"
-                      >
-                        added amount
-                      </span>
-                    </div>
-                    <div
-                      className="h-full col-span-1 border border-slate-300 bg-white p-4 rounded
-              flex flex-col justify-between overflow-hidden"
-                    >
-                      <span
-                        className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
-                text-ellipsis"
-                      >
-                        {selectedCurrency?.symbol}&nbsp;
-                        {activeFloat?.total
-                          ? numberWithSpaces(
-                              (
-                                selectedCurrency?.rate_multiplier *
-                                parseFloat(activeFloat?.total)
-                              ).toFixed(2)
-                            )
-                          : "0.00"}
-                      </span>
-                      <span
-                        className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
-                text-ellipsis"
-                      >
-                        Total
-                      </span>
-                    </div>
-                  </div>
-                  {[...activeFloat?.activities]
-                    ?.sort((a: any, b: any) => b.time - a.time)
-                    ?.map((log: any, index: number) => {
-                      return (
-                        <li
-                          key={index + log?.time}
-                          className="w-full h-14 flex flex-col justify-center space-y-0.5 border-b first:border-t border-slate-100 px-1 py-2"
-                        >
-                          <div className="flex items-center justify-between w-full h-fit">
-                            <span
-                              className="text-xs capitalize text-slate-500 font-semibold w-[60%]
-                 overflow-hidden whitespace-nowrap text-ellipsis cursor-default"
-                            >
-                              <abbr title={log?.note}>{log?.note}</abbr>
-                            </span>
-                            <span
-                              className="text-xs capitalize text-slate-600 font-bold w-[60%]
-                 overflow-hidden whitespace-nowrap text-ellipsis text-end"
-                            >
-                              {selectedCurrency?.symbol}&nbsp;
-                              {log?.amount
-                                ? numberWithSpaces(
-                                    (
-                                      selectedCurrency?.rate_multiplier *
-                                      parseFloat(log?.amount)
-                                    ).toFixed(2)
-                                  )
-                                : "0.00"}
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span
-                              className="text-xs capitalize text-slate-400 font-medium w-[60%]
-                 overflow-hidden whitespace-nowrap text-ellipsis"
-                            >
-                              {new Date(log?.time).toString()?.split("(")[0]}
-                            </span>
-                            <span
-                              className="text-xs text-end uppercase text-slate-400 font-medium w-[40%]
-                 overflow-hidden whitespace-nowrap text-ellipsis"
-                            >
-                              {log?.currency}
-                            </span>
-                          </div>
-                        </li>
-                      );
-                    })}
-                </ul>
-              ) : (
-                <div
-                  className="mt-4 w-full min-h-[20rem] border border-slate-300 bg-white rounded 
-            overflow-hidden print:hidden flex flex-col space-y-4 items-center justify-center pb-10"
-                >
-                  <img
-                    src={float_no_activity}
-                    alt="no_float"
-                    className="w-12 h-12 overflow-hidden object-center object-contain opacity-80"
-                  />
-                  <span className="text-xs font-medium text-slate-400 text-center px-4">
-                    Activities list is empty, select the float you want to view
-                    on your left.
-                  </span>
-                </div>
-              )}
-            </div>
-          </div>
         </div>
       </div>
-    </div>
+
+      {activeFloat &&
+        activeFloat?.activities?.length >= 1 &&
+        cash_float?.length >= 1 && (
+          <ul
+            className="w-screen h-fit min-h-[20rem] print:border-0 bg-white
+            hidden print:flex flex-col print:space-y-4 print:bg-white p-6
+             print:absolute print:z-[999999] top-0 bottom-0"
+          >
+            <span
+              className="mb-4 text-xs font-semibold
+             text-slate-600 w-full h-5 whitespace-nowrap
+              overflow-hidden hidden print:flex items-center justify-between capitalize"
+            >
+              <span className="uppercase">
+                {activeFloat?.user?.name} Cash Float
+              </span>
+              <span>{new Date(activeFloat?.date)?.toDateString()}</span>
+            </span>
+            <div className="w-full h-32 print:h-fit hidden print:grid grid-cols-3 gap-2">
+              <div
+                className="h-20 col-span-1 border border-slate-300 bg-white p-4 rounded
+              flex flex-col justify-between space-y-2 overflow-hidden"
+              >
+                <span
+                  className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                >
+                  {selectedCurrency?.symbol}&nbsp;
+                  {activeFloat?.opening
+                    ? numberWithSpaces(
+                        (
+                          selectedCurrency?.rate_multiplier *
+                          parseFloat(activeFloat?.opening)
+                        ).toFixed(2)
+                      )
+                    : "0.00"}
+                </span>
+                <span
+                  className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                >
+                  opening
+                </span>
+              </div>
+              <div
+                className="h-20 col-span-1 border border-slate-300 bg-white p-4 rounded
+              flex flex-col justify-between space-y-2 overflow-hidden"
+              >
+                <span
+                  className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                >
+                  {selectedCurrency?.symbol}&nbsp;
+                  {activeFloat?.expenses
+                    ? numberWithSpaces(
+                        (
+                          selectedCurrency?.rate_multiplier *
+                          parseFloat(activeFloat?.expenses)
+                        ).toFixed(2)
+                      )
+                    : "0.00"}
+                </span>
+                <span
+                  className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                >
+                  Expenses
+                </span>
+              </div>
+              <div
+                className="h-20 col-span-1 border border-slate-300 bg-white p-4 rounded
+              flex flex-col justify-between space-y-2 overflow-hidden"
+              >
+                <span
+                  className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                >
+                  {selectedCurrency?.symbol}&nbsp;
+                  {activeFloat?.sales
+                    ? numberWithSpaces(
+                        (
+                          selectedCurrency?.rate_multiplier *
+                          parseFloat(activeFloat?.sales)
+                        ).toFixed(2)
+                      )
+                    : "0.00"}
+                </span>
+                <span
+                  className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                >
+                  Sales
+                </span>
+              </div>
+              <div
+                className="h-20 col-span-1 border border-slate-300 bg-white p-4 rounded
+              flex flex-col justify-between space-y-2 overflow-hidden"
+              >
+                <span
+                  className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                >
+                  {selectedCurrency?.symbol}&nbsp;
+                  {activeFloat?.refunds
+                    ? numberWithSpaces(
+                        (
+                          selectedCurrency?.rate_multiplier *
+                          parseFloat(activeFloat?.refunds)
+                        ).toFixed(2)
+                      )
+                    : "0.00"}
+                </span>
+                <span
+                  className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                >
+                  refunds
+                </span>
+              </div>
+              <div
+                className="h-20 col-span-1 border border-slate-300 bg-white p-4 rounded
+              flex flex-col justify-between space-y-2 overflow-hidden"
+              >
+                <span
+                  className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                >
+                  {selectedCurrency?.symbol}&nbsp;
+                  {activeFloat?.additional
+                    ? numberWithSpaces(
+                        (
+                          selectedCurrency?.rate_multiplier *
+                          parseFloat(activeFloat?.additional)
+                        ).toFixed(2)
+                      )
+                    : "0.00"}
+                </span>
+                <span
+                  className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                >
+                  added amount
+                </span>
+              </div>
+              <div
+                className="h-20 col-span-1 border border-slate-300 bg-white p-4 rounded
+              flex flex-col justify-between space-y-2 overflow-hidden"
+              >
+                <span
+                  className="text-sm text-center px-1 font-bold text-slate-600 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                >
+                  {selectedCurrency?.symbol}&nbsp;
+                  {activeFloat?.total
+                    ? numberWithSpaces(
+                        (
+                          selectedCurrency?.rate_multiplier *
+                          parseFloat(activeFloat?.total)
+                        ).toFixed(2)
+                      )
+                    : "0.00"}
+                </span>
+                <span
+                  className="text-[0.7rem] text-center px-1 uppercase font-semibold text-slate-500 w-full whitespace-nowrap overflow-hidden
+                text-ellipsis"
+                >
+                  Total
+                </span>
+              </div>
+            </div>
+            {[...activeFloat?.activities]
+              ?.sort((a: any, b: any) => b.time - a.time)
+              ?.map((log: any, index: number) => {
+                return (
+                  <li
+                    key={index + log?.time}
+                    className="w-full h-14 flex flex-col justify-center space-y-0.5 border-b first:border-t border-slate-100 px-1 py-2"
+                  >
+                    <div className="flex items-center justify-between w-full h-fit">
+                      <span
+                        className="text-xs capitalize text-slate-500 font-semibold w-[60%]
+                 overflow-hidden whitespace-nowrap text-ellipsis cursor-default"
+                      >
+                        <abbr title={log?.note}>{log?.note}</abbr>
+                      </span>
+                      <span
+                        className="text-xs capitalize text-slate-600 font-bold w-[60%]
+                 overflow-hidden whitespace-nowrap text-ellipsis text-end"
+                      >
+                        {selectedCurrency?.symbol}&nbsp;
+                        {log?.amount
+                          ? numberWithSpaces(
+                              (
+                                selectedCurrency?.rate_multiplier *
+                                parseFloat(log?.amount)
+                              ).toFixed(2)
+                            )
+                          : "0.00"}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span
+                        className="text-xs capitalize text-slate-400 font-medium w-[60%]
+                 overflow-hidden whitespace-nowrap text-ellipsis"
+                      >
+                        {new Date(log?.time).toString()?.split("(")[0]}
+                      </span>
+                      <span
+                        className="text-xs text-end uppercase text-slate-400 font-medium w-[40%]
+                 overflow-hidden whitespace-nowrap text-ellipsis"
+                      >
+                        {log?.currency}
+                      </span>
+                    </div>
+                  </li>
+                );
+              })}
+          </ul>
+        )}
+    </>
   );
 };
 

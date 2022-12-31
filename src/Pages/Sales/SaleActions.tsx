@@ -162,7 +162,7 @@ const SaleActions: FC<Props> = ({
 
         //Deduct Stock From Inventory
         currentSale.products?.forEach((prod: any) => {
-          if (prod?.has_stock_count) {
+          if (prod?.prod_obj?.has_stock_count) {
             window.localStorage.setItem(
               "inventory_data",
               JSON.stringify([

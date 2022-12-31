@@ -175,7 +175,7 @@ const Refund: FC<Props> = ({
           //Restore Stock to Inventory
           tempProduct_Array.length >= 1 &&
             tempProduct_Array?.forEach((prod: any) => {
-              if (prod?.has_stock_count) {
+              if (prod?.prod_obj?.has_stock_count) {
                 window.localStorage.setItem(
                   "inventory_data",
                   JSON.stringify([
