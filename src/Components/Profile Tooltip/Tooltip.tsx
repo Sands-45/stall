@@ -30,6 +30,16 @@ const Tooltip: FC<Props> = ({ position }) => {
         rounded-sm bg-white backdrop-blur-md p-3 absolute z-[9999] ${position}`}
     >
       <div className="h-fit w-full px-1">
+        <div className="w-full h-fit">
+          <div
+            className="w-full h-12 pb-3 mb-1 border-b border-slate-200 flex items-center space-x-2
+          font-semibold text-slate-500 text-xs hover:bg-slate-50 transition-all"
+          >
+            <div className="h-8 w-8 rounded-full bg-cyan-800 text-sm uppercase font-bold text-white
+            flex items-center justify-center">{user?.name?.charAt(0)}</div>
+            <span className="w-[calc(100%-2.5rem)] whitespace-nowrap overflow-hidden text-ellipsis capitalize">{user?.name}</span>
+          </div>
+        </div>
         <Link to="" className="w-full h-fit">
           <div
             className="w-full h-9 flex items-center space-x-2
