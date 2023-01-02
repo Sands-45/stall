@@ -37,6 +37,7 @@ const Refund: FC<Props> = ({
     (state: RootState) => state.Inventory.inventory_changes_data
   );
   const cash_float = useSelector((state: RootState) => state.Sales.cash_float);
+  const user = useSelector((state: RootState) => state.UserInfo.user);
   const [markedItems, markItem] = useState<any>([]);
   const [reason, setReason] = useState<string>("");
   const [refundAmount, setAmount] = useState<any>("");
@@ -117,11 +118,34 @@ const Refund: FC<Props> = ({
                     0
                   )
               : 0.0;
+          let profit_amount =
+            total - tempProduct_Array.length <= 0
+              ? [...markedItems]
+                  ?.map(
+                    (prod: any) =>
+                      prod?.prod_obj?.buying_price_in_usd * prod?.quantity
+                  )
+                  ?.reduce(
+                    (acc: any, value: any) => Number(acc) + Number(value),
+                    0
+                  )
+              : tempProduct_Array.length >= 1
+              ? currentSale?.total -
+                [...tempProduct_Array]
+                  ?.map(
+                    (prod: any) =>
+                      prod?.prod_obj?.buying_price_in_usd * prod?.quantity
+                  )
+                  ?.reduce(
+                    (acc: any, value: any) => Number(acc) + Number(value),
+                    0
+                  )
+              : 0.0;
 
           //New Sale Object with updated values
           let newCart = {
             ...currentSale,
-            profit: currentSale?.profit - total,
+            profit: currentSale?.profit - profit_amount,
             total: currentSale?.total - total,
             refund_amount: total,
             refund_date: new Date()?.getTime(),
@@ -260,8 +284,10 @@ const Refund: FC<Props> = ({
 
           //Update Cash Float
           let openFloat =
-            cash_float?.filter((data: any) => data.status === "open")[0] ??
-            null;
+            cash_float?.filter(
+              (data: any) =>
+                data.status === "open" && data?.user?.email === user?.email
+            )[0] ?? null;
           if (openFloat && currentSale?.payment_method === "cash") {
             dispatch(
               updateFloat([
@@ -330,8 +356,8 @@ const Refund: FC<Props> = ({
           let newCart = {
             ...currentSale,
             profit:
-              currentSale?.profit -
-              refundAmount / selectedCurrency?.rate_multiplier,
+              (currentSale?.profit-((currentSale?.profit / currentSale?.total) * refundAmount)) /
+              selectedCurrency?.rate_multiplier,
             total:
               currentSale?.total -
               refundAmount / selectedCurrency?.rate_multiplier,
@@ -384,7 +410,7 @@ const Refund: FC<Props> = ({
 
           //Update Cash Float
           let openFloat =
-            cash_float?.filter((data: any) => data.status === "open")[0] ??
+            cash_float?.filter((data: any) => data.status === "open" && data?.user?.email === user?.email)[0] ??
             null;
           if (openFloat && currentSale?.payment_method === "cash") {
             dispatch(

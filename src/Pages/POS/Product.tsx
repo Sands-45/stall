@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { TbShoppingCartPlus,TbInfinity } from "react-icons/tb";
+import { TbClick,TbInfinity } from "react-icons/tb";
 import { useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
 import { numberWithSpaces } from "../../Reusable Functions/Functions";
@@ -49,19 +49,19 @@ const Product: FC<Props> = ({
         >
           <div className="w-full h-fit flex flex-col space-y-1.5 pt-2 px-2">
             <span
-              className="text-xs font-semibold text-slate-700
+              className="text-xs font-bold text-slate-700
                      uppercase w-full whitespace-nowrap overflow-hidden text-ellipsis"
             >
               {prod?.name}
             </span>
             <p
-              className="mt-2 text-[0.65rem] font-medium text-slate-500 w-full
+              className="mt-2 text-[0.65rem] font-semibold text-slate-500 w-full
                   whitespace-nowrap  overflow-hidden text-ellipsis flex items-center space-x-1"
             >
              <span> IN-STOCK :</span> {prod?.has_stock_count?<strong>{prod?.in_stock}</strong>:<TbInfinity className="text-lg"/>}
             </p>
             <span
-              className="text-xs font-semibold text-slate-600 uppercase w-full
+              className="text-xs font-bold text-slate-600 uppercase w-full
                    whitespace-nowrap overflow-hidden text-ellipsis text-left"
             >
               {selectedCurrency?.symbol}&nbsp;
@@ -72,24 +72,13 @@ const Product: FC<Props> = ({
               )}
             </span>
           </div>
-          <button
-            onClick={() => {
-              setProObj(prod);
-              setImg(prod?.gallery?.length >= 1 ? prod?.gallery[0]?.url : "");
-              setProduct({
-                prod_cart_uid: new Date()?.getTime(),
-                prod_obj: prod,
-                quantity: 1,
-                customization: "",
-              });
-              setPreview(true);
-            }}
-            className="h-8 w-full rounded-sm border border-cyan-750/20 group-hover:text-cyan-800 bg-slate-50 transition-all text-cyan-750 
-                  text-base flex items-center justify-between px-2"
+          <div
+            className="h-8 w-full pt-1 border-t border-slate-200 group-hover:text-cyan-800 bg-inherit transition-all text-cyan-750 
+                  text-base flex items-center justify-between px-1 focus:outline-none       "
           >
             <span className="text-xs font-semibold uppercase">Add item</span>
-            <TbShoppingCartPlus className="stroke-[2.5]" />
-          </button>
+            <TbClick className="text-lg"/>
+          </div>
         </div>
       );
     })

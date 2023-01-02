@@ -150,8 +150,8 @@ const Login: FC<Props> = () => {
               className="w-[60%] h-fit object-cover object-center"
             />
             <div className="absolute top-0 left-0 right-0 bottom-0 flex flex-col items-center justify-center bg-gradient-to-tr from-cyan-900 to-cyan-750/80 space-y-6">
-              <h1 className="text-white font-semibold text-[2rem]">
-                Hey, Let's Get You In
+              <h1 className="text-white font-bold text-[2rem]">
+                Hey, Let's Get You Back In
               </h1>
               <form
                 onSubmit={(e) => handleLogIn(e)}
@@ -205,7 +205,7 @@ const Login: FC<Props> = () => {
                   <button
                     disabled={logging}
                     type="submit"
-                    className="h-10 w-[47%] bg-cyan-750 text-sm text-white font-medium rounded flex items-center justify-center disabled:cursor-not-allowed disabled:opacity-80"
+                    className="h-10 w-[47%] bg-cyan-750 text-sm text-white font-semibold rounded flex items-center justify-center disabled:cursor-not-allowed disabled:opacity-80"
                   >
                     {!logging ? (
                       <span>Log In</span>
@@ -215,7 +215,7 @@ const Login: FC<Props> = () => {
                   </button>
                   <button
                     type="button"
-                    className="h-10 w-[47%] border-2 border-cyan-500 text-sm text-cyan-500 font-medium rounded"
+                    className="h-10 w-[47%] border-2 border-cyan-500 text-sm text-cyan-500 font-semibold rounded"
                   >
                     Sign Up
                   </button>
@@ -250,7 +250,7 @@ const Login: FC<Props> = () => {
             : "w-0 -left-[200%]  -z-[999]"
         } transition-all duration-300 flex flex-col justify-center items-center space-y-6`}
       >
-        <h1 className="text-cyan-900 text-3xl font-semibold">
+        <h1 className="text-cyan-900 text-3xl font-bold">
           Select The Workspace
         </h1>
         <div className="w-fit h-fit relative">
@@ -289,11 +289,11 @@ const Login: FC<Props> = () => {
                     key={space?.id}
                     className="w-full h-14 rounded border border-slate-300 bg-white p-2 flex items-center space-x-2"
                   >
-                    <div className="h-full w-10 rounded-sm bg-cyan-900 uppercase text-lg text-white font-semibold flex items-center justify-center">
+                    <div className="h-full w-10 rounded-sm bg-cyan-900 uppercase text-lg text-white font-bold flex items-center justify-center">
                       {space?.workspace_name?.charAt(0)}
                     </div>
                     <div className="h-full w-[calc(100%-2.75rem)] flex items-center justify-between">
-                      <span className="w-[60%] overflow-hidden whitespace-nowrap text-ellipsis text-sm capitalize font-semibold text-cyan-900">
+                      <span className="w-[60%] overflow-hidden whitespace-nowrap text-ellipsis text-sm capitalize font-bold text-cyan-900">
                         {space?.workspace_name}
                       </span>
                       <button
@@ -319,7 +319,7 @@ const Login: FC<Props> = () => {
                           setOverlay(false);
                           navigate("/portal");
                         }}
-                        className="px-6 h-8 text-xs text-cyan-750 font-medium border-2 border-cyan-800/90 bg-cyan-50 rounded hover:opacity-80 transition-all"
+                        className="px-6 h-8 text-xs text-cyan-750 font-semibold border-2 border-cyan-800/90 bg-cyan-50 rounded hover:opacity-80 transition-all"
                       >
                         Select
                       </button>

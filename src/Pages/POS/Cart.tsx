@@ -50,13 +50,13 @@ const Cart: FC<Props> = ({
             )
             ?.reduce((acc: any, value: any) => Number(acc) + Number(value), 0)
       : 0.0;
-  }, [cart,total]);
-  const tax = 0
+  }, [cart, total]);
+  const tax = 0;
 
   //Component
   return (
     <>
-      <div className="h-full w-[25rem] bg-white p-4 pt-4 flex flex-col justify-between items-center">
+      <div className="h-full w-[25rem] bg-white p-4 pt-4 flex flex-col justify-between items-center border-l border-slate-200">
         <div className="w-full flex justify-between items-center space-x-2">
           <label
             htmlFor="search_cart"
@@ -175,7 +175,7 @@ const Cart: FC<Props> = ({
                             }));
                           }}
                           className="h-5 w-[50%] flex items-center justify-center
-                      rounded text-sm text-red-600
+                      rounded text-sm text-red-600 <focus:outline-none></focus:outline-none>
                      hover:opacity-80 transition-all border border-slate-200 bg-slate-100 hover:bg-red-100"
                         >
                           <TbTrash />

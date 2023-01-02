@@ -33,31 +33,31 @@ const Landing: FC<Props> = () => {
           <div className="flex items-center space-x-8 hover:opacity-80 transition-all">
             <Link
               to=""
-              className="text-xs font-medium tracking-wider text-cyan-900"
+              className="text-sm font-medium tracking-wider text-cyan-900"
             >
               Features
             </Link>
             <Link
               to=""
-              className="text-xs font-medium tracking-wider text-cyan-900"
+              className="text-sm font-medium tracking-wider text-cyan-900"
             >
               Pricing
             </Link>
             <Link
               to=""
-              className="text-xs font-medium tracking-wider text-cyan-900"
+              className="text-sm font-medium tracking-wider text-cyan-900"
             >
               Company
             </Link>
             <Link
               to=""
-              className="text-xs font-medium tracking-wider text-cyan-900"
+              className="text-sm font-medium tracking-wider text-cyan-900"
             >
               Resources
             </Link>
             <Link
               to=""
-              className="text-xs font-medium tracking-wider text-cyan-900"
+              className="text-sm font-medium tracking-wider text-cyan-900"
             >
               Contact
             </Link>
@@ -74,11 +74,11 @@ const Landing: FC<Props> = () => {
       </header>
       {/**Hero ================= */}
       <div className="w-full h-fit py-12 px-[5%] space-y-4">
-        <h1 className="text-cyan-900 font-semibold text-[2.5rem] text-center">
+        <h1 className="text-cyan-900 font-bold text-[2.5rem] text-center">
           Your Go-To Digital Store <br />
           Encompassing All Your Needs
         </h1>
-        <p className="text-sm text-center text-cyan-800">
+        <p className="text-sm text-center text-cyan-800 font-medium">
           Stall is your all In-One Store with features ranging from POS,
           <br /> Inventory, Online Store, CRM, Sales and Advanced Reports with
           full offline support

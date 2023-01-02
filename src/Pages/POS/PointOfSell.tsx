@@ -3,8 +3,8 @@ import {
   TbSearch,
   TbScan,
   TbCheck,
-  TbChevronLeft,
-  TbChevronRight,
+  TbCaretLeft,
+  TbCaretRight ,
 } from "react-icons/tb";
 import { HiOutlineCollection } from "react-icons/hi";
 import { useSelector } from "react-redux";
@@ -109,7 +109,7 @@ const PointOfSell: FC<Props> = () => {
             >
               {/** Search */}
               <div className="h-full w-[calc(100%-18rem)] relative">
-                <TbSearch className="absolute text-xl text-slate-500 top-3.5 left-2.5" />
+                <TbSearch className="absolute text-xl text-slate-400 top-3.5 left-2.5 stroke-[2]" />
                 <input
                   onChange={(e) => {
                     changeSearch(e.target.value);
@@ -120,7 +120,7 @@ const PointOfSell: FC<Props> = () => {
                   name="point_of_sale_main_search"
                   id="point_of_sale_main_search"
                   className="h-full w-full rounded p-2 px-3 pl-9 text-xs text-slate-600 placeholder:text-slate-400
-              border-slate-300 focus:border-cyan-750 focus:ring-0"
+              border-slate-300 focus:border-cyan-750 focus:ring-0 font-medium"
                   placeholder="Quick Search ..."
                 />
               </div>
@@ -129,7 +129,7 @@ const PointOfSell: FC<Props> = () => {
              border border-slate-300 rounded-sm flex items-center justify-center focus:outline-none
              space-x-3 text-slate-600 hover:bg-cyan-750 hover:text-white transition-all"
               >
-                <span className="uppercase font-medium text-xs">Scan</span>
+                <span className="uppercase font-semibold text-xs">Scan</span>
                 <TbScan className="text-xl" />
               </button>
               <button
@@ -139,7 +139,7 @@ const PointOfSell: FC<Props> = () => {
                 className="w-40 h-11 bg-cyan-750 focus:outline-none rounded-sm flex items-center justify-center
              space-x-3 text-white hover:bg-cyan-800 transition-all"
               >
-                <span className="uppercase font-medium text-xs">
+                <span className="uppercase font-semibold text-xs">
                   Cash Float
                 </span>
                 <HiOutlineCollection className="text-xl" />
@@ -164,13 +164,13 @@ const PointOfSell: FC<Props> = () => {
                     )
                   )
                 )?.length <= 0 && (
-                  <button
+                  <div
                     className={`h-full w-fit px-3 bg-white rounded border text-[0.65rem]
-              uppercase font-medium border-slate-300 text-slate-500 hover:text-cyan-750 hover:border-cyan-750 flex 
+              uppercase font-semibold border-slate-300 text-slate-500 hover:text-cyan-750 hover:border-cyan-750 flex 
              items-center space-x-1 transition-all`}
                   >
                     <span className="whitespace-nowrap">no categories</span>{" "}
-                  </button>
+                  </div>
                 )}
                 {Array.from(
                   new Set(
@@ -203,7 +203,7 @@ const PointOfSell: FC<Props> = () => {
                         }}
                         key={cat}
                         className={`h-full w-fit px-3 bg-white rounded border text-[0.6rem]
-              uppercase font-medium ${
+              uppercase font-semibold ${
                 selectedCategory?.some((data: any) =>
                   data
                     ?.toString()
@@ -213,7 +213,7 @@ const PointOfSell: FC<Props> = () => {
                   ? "text-cyan-750 border-cyan-750 pl-1"
                   : "border-slate-300 text-slate-500"
               } hover:text-cyan-750 hover:border-cyan-750 flex 
-             items-center space-x-1 transition-all`}
+             items-center space-x-1 transition-all focus:outline-none `}
                       >
                         {selectedCategory?.some((data: any) =>
                           data
@@ -236,10 +236,10 @@ const PointOfSell: FC<Props> = () => {
                       categoryContainerRef.current.scrollLeft -= 30;
                     }
                   }}
-                  className="h-6 w-8 text-sm text-slate-500 bg-slate-50 rounded
+                  className="h-6 w-8 focus:outline-none text-base stroke-[3] text-slate-500 bg-slate-50 rounded
                  border border-slate-300 flex items-center justify-center"
                 >
-                  <TbChevronLeft />
+                  <TbCaretLeft />
                 </button>
                 <button
                   onClick={() => {
@@ -247,10 +247,10 @@ const PointOfSell: FC<Props> = () => {
                       categoryContainerRef.current.scrollLeft += 30;
                     }
                   }}
-                  className="h-6 w-8 text-sm text-slate-500 bg-slate-50 rounded
+                  className="h-6 w-8 focus:outline-none text-base stroke-[3] text-slate-500 bg-slate-50 rounded
                  border border-slate-300 flex items-center justify-center"
                 >
-                  <TbChevronRight />
+                  <TbCaretRight  />
                 </button>
               </div>
             </div>

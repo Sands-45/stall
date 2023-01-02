@@ -103,7 +103,7 @@ const ProductPreview: FC<Props> = ({
             setCustomization([]);
             setPreview(false);
           }}
-          className="absolute -top-3 -right-3 h-7 w-7 rounded
+          className="absolute -top-3 -right-3 h-7 w-7 rounded-sm
          bg-cyan-750 hover:bg-red-600 border border-white transition-all text-white text-sm"
         >
           &times;
@@ -343,7 +343,7 @@ const ProductPreview: FC<Props> = ({
                 setCustomization([]);
                 setPreview(false);
               }}
-              className="h-9 w-40 rounded flex items-center justify-center space-x-2
+              className="h-9 w-40 rounded-sm flex items-center justify-center space-x-3
            bg-cyan-750 text-white text-xs font-semibold uppercase hover:bg-cyan-800 transition-all"
             >
               <span> Add to cart</span>{" "}

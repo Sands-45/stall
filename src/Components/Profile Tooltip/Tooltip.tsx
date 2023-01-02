@@ -1,9 +1,9 @@
 import { FC } from "react";
 import { signOut, getAuth } from "firebase/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { changeLocation } from "../../Redux/Slices/UserSlice";
-import { AppDispatch } from "../../Redux/store";
+import { AppDispatch, RootState } from "../../Redux/store";
 import {
   TbDoorEnter,
   TbSettings,
@@ -20,6 +20,7 @@ const Tooltip: FC<Props> = ({ position }) => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const auth = getAuth();
+  const user = useSelector((state:RootState)=>state.UserInfo.user)
 
   //component
   return (

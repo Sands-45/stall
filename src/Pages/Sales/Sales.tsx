@@ -418,7 +418,7 @@ const Sales: FC<Props> = () => {
         <div className="w-full h-fit overflow-hidded grid grid-cols-3 lg:grid-cols-6 gap-4">
           <div
             className="col-span-1 h-20 px-6 bg-white rounded border
-           border-slate-200 p-4 flex flex-col justify-center space-y-0 overflow-hidden"
+           border-slate-200 p-4 flex flex-col justify-center space-y-1 overflow-hidden"
           >
             <span className="text-base font-bold text-slate-700">
               {selectedCurrency?.symbol}&nbsp;
@@ -431,25 +431,25 @@ const Sales: FC<Props> = () => {
                   )
                 : "0.00"}
             </span>
-            <span className="text-xs uppercase font-semibold text-slate-500">
+            <span className="text-[0.65rem] uppercase font-semibold text-slate-500">
               Sales Turnover
             </span>
           </div>
           <div
             className="col-span-1 h-20 px-6 bg-white rounded border
-           border-slate-200 p-4 flex flex-col justify-center space-y-0 overflow-hidden"
+           border-slate-200 p-4 flex flex-col justify-center space-y-1 overflow-hidden"
           >
             <span className="text-base font-bold text-slate-700">
               {statsData?.sales_count < 10 ? "0" : ""}
               {statsData?.sales_count ?? "0"}
             </span>
-            <span className="text-xs uppercase font-semibold text-slate-500">
+            <span className="text-[0.65rem] uppercase font-semibold text-slate-500">
               Sales Count
             </span>
           </div>
           <div
             className="col-span-1 h-20 px-6 bg-white rounded border
-           border-slate-200 p-4 flex flex-col justify-center space-y-0 overflow-hidden"
+           border-slate-200 p-4 flex flex-col justify-center space-y-1 overflow-hidden"
           >
             <span className="text-base font-bold text-slate-700">
               {selectedCurrency?.symbol}&nbsp;
@@ -462,13 +462,13 @@ const Sales: FC<Props> = () => {
                   )
                 : "0.00"}
             </span>
-            <span className="text-xs uppercase font-semibold text-slate-500">
+            <span className="text-[0.65rem] uppercase font-semibold text-slate-500">
               Net Profit
             </span>
           </div>
           <div
             className="col-span-1 h-20 px-6 bg-white rounded border
-           border-slate-200 p-4 flex flex-col justify-center space-y-0 overflow-hidden"
+           border-slate-200 p-4 flex flex-col justify-center space-y-1 overflow-hidden"
           >
             <span className="text-base font-bold text-slate-700">
               {selectedCurrency?.symbol}&nbsp;
@@ -481,13 +481,13 @@ const Sales: FC<Props> = () => {
                   )
                 : "0.00"}
             </span>
-            <span className="text-xs uppercase font-semibold text-slate-500">
+            <span className="text-[0.65rem] uppercase font-semibold text-slate-500">
               Tips Amount
             </span>
           </div>
           <div
             className="col-span-1 h-20 px-6 bg-white rounded border
-           border-slate-200 p-4 flex flex-col justify-center space-y-0 overflow-hidden"
+           border-slate-200 p-4 flex flex-col justify-center space-y-1 overflow-hidden"
           >
             <span className="text-base font-bold text-slate-700">
               {selectedCurrency?.symbol}&nbsp;
@@ -500,19 +500,19 @@ const Sales: FC<Props> = () => {
                   )
                 : "0.00"}
             </span>
-            <span className="text-xs uppercase font-semibold text-slate-500">
+            <span className="text-[0.65rem] uppercase font-semibold text-slate-500">
               Refunds Amount
             </span>
           </div>
           <div
             className="col-span-1 h-20 px-6 bg-white rounded border
-           border-slate-200 p-4 flex flex-col justify-center space-y-0 overflow-hidden"
+           border-slate-200 p-4 flex flex-col justify-center space-y-1 overflow-hidden"
           >
             <span className="text-base font-bold text-slate-700">
               {statsData?.refunds_count < 10 ? "0" : ""}
               {statsData?.refunds_count ?? "0"}
             </span>
-            <span className="text-xs uppercase font-semibold text-slate-500">
+            <span className="text-[0.65rem] uppercase font-semibold text-slate-500">
               Refunds Count
             </span>
           </div>

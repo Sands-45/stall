@@ -1,6 +1,6 @@
 import { FC, useEffect } from "react";
 import userImg from "../../Assets/portal images/user.png";
-import { TbMessage2,TbSearch } from "react-icons/tb";
+import { TbMessage2, TbSearch,TbPower } from "react-icons/tb";
 import { signOut, getAuth } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import {
@@ -42,15 +42,17 @@ const Portal: FC<Props> = () => {
     <div className="w-screen min-h-screen bg-white p-12 flex flex-col items-center justify-between space-y-6">
       <nav className="w-full h-14 flex items-center justify-between">
         <div className="h-fit w-fit relative shadow-sm rounded overflow-hidden group">
-          <TbSearch className="absolute top-3.5 right-[1.15rem] group-focus-within:right-3 text-lg
-           text-slate-400 pointer-events-none stroke-[3]"/>
+          <TbSearch
+            className="absolute top-3.5 right-[1.15rem] group-focus-within:right-3 text-lg
+           text-slate-400 pointer-events-none stroke-[3]"
+          />
           <input
             type="search"
             name="portal_Search"
             id="portal_Search"
             placeholder="Quick Search ..."
             className="h-11 w-11 focus:w-[10rem] focus:md:w-[23rem] bg-cyan-50/60 border-slate-300
-             focus:border-cyan-750 focus:ring-0 rounded pr-10 px-3 transition-all border-[1.5px]
+             focus:border-cyan-750 focus:ring-0 rounded pr-10 px-3 transition-all border-2
             text-slate-600 text-xs placeholder:text-slate-400 font-medium"
           />
         </div>
@@ -81,7 +83,7 @@ const Portal: FC<Props> = () => {
               <div className="h-10 w-10 flex items-center justify-center rounded bg-slate-600 text-white text-xl">
                 <MdPointOfSale />
               </div>
-              <p className="text-base font-semibold text-cyan-700 whitespace-nowrap">
+              <p className="text-base font-bold text-cyan-700 whitespace-nowrap">
                 Point of Sale
               </p>
             </div>
@@ -97,7 +99,7 @@ const Portal: FC<Props> = () => {
               <div className="h-10 w-10 flex items-center justify-center rounded bg-cyan-700 text-white text-xl">
                 <MdReceipt />
               </div>
-              <p className="text-base font-semibold text-cyan-700 whitespace-nowrap">
+              <p className="text-base font-bold text-cyan-700 whitespace-nowrap">
                 Sales
               </p>
             </div>
@@ -113,7 +115,7 @@ const Portal: FC<Props> = () => {
               <div className="h-10 w-10 flex items-center justify-center rounded bg-teal-600 text-white text-xl">
                 <MdLoyalty />
               </div>
-              <p className="text-base font-semibold text-cyan-700 whitespace-nowrap">
+              <p className="text-base font-bold text-cyan-700 whitespace-nowrap">
                 Campaigns
               </p>
             </div>
@@ -129,7 +131,7 @@ const Portal: FC<Props> = () => {
               <div className="h-10 w-10 flex items-center justify-center rounded bg-blue-600 text-white text-xl">
                 <MdOutlineStackedBarChart />
               </div>
-              <p className="text-base font-semibold text-cyan-700 whitespace-nowrap">
+              <p className="text-base font-bold text-cyan-700 whitespace-nowrap">
                 Reports
               </p>
             </div>
@@ -146,7 +148,7 @@ const Portal: FC<Props> = () => {
               <div className="h-10 w-10 flex items-center justify-center rounded bg-teal-800 text-white text-xl">
                 <MdSupervisorAccount className="text-2xl" />
               </div>
-              <p className="text-base font-semibold text-cyan-700 whitespace-nowrap">
+              <p className="text-base font-bold text-cyan-700 whitespace-nowrap">
                 Customers
               </p>
             </div>
@@ -163,7 +165,7 @@ const Portal: FC<Props> = () => {
               <div className="h-10 w-10 flex items-center justify-center rounded bg-blue-600 text-white text-xl">
                 <MdAssignment />
               </div>
-              <p className="text-base font-semibold text-cyan-700 whitespace-nowrap">
+              <p className="text-base font-bold text-cyan-700 whitespace-nowrap">
                 Inventory
               </p>
             </div>
@@ -180,7 +182,7 @@ const Portal: FC<Props> = () => {
               <div className="h-10 w-10 flex items-center justify-center rounded bg-slate-600 text-white text-xl">
                 <MdLocalMall />
               </div>
-              <p className="text-base font-semibold text-cyan-700 whitespace-nowrap">
+              <p className="text-base font-bold text-cyan-700 whitespace-nowrap">
                 Online Store
               </p>
             </div>
@@ -197,7 +199,7 @@ const Portal: FC<Props> = () => {
               <div className="h-10 w-10 flex items-center justify-center rounded bg-cyan-800 text-white text-xl">
                 <AiFillSetting />
               </div>
-              <p className="text-base font-semibold text-cyan-700 whitespace-nowrap">
+              <p className="text-base font-bold text-cyan-700 whitespace-nowrap">
                 Settings
               </p>
             </div>
@@ -220,10 +222,10 @@ const Portal: FC<Props> = () => {
               navigate("/login");
             });
           }}
-          className="h-10 px-8 rounded hover:opacity-80 hover:bg-cyan-50 disabled:cursor-not-allowed
-          transition-all border-2 border-cyan-750 uppercase font-bold text-cyan-750 text-xs"
+          className="h-10 px-4 rounded hover:opacity-80 hover:bg-cyan-50 disabled:cursor-not-allowed
+          transition-all border-2 border-cyan-750 uppercase font-bold text-cyan-750 text-xs flex items-center justify-center"
         >
-          Sign out
+          <TbPower className="text-lg stroke-[3]" />
         </button>
       </div>
     </div>

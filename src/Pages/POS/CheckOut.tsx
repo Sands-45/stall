@@ -217,7 +217,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
 
       //Update Cash Float
       let openFloat =
-        cash_float?.filter((data: any) => data.status === "open")[0] ?? null;
+        cash_float?.filter((data: any) => data.status === "open"  && data?.user?.email === user?.email)[0] ?? null;
       if (openFloat) {
         dispatch(
           updateFloat([
@@ -281,7 +281,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
       });
       startTransact(false);
       setProcessDone(true);
-    }, 2000);
+    }, 1000);
   };
 
   //Apply Discount Function

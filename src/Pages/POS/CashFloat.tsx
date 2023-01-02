@@ -79,7 +79,7 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
 
     if (
       activityObj?.new &&
-      localData()?.filter((data: any) => data.status === "open").length <= 0
+      localData()?.filter((data: any) => data.status === "open" && data?.user?.email === user?.email).length <= 0
     ) {
       dispatch(
         updateFloat([
@@ -154,7 +154,7 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
         note: "",
       });
     } else {
-      if (floatFunction === "add" && activeFloat?.status === "open") {
+      if (floatFunction === "add" && activeFloat?.status === "open"  && activeFloat?.user?.email === user?.email) {
         if (localData()) {
           //Save local
           window.localStorage.setItem(
@@ -234,7 +234,7 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
             note: "",
           });
         }
-      } else if (floatFunction === "minus" && activeFloat?.status === "open") {
+      } else if (floatFunction === "minus" && activeFloat?.status === "open"  && activeFloat?.user?.email === user?.email) {
         //Save local
         window.localStorage.setItem(
           "cash_float",
@@ -390,7 +390,7 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
                   <div className="col-span-1 h-10 flex items-center justify-between">
                     {cash_float?.length >= 1 &&
                     cash_float?.filter(
-                      (data: any) => data?.status?.toLowerCase() === "open"
+                      (data: any) => data?.status?.toLowerCase() === "open"  && data?.user?.email === user?.email
                     )?.length >= 1 ? (
                       <>
                         <button

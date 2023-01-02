@@ -145,11 +145,6 @@ const Sale: FC<Props> = ({
                       ? sale?.customers_details?.name
                       : "Unkown Customer"}
                   </span>
-                  <span className="font-medium text-[0.7rem] lowercase text-slate-400 w-full whitespace-nowrap overflow-hidden text-ellipsis">
-                    {sale?.customers_details?.email
-                      ? sale?.customers_details?.email
-                      : "no email"}
-                  </span>
                 </div>
               </div>
               <div
@@ -161,9 +156,6 @@ const Sale: FC<Props> = ({
               >
                 <span className="font-medium text-xs capitalize w-full whitespace-nowrap overflow-hidden text-ellipsis">
                   {new Date(sale?.date)?.toString()?.split("(")[0]}
-                </span>
-                <span className="font-medium text-[0.7rem] upperrcase text-slate-400 w-full whitespace-nowrap overflow-hidden text-ellipsis">
-                  {sale?.transact_id}
                 </span>
               </div>
               <div
@@ -211,6 +203,9 @@ const Sale: FC<Props> = ({
                 </div>
               </div>
               <div
+                onClick={() => {
+                  saleClickFunc(sale);
+                }}
                 className="h-full col-span-1 overflow-hidden px-2 flex items-center 
           text-xs text-slate-600 font-semibold text-ellipsis whitespace-nowrap uppercase"
               >
@@ -222,6 +217,9 @@ const Sale: FC<Props> = ({
                 )}
               </div>
               <div
+                onClick={() => {
+                  saleClickFunc(sale);
+                }}
                 className="h-full col-span-1 overflow-hidden px-2 flex items-center 
           text-xs text-slate-600 font-semibold text-ellipsis whitespace-nowrap uppercase"
               >

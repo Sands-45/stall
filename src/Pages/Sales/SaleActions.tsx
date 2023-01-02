@@ -32,6 +32,7 @@ const SaleActions: FC<Props> = ({
     (state: RootState) => state.SettingsData.selectedCurrency
   );
   const cash_float = useSelector((state: RootState) => state.Sales.cash_float);
+  const user = useSelector((state:RootState)=>state.UserInfo.user)
   const [showAuthorize, setAuthorize] = useState<boolean>(false);
   const [reason, setReason] = useState<string>("");
   const dispatch: AppDispatch = useDispatch();
@@ -104,7 +105,7 @@ const SaleActions: FC<Props> = ({
 
         //Update Cash Float
         let openFloat =
-          cash_float?.filter((data: any) => data.status === "open")[0] ?? null;
+          cash_float?.filter((data: any) => data.status === "open" && data?.user?.email === user?.email)[0] ?? null;
         if (openFloat && currentSale?.payment_method === "cash") {
           dispatch(
             updateFloat([
