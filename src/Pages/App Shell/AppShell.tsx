@@ -190,7 +190,7 @@ const AppShell: FC<Props> = () => {
           className={`navLinks border-l border-slate-200
             px-2 ${
               location.pathname === "/app"
-                ? "border-b-[3px] border-b-cyan-750 bg-cyan-50"
+                ? "after:absolute after:h-[3px] after:bg-cyan-750 after:bottom-0 after:-left-[0.06rem] after:-right-[0.06rem] bg-cyan-50"
                 : ""
             }`}
         >
@@ -204,7 +204,7 @@ const AppShell: FC<Props> = () => {
           className={`navLinks
             px-2 ${
               location.pathname === "/app/sales"
-                ? "border-b-[3px] border-b-cyan-750 bg-cyan-50"
+                ? "after:absolute after:h-[3px] after:bg-cyan-750 after:bottom-0 after:-left-[0.06rem] after:-right-[0.06rem] bg-cyan-50"
                 : ""
             }`}
         >
@@ -218,7 +218,7 @@ const AppShell: FC<Props> = () => {
           className={`navLinks
             px-2 ${
               location.pathname === "/app/reports"
-                ? "border-b-[3px] border-b-cyan-750 bg-cyan-50"
+                ? "after:absolute after:h-[3px] after:bg-cyan-750 after:bottom-0 after:-left-[0.06rem] after:-right-[0.06rem] bg-cyan-50"
                 : ""
             }`}
         >
@@ -232,7 +232,7 @@ const AppShell: FC<Props> = () => {
           className={`navLinks
             px-2 ${
               location.pathname === "/app/campaigns"
-                ? "border-b-[3px] border-b-cyan-750 bg-cyan-50"
+                ? "after:absolute after:h-[3px] after:bg-cyan-750 after:bottom-0 after:-left-[0.06rem] after:-right-[0.06rem] bg-cyan-50"
                 : ""
             }`}
         >
@@ -246,7 +246,7 @@ const AppShell: FC<Props> = () => {
           className={`navLinks
             px-2 ${
               location.pathname === "/app/customers"
-                ? "border-b-[3px] border-b-cyan-750 bg-cyan-50"
+                ? "after:absolute after:h-[3px] after:bg-cyan-750 after:bottom-0 after:-left-[0.06rem] after:-right-[0.06rem] bg-cyan-50"
                 : ""
             }`}
         >
@@ -260,7 +260,7 @@ const AppShell: FC<Props> = () => {
           className={`navLinks
             px-2 ${
               location.pathname === "/app/inventory"
-                ? "border-b-[3px] border-b-cyan-750 bg-cyan-50"
+                ? "after:absolute after:h-[3px] after:bg-cyan-750 after:bottom-0 after:-left-[0.06rem] after:-right-[0.06rem] bg-cyan-50"
                 : ""
             }`}
         >
@@ -274,7 +274,7 @@ const AppShell: FC<Props> = () => {
           className={`navLinks
             px-2 ${
               location.pathname === "/app/online-store"
-                ? "border-b-[3px] border-b-cyan-750 bg-cyan-50"
+                ? "after:absolute after:h-[3px] after:bg-cyan-750 after:bottom-0 after:-left-[0.06rem] after:-right-[0.06rem] bg-cyan-50"
                 : ""
             }`}
         >
@@ -288,7 +288,7 @@ const AppShell: FC<Props> = () => {
           className={`navLinks 
             px-2 ${
               location.pathname === "/app/settings"
-                ? "border-b-[3px] border-b-cyan-750 bg-cyan-50"
+                ? "after:absolute after:h-[3px] after:bg-cyan-750 after:bottom-0 after:-left-[0.06rem] after:-right-[0.06rem] bg-cyan-50"
                 : ""
             }`}
         >

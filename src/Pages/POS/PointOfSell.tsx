@@ -119,15 +119,15 @@ const PointOfSell: FC<Props> = () => {
                   type="search"
                   name="point_of_sale_main_search"
                   id="point_of_sale_main_search"
-                  className="h-full w-full rounded p-2 px-3 pl-9 text-xs text-slate-600 placeholder:text-slate-400
-              border-slate-300 focus:border-cyan-750 focus:ring-0 font-medium"
+                  className="h-full w-full rounded-sm p-2 px-3 pl-9 text-xs text-slate-600 placeholder:text-slate-400
+              border-slate-300 border-[1.5px] focus:border-cyan-750 focus:ring-0 font-medium"
                   placeholder="Quick Search ..."
                 />
               </div>
               <button
                 className="w-28 h-full bg-slate-50
-             border border-slate-300 rounded-sm flex items-center justify-center focus:outline-none
-             space-x-3 text-slate-600 hover:bg-cyan-750 hover:text-white transition-all"
+             border-[1.5px] border-slate-300 rounded-sm flex items-center justify-center focus:outline-none
+             space-x-3 text-slate-600 hover:bg-cyan-750 hover:border-cyan-750 hover:text-white transition-all"
               >
                 <span className="uppercase font-semibold text-xs">Scan</span>
                 <TbScan className="text-xl" />
@@ -277,11 +277,11 @@ const PointOfSell: FC<Props> = () => {
                 <img
                   src={pos_empty}
                   alt="no_data"
-                  className="h-[4rem] w-[3.5rem] opacity-40 overflow-hidden object-center objct-fit"
+                  className="h-[4rem] w-[4rem] opacity-80 overflow-hidden object-center objct-fit"
                 />
                 <p className="text-sm font-medium text-slate-400 text-center">
                   There's no data to display, you either out of stock
-                  <br /> or searched product doesn't exit
+                  <br /> or searched for none existing item
                 </p>
                 <Link to="/app/inventory">
                   <div
@@ -289,7 +289,7 @@ const PointOfSell: FC<Props> = () => {
               text-white text-xs text-center font-medium
                capitalize flex items-center justify-center rounded-sm"
                   >
-                    add stock
+                    add product
                   </div>
                 </Link>
               </div>

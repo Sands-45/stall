@@ -39,7 +39,7 @@
 
   .navLinks {
     @apply flex items-center justify-center space-x-1 text-xs text-slate-800 font-semibold
-           h-full w-full col-span-1 border-r border-r-slate-200 focus:outline-none;
+           h-full w-full col-span-1 border-r border-r-slate-200 focus:outline-none relative;
   }
 
   .inventory_input {

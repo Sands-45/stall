@@ -72,14 +72,14 @@ const Cart: FC<Props> = ({
               name="search_cart"
               id="search_cart"
               placeholder="Search Cart ..."
-              className="w-full h-10 rounded border border-slate-200 px-4 pr-10
+              className="w-full h-10 rounded-sm border border-slate-200 px-4 pr-10
            text-xs text-slate-600 placeholder:text-slate-400 bg-slate-50
            focus:ring-0 focus:border-cyan-750 transition-all"
             />
           </label>
           <button
             onClick={() => setCart({})}
-            className="h-10 w-10 rounded bg-slate-50 hover:bg-red-100 transition-all border border-red-100 
+            className="h-10 w-10 rounded-sm bg-slate-50 hover:bg-red-100 transition-all border border-red-100 
          hover:border-red-300 flex items-center justify-center text-lg text-red-500"
           >
             <TbTrash />

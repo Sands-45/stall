@@ -77,10 +77,13 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
       return combined?.replace(/\s/g, "");
     };
 
-    if (
-      activityObj?.new &&
-      localData()?.filter((data: any) => data.status === "open" && data?.user?.email === user?.email).length <= 0
-    ) {
+    const currentFloat =
+      cash_float?.filter(
+        (data: any) =>
+          data.status === "open" && data?.user?.email === user?.email
+      )[0] ?? null;
+
+    if (activityObj?.new && !currentFloat) {
       dispatch(
         updateFloat([
           ...localData(),
@@ -154,29 +157,29 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
         note: "",
       });
     } else {
-      if (floatFunction === "add" && activeFloat?.status === "open"  && activeFloat?.user?.email === user?.email) {
+      if (floatFunction === "add" && currentFloat) {
         if (localData()) {
           //Save local
           window.localStorage.setItem(
             "cash_float",
             JSON.stringify([
               ...localData().filter(
-                (data: any) => data.id_two !== activeFloat?.id_two
+                (data: any) => data.id_two !== currentFloat?.id_two
               ),
               {
-                ...activeFloat,
+                ...currentFloat,
                 total:
                   Number(activityObj?.amount) /
                     selectedCurrency?.rate_multiplier +
-                  parseFloat(activeFloat?.total),
+                  parseFloat(currentFloat?.total),
                 additional:
-                  activeFloat?.additional +
+                  currentFloat?.additional +
                   Number(activityObj?.amount) /
                     selectedCurrency?.rate_multiplier,
                 status: "open",
                 user: user,
                 activities: [
-                  ...activeFloat?.activities,
+                  ...currentFloat?.activities,
                   {
                     ...activityObj,
                     amount:
@@ -196,22 +199,22 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
           dispatch(
             updateFloat([
               ...localData().filter(
-                (data: any) => data.id_two !== activeFloat?.id_two
+                (data: any) => data.id_two !== currentFloat?.id_two
               ),
               {
-                ...activeFloat,
+                ...currentFloat,
                 total:
                   Number(activityObj?.amount) /
                     selectedCurrency?.rate_multiplier +
-                  parseFloat(activeFloat?.total),
+                  parseFloat(currentFloat?.total),
                 additional:
-                  activeFloat?.additional +
+                  currentFloat?.additional +
                   Number(activityObj?.amount) /
                     selectedCurrency?.rate_multiplier,
                 status: "open",
                 user: user,
                 activities: [
-                  ...activeFloat?.activities,
+                  ...currentFloat?.activities,
                   {
                     ...activityObj,
                     amount:
@@ -234,24 +237,24 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
             note: "",
           });
         }
-      } else if (floatFunction === "minus" && activeFloat?.status === "open"  && activeFloat?.user?.email === user?.email) {
+      } else if (floatFunction === "minus" && currentFloat) {
         //Save local
         window.localStorage.setItem(
           "cash_float",
           JSON.stringify([
             ...localData().filter(
-              (data: any) => data.id_two !== activeFloat?.id_two
+              (data: any) => data.id_two !== currentFloat?.id_two
             ),
             {
-              ...activeFloat,
+              ...currentFloat,
               total:
-                parseFloat(activeFloat?.total) -
+                parseFloat(currentFloat?.total) -
                 Number(activityObj?.amount) / selectedCurrency?.rate_multiplier,
               expenses:
-                activeFloat?.expenses +
+                currentFloat?.expenses +
                 Number(activityObj?.amount) / selectedCurrency?.rate_multiplier,
               activities: [
-                ...activeFloat?.activities,
+                ...currentFloat?.activities,
                 {
                   ...activityObj,
                   amount:
@@ -273,20 +276,20 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
           dispatch(
             updateFloat([
               ...localData().filter(
-                (data: any) => data.id_two !== activeFloat?.id_two
+                (data: any) => data.id_two !== currentFloat?.id_two
               ),
               {
-                ...activeFloat,
+                ...currentFloat,
                 total:
-                  parseFloat(activeFloat?.total) -
+                  parseFloat(currentFloat?.total) -
                   Number(activityObj?.amount) /
                     selectedCurrency?.rate_multiplier,
                 expenses:
-                  activeFloat?.expenses +
+                  currentFloat?.expenses +
                   Number(activityObj?.amount) /
                     selectedCurrency?.rate_multiplier,
                 activities: [
-                  ...activeFloat?.activities,
+                  ...currentFloat?.activities,
                   {
                     ...activityObj,
                     amount:
@@ -390,7 +393,9 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
                   <div className="col-span-1 h-10 flex items-center justify-between">
                     {cash_float?.length >= 1 &&
                     cash_float?.filter(
-                      (data: any) => data?.status?.toLowerCase() === "open"  && data?.user?.email === user?.email
+                      (data: any) =>
+                        data?.status?.toLowerCase() === "open" &&
+                        data?.user?.email === user?.email
                     )?.length >= 1 ? (
                       <>
                         <button
@@ -523,10 +528,10 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
                                       updateFloat([
                                         ...cash_float.filter(
                                           (data: any) =>
-                                            data.id_two !== activeFloat?.id_two
+                                            data.id_two !== float?.id_two
                                         ),
                                         {
-                                          ...activeFloat,
+                                          ...float,
                                           status: "closed",
                                           edited: true,
                                         },
@@ -539,10 +544,10 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
                                       JSON.stringify([
                                         ...cash_float.filter(
                                           (data: any) =>
-                                            data.id_two !== activeFloat?.id_two
+                                            data.id_two !== float?.id_two
                                         ),
                                         {
-                                          ...activeFloat,
+                                          ...float,
                                           status: "closed",
                                           edited: true,
                                         },
