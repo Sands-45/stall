@@ -129,7 +129,7 @@ const AppShell: FC<Props> = () => {
             to="/portal"
             className="focus:outline-none outline-none w-fit h-fit"
           >
-            <div className="h-8 px-3 rounded-sm border-2 border-cyan-750 bg-slate-100 text-sm text-cyan-750 font-bold flex items-center justify-center space-x-2">
+            <div className="h-8 px-3 rounded-sm border-2 border-cyan-750 bg-slate-50 text-sm text-cyan-750 font-bold flex items-center justify-center space-x-2">
               <MdTv className="text-lg" />
               <span>Portal</span>
             </div>

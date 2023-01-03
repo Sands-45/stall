@@ -76,12 +76,12 @@ const Sale: FC<Props> = ({
           return (
             <div
               key={sale?.transact_id}
-              className={`h-14 w-[99.5%] m-auto border-b border-slate-200 grid grid-cols-5 md:grid-cols-12 gap-1 
-    cursor-pointer hover:bg-slate-50 ${
+              className={`h-[14.3%] w-full overflow-hidden border-b border-slate-200 grid
+               grid-cols-5 md:grid-cols-12 gap-1 cursor-pointer hover:bg-slate-50 ${
       currentSale?.transact_id === sale?.transact_id && "bg-slate-100"
     } transition-all`}
             >
-              <div className="h-full col-span-1 pr-2 overflow-hidden flex items-center justify-center text-ellipsis whitespace-nowrap">
+              <div className="h-full col-span-1 overflow-hidden flex items-center justify-center text-ellipsis whitespace-nowrap">
                 <input
                   type="checkbox"
                   name="select_all"
@@ -128,18 +128,18 @@ const Sale: FC<Props> = ({
                 onClick={() => {
                   saleClickFunc(sale);
                 }}
-                className="h-full col-span-2 overflow-hidden px-2 flex items-center 
+                className="h-full col-span-2 overflow-hidden flex items-center space-x-2 
           text-xs text-slate-400 font-semibold text-ellipsis whitespace-nowrap"
               >
                 <div
-                  className="h-9 w-9 rounded bg-cyan-900 text-white flex items-center justify-center text-lg uppercase
+                  className="h-8 w-8 rounded bg-cyan-900 text-white flex items-center justify-center text-sm uppercase
         "
                 >
                   {sale?.customers_details?.name
                     ? sale?.customers_details?.name?.charAt(0)
                     : "U"}
                 </div>
-                <div className="w-[calc(100%-2.5rem)] h-full flex flex-col px-2 justify-center space-y-0">
+                <div className="w-[calc(100%-2.5rem)] h-full flex flex-col justify-center space-y-0">
                   <span className="text-slate-600 font-semibold text-xs capitalize w-full whitespace-nowrap overflow-hidden text-ellipsis">
                     {sale?.customers_details?.name
                       ? sale?.customers_details?.name
@@ -151,7 +151,7 @@ const Sale: FC<Props> = ({
                 onClick={() => {
                   saleClickFunc(sale);
                 }}
-                className="h-full col-span-3 overflow-hidden hidden md:flex flex-col px-2 justify-center space-y-0 
+                className="h-full col-span-3 overflow-hidden hidden md:flex flex-col justify-center space-y-0 
           text-xs text-slate-600 font-semibold text-ellipsis whitespace-nowrap uppercase"
               >
                 <span className="font-medium text-xs capitalize w-full whitespace-nowrap overflow-hidden text-ellipsis">
@@ -162,7 +162,7 @@ const Sale: FC<Props> = ({
                 onClick={() => {
                   saleClickFunc(sale);
                 }}
-                className="h-full col-span-2 overflow-hidden hidden md:flex flex-col px-2 justify-center space-y-0 
+                className="h-full col-span-2 overflow-hidden hidden md:flex flex-col justify-center space-y-0 
           text-xs text-slate-600 font-semibold text-ellipsis whitespace-nowrap uppercase"
               >
                 <span className="font-medium text-xs capitalize w-full whitespace-nowrap overflow-hidden text-ellipsis">
@@ -178,7 +178,7 @@ const Sale: FC<Props> = ({
                 onClick={() => {
                   saleClickFunc(sale);
                 }}
-                className="h-full col-span-2 overflow-hidden px-2 hidden md:flex items-center 
+                className="h-full col-span-2 overflow-hidden hidden md:flex items-center 
           text-xs text-slate-600 font-semibold text-ellipsis whitespace-nowrap uppercase"
               >
                 <div
@@ -199,14 +199,14 @@ const Sale: FC<Props> = ({
              : ""
          }`}
                 >
-                  {sale?.status}
+                  <span>{sale?.status}</span>
                 </div>
               </div>
               <div
                 onClick={() => {
                   saleClickFunc(sale);
                 }}
-                className="h-full col-span-1 overflow-hidden px-2 flex items-center 
+                className="h-full col-span-1 overflow-hidden flex items-center 
           text-xs text-slate-600 font-semibold text-ellipsis whitespace-nowrap uppercase"
               >
                 {selectedCurrency?.symbol}&nbsp;
@@ -220,7 +220,7 @@ const Sale: FC<Props> = ({
                 onClick={() => {
                   saleClickFunc(sale);
                 }}
-                className="h-full col-span-1 overflow-hidden px-2 flex items-center 
+                className="h-full col-span-1 overflow-hidden flex items-center 
           text-xs text-slate-600 font-semibold text-ellipsis whitespace-nowrap uppercase"
               >
                 {selectedCurrency?.symbol}&nbsp;

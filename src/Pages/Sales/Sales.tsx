@@ -8,6 +8,8 @@ import {
   TbSortDescending,
   TbTrash,
   TbDownload,
+  TbCaretLeft,
+  TbCaretRight,
 } from "react-icons/tb";
 import no_sales from "../../Assets/no_sales.png";
 import { Link } from "react-router-dom";
@@ -38,7 +40,7 @@ const Sales: FC<Props> = () => {
   const [sortBy, setSort] = useState<string>(
     initialSort ? JSON.parse(initialSort) : "date"
   );
-  const sales_date = useSelector((state:RootState)=>state.Sales.sales_date)
+  const sales_date = useSelector((state: RootState) => state.Sales.sales_date);
   const [openDatePicker, setDateOpen] = useState<boolean>(false);
   const [searchValue, setSearch] = useState<any>("");
   const sales = useMemo(() => {
@@ -138,6 +140,7 @@ const Sales: FC<Props> = () => {
   const [showActions, setActions] = useState<boolean>(false);
   const [currentSale, setCurrentSale] = useState<any>();
   const [statsData, setStats] = useState<any>(null);
+  const [pageNumber, setPage] = useState<number>(7);
 
   //Send Data to A service worker for filtering ====
   const worker = useMemo(
@@ -245,16 +248,16 @@ const Sales: FC<Props> = () => {
             </label>
           </div>
 
-          <DatePicker 
-          openDatePicker={openDatePicker}
-          setDateOpen={setDateOpen}
-          dates={sales_date}
-          additionalStyles={`h-10 w-full bg-white rounded border ${
-            openDatePicker ? "border-cyan-750" : "border-slate-200"
-          } text-xs text-slate-500 font-medium`}
-          localName="sales_date"
-          changeDate={changeSalesDate}
-          parentWidth="col-span-1"
+          <DatePicker
+            openDatePicker={openDatePicker}
+            setDateOpen={setDateOpen}
+            dates={sales_date}
+            additionalStyles={`h-10 w-full bg-white rounded border ${
+              openDatePicker ? "border-cyan-750" : "border-slate-200"
+            } text-xs text-slate-500 font-medium`}
+            localName="sales_date"
+            changeDate={changeSalesDate}
+            parentWidth="col-span-1"
           />
 
           <div
@@ -521,7 +524,7 @@ const Sales: FC<Props> = () => {
         {/**Sales Table */}
         <div className="w-full h-[calc(100%-19rem)] md:h-[calc(100%-8.5rem)] bg-white border border-slate-200 rounded overflow-hidden">
           <div className="h-12 w-full bg-slate-50 border-b border-slate-200 grid grid-cols-5 md:grid-cols-12 gap-1 text-slate-500">
-            <div className="h-full col-span-1 overflow-hidden px-1 flex items-center justify-center text-ellipsis whitespace-nowrap">
+            <div className="h-full col-span-1 overflow-hidden flex items-center justify-center text-ellipsis whitespace-nowrap">
               <input
                 type="checkbox"
                 name="select_all"
@@ -543,13 +546,13 @@ const Sales: FC<Props> = () => {
               />
             </div>
             <div
-              className="h-full col-span-2 overflow-hidden px-1 flex items-center 
+              className="h-full col-span-2 overflow-hidden flex items-center 
           text-xs font-bold text-ellipsis whitespace-nowrap uppercase"
             >
               customer's Name
             </div>
             <div
-              className="h-full col-span-3 overflow-hidden px-1 hidden md:flex items-center 
+              className="h-full col-span-3 overflow-hidden hidden md:flex items-center 
           text-xs font-bold text-ellipsis whitespace-nowrap uppercase"
             >
               payment date
@@ -579,10 +582,10 @@ const Sales: FC<Props> = () => {
               Profit
             </div>
           </div>
-          <div className="w-full h-[calc(100%-3rem)] overflow-hidden p-1 pl-0">
-            <div className="w-full h-full overflow-hidden overflow-y-scroll">
+          <div className="w-full h-[calc(100%-3rem)] overflow-hidden relative">
+            <div className="w-full h-[calc(100%-3rem)] overflow-hidden flex flex-col">
               <Sale
-                sales={sales}
+                sales={sales?.slice(pageNumber - 7, pageNumber)}
                 currentView={currentView}
                 markItem={markItem}
                 markedArray={markedArray}
@@ -612,6 +615,33 @@ const Sales: FC<Props> = () => {
                   </Link>
                 </div>
               )}
+            </div>
+
+            {/**Pagenation */}
+            <div className="h-12 w-full flex items-center justify-center absolute bottom-0 space-x-3">
+              <button
+                onClick={() => {
+                  setPage((prev: any) =>
+                    prev > 7 ? prev - 7 : prev === 7 ? 7 : 7
+                  );
+                }}
+                className="h-7 w-7 rounded border-[1.5px] border-slate-200 bg-slate-50 flex items-center justify-center
+                text-slate-500 text-lg"
+              >
+                <TbCaretLeft />
+              </button>
+              <span className="text-[0.65rem] font-semibold text-slate-600 lowercasee">
+                {pageNumber - 7 + 1} &nbsp; to &nbsp; {pageNumber} &nbsp; of &nbsp; {sales.length}
+              </span>
+              <button
+                onClick={() => {
+                  setPage((prev: any) => prev + 7);
+                }}
+                className="h-7 w-7 rounded border-[1.5px] border-slate-200 bg-slate-50 flex items-center justify-center
+                text-slate-500 text-lg"
+              >
+                <TbCaretRight />
+              </button>
             </div>
           </div>
         </div>

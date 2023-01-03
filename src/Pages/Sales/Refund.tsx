@@ -446,7 +446,7 @@ const Refund: FC<Props> = ({
               ])
             );
 
-            //Save Cash Float Local local
+            //Save Cash Float Local local˚
             window.localStorage.setItem(
               "cash_float",
               JSON.stringify([

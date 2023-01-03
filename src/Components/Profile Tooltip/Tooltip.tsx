@@ -2,7 +2,7 @@ import { FC } from "react";
 import { signOut, getAuth } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { changeLocation } from "../../Redux/Slices/UserSlice";
+import { changeLocation, updateUserData } from "../../Redux/Slices/UserSlice";
 import { AppDispatch, RootState } from "../../Redux/store";
 import {
   TbDoorEnter,
@@ -95,6 +95,7 @@ const Tooltip: FC<Props> = ({ position }) => {
         }
         onClick={() => {
           dispatch(changeLocation("Stall"));
+          dispatch(updateUserData(null));
           signOut(auth).then(() => {
             window.localStorage.clear();
             document.title = "Stall";

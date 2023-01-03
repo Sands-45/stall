@@ -69,17 +69,17 @@ const DatePicker: FC<Props> = ({ openDatePicker, setDateOpen, dates,additionalSt
           setDateOpen(true);
         }}
         className={`${additionalStyles} relative
-  overflow-hidden flex justify-between items-center p-1`}
+  overflow-hidden flex justify-between items-center`}
       >
         <div
-          className={`h-full w-9 border-r border-slate-300 flex items-center justify-center
+          className={`h-full w-9 border-r border-slate-200 flex items-center justify-center
     text-base`}
         >
           <TbCalendarEvent />
         </div>
         <div
           className="w-[calc(100%-2.5rem)] h-full flex 
-      items-center justify-between space-x-1 px-3"
+      items-center justify-between space-x-1 px-2"
         >
           <span className="w-[40%] whitespace-nowrap overflow-hidden text-ellipsis">{new Date(dates?.start)?.toLocaleDateString()}</span>-
           <span className="w-[40%] whitespace-nowrap overflow-hidden text-ellipsis">{new Date(dates?.end)?.toLocaleDateString()}</span>

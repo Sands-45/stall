@@ -5,7 +5,7 @@ import no_float from "../../Assets/no_float.png";
 import float_no_activity from "../../Assets/float_no_activity.png";
 import { updateFloat } from "../../Redux/Slices/SalesSlice";
 import { numberWithSpaces } from "../../Reusable Functions/Functions";
-import { TbPrinter } from "react-icons/tb";
+import { TbPrinter, TbFilter } from "react-icons/tb";
 import DatePicker from "../../Components/Date Picker/DatePicker";
 import { changeFloatDate } from "../../Redux/Slices/SalesSlice";
 
@@ -41,6 +41,12 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
   );
   const [floatFunction, setFunction] = useState("");
   const [openDatePicker, setDateOpen] = useState<boolean>(false);
+  const [logsType, setType] = useState<any>([
+    { name: "All", value: "", field: "note", active: true },
+    { name: "Expenses", value: "-", field: "amount", active: false },
+    { name: "Void", value: "Voided", field: "note", active: false },
+    { name: "Refund", value: "Refund", field: "note", active: false },
+  ]);
 
   //Update Selected Float On change
   useEffect(() => {
@@ -317,6 +323,8 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
     }
   };
 
+  //console.log(new Blob([JSON.stringify(activeFloat)]).size)
+
   //Component
   return (
     <>
@@ -331,17 +339,57 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
        no-scrollbar no-scrollbar::-webkit-scrollbar h-fit"
         >
           <div className="w-full h-10 print:hidden flex justify-between">
-            <DatePicker
-              openDatePicker={openDatePicker}
-              setDateOpen={setDateOpen}
-              dates={cash_float_date}
-              additionalStyles={`h-10 w-[15rem] bg-white rounded border ${
-                openDatePicker ? "border-cyan-750" : "border-slate-300"
-              } text-xs text-slate-600`}
-              localName="cash_float_date"
-              changeDate={changeFloatDate}
-              parentWidth="w-fit"
-            />
+            <div className="flex items-center justify-between space-x-4 h-full w-[48.85%]">
+              <DatePicker
+                openDatePicker={openDatePicker}
+                setDateOpen={setDateOpen}
+                dates={cash_float_date}
+                additionalStyles={`h-10 w-[14rem] bg-white rounded border ${
+                  openDatePicker ? "border-cyan-750" : "border-slate-300"
+                } text-xs text-slate-600`}
+                localName="cash_float_date"
+                changeDate={changeFloatDate}
+                parentWidth="w-fit"
+              />
+
+              <div
+                className="rounded h-full w-[calc(100%-15rem)] bg-white relative 
+             border border-slate-300 hover:border-cyan-750 transition-all
+              hidden lg:flex items-center justify-between px-3 text-[0.65rem] text-slate-600 font-medium cursor-pointer group"
+              >
+                <span className="uppercase [0.65rem]">
+                  {logsType?.filter((data: any) => data?.active)[0]?.name}
+                </span>
+                <TbFilter className="text-lg group-hover:-rotate-180 transition-all" />
+                <div
+                  className="absolute bg-slate-50 border border-slate-300
+            left-0 right-0 top-[2.45rem] rounded shadow-xl w-full h-fit p-2 z-[99] hidden group-hover:flex flex-col"
+                >
+                  {logsType?.map((opt: any) => {
+                    return (
+                      <button
+                        key={opt?.name}
+                        onClick={() => {
+                          setType((prev: any) => [
+                            ...prev
+                              ?.filter((data: any) => data?.name !== opt?.name)
+                              ?.map((data: any) => ({
+                                ...data,
+                                active: false,
+                              })),
+                            { ...opt, active: true },
+                          ]);
+                        }}
+                        className="w-full h-8 outline-none focus:outline-none px-1 text-xs text-slate-500 font-medium
+              hover:transition-all hover:bg-white last:border-0 border-b border-slate-300 text-left capitalize"
+                      >
+                        {opt?.name}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
             {/**Close Float Btn */}
             <button
               onClick={() => {
@@ -907,8 +955,14 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
                         </span>
                       </div>
                     </div>
-                    {[...activeFloat?.activities]
-                      ?.sort((a: any, b: any) => b.time - a.time)
+                    {[...activeFloat?.activities]?.filter((log: any) =>
+                        log[
+                          logsType?.filter((data: any) => data?.active)[0]?.field
+                        ]?.toString()?.includes(
+                          logsType?.filter((data: any) => data?.active)[0]
+                            ?.value?.toString()
+                        )
+                      )?.sort((a: any, b: any) => b.time - a.time)
                       ?.map((log: any, index: number) => {
                         return (
                           <li
