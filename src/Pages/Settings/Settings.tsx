@@ -10,6 +10,7 @@ import {
   TbTruckDelivery,
   TbBusinessplan,
 } from "react-icons/tb";
+import ProfleSettings from "./Profile Settings/ProfleSettings";
 
 type Props = {};
 
@@ -56,67 +57,72 @@ const Settings: FC<Props> = () => {
       description: "upgrade your plans and manage subscription",
     },
   ];
-  const [activetab, setTab] = useState<any>();
+  const [activetab, setTab] = useState<any>(null);
 
   //Component
   return (
     <div className="w-full h-full px-[2.5%] py-4">
-      <div
-        className="w-full h-full p-2 px-0 overflow-hidden overflow-y-scroll no-scrollbar no-scrollbar::-webkit-scrollbar
+      {!activetab && (
+        <div
+          className="w-full h-full p-2 px-0 overflow-hidden overflow-y-scroll no-scrollbar no-scrollbar::-webkit-scrollbar
          grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 3xl:grid-cols-4 gap-2 auto-rows-min"
-      >
-        {menuList?.map((item: any) => {
-          return (
-            <div
-              onClick={() => {
-                setTab(item);
-              }}
-              key={item?.id}
-              className="bg-white rounded col-span-1 h-24 border border-slate-300 p-3 grid gap-4 grid-cols-12
+        >
+          {menuList?.map((item: any) => {
+            return (
+              <div
+                onClick={() => {
+                  setTab(item);
+                }}
+                key={item?.id}
+                className="bg-white rounded col-span-1 h-24 border border-slate-300 p-3 grid gap-4 grid-cols-12
         hover:border-cyan-750 transition-all cursor-pointer select-none"
-            >
-              <div className="col-span-2 h-full flex items-center justify-center">
-                <div className="h-10 w-10 rounded-full bg-cyan-750/20 flex items-center justify-center text-xl text-cyan-800">
-                  {item?.name === "profile settings" ? (
-                    <TbUser />
-                  ) : item?.name === "team" ? (
-                    <TbUsers />
-                  ) : item?.name === "permissions" ? (
-                    <TbShieldLock />
-                  ) : item?.name === "currencies" ? (
-                    <TbSwitchVertical />
-                  ) : item?.name === "workspace details" ? (
-                    <TbBuildingStore />
-                  ) : item?.name === "payments" ? (
-                    <TbCreditCard />
-                  ) : item?.name === "services" ? (
-                    <TbTruckDelivery />
-                  ) : (
-                    <TbBusinessplan />
-                  )}
+              >
+                <div className="col-span-2 h-full flex items-center justify-center">
+                  <div className="h-10 w-10 rounded-full bg-cyan-750/20 flex items-center justify-center text-xl text-cyan-800">
+                    {item?.name === "profile settings" ? (
+                      <TbUser />
+                    ) : item?.name === "team" ? (
+                      <TbUsers />
+                    ) : item?.name === "permissions" ? (
+                      <TbShieldLock />
+                    ) : item?.name === "currencies" ? (
+                      <TbSwitchVertical />
+                    ) : item?.name === "workspace details" ? (
+                      <TbBuildingStore />
+                    ) : item?.name === "payments" ? (
+                      <TbCreditCard />
+                    ) : item?.name === "services" ? (
+                      <TbTruckDelivery />
+                    ) : (
+                      <TbBusinessplan />
+                    )}
+                  </div>
+                </div>
+                <div className="col-span-8 h-full flex flex-col justify-center space-y-1 overflow-hidden">
+                  <span
+                    className="text-sm font-semibold text-slate-600 capitalize overflow-hidden whitespace-nowrap
+            text-ellipsis"
+                  >
+                    {item?.name}
+                  </span>
+                  <span
+                    className="text-xs font-medium text-slate-500 capitalize w-full overflow-hidden whitespace-nowrap
+            text-ellipsis"
+                  >
+                    {item?.description}
+                  </span>
+                </div>
+                <div className="col-span-2 h-full flex items-center justify-center text-slate-600 text-xl">
+                  <TbChevronRight />
                 </div>
               </div>
-              <div className="col-span-8 h-full flex flex-col justify-center space-y-1 overflow-hidden">
-                <span
-                  className="text-sm font-semibold text-slate-600 capitalize overflow-hidden whitespace-nowrap
-            text-ellipsis"
-                >
-                  {item?.name}
-                </span>
-                <span
-                  className="text-xs font-medium text-slate-500 capitalize w-full overflow-hidden whitespace-nowrap
-            text-ellipsis"
-                >
-                  {item?.description}
-                </span>
-              </div>
-              <div className="col-span-2 h-full flex items-center justify-center text-slate-600 text-xl">
-                <TbChevronRight />
-              </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
+      {activetab && activetab?.name === "profile settings" && (
+        <ProfleSettings setTab={setTab} />
+      )}
     </div>
   );
 };
