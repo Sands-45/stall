@@ -71,7 +71,8 @@ const ProductPreview: FC<Props> = ({
   useEffect(() => {
     if (
       currentProd?.length >= 1 &&
-      Number(currentProd[0]?.in_stock) < quantity && currentProd[0]?.has_stock_count
+      Number(currentProd[0]?.in_stock) < quantity &&
+      currentProd[0]?.has_stock_count
     ) {
       setQuantity(Number(currentProd[0]?.in_stock));
     }
@@ -86,7 +87,7 @@ const ProductPreview: FC<Props> = ({
      justify-center bg-cyan-750/40 overflow-hidden overflow-y-scroll`}
     >
       <div
-        className="w-[45rem] h-[30rem] bg-white rounded-md relative p-4 
+        className="w-[45rem] h-[27rem] bg-white rounded-sm relative p-4 
       grid grid-cols-4 gap-4"
       >
         {/**Close Btn */}
@@ -103,14 +104,14 @@ const ProductPreview: FC<Props> = ({
             setCustomization([]);
             setPreview(false);
           }}
-          className="absolute -top-3 -right-3 h-7 w-7 rounded-sm
-         bg-cyan-750 hover:bg-red-600 border border-white transition-all text-white text-sm"
+          className="absolute top-0 -right-9 h-7 w-7 rounded-sm
+         bg-red-600 hover:opacity-80 border border-white transition-all text-white text-sm"
         >
           &times;
         </button>
 
         {/**images  Prev*/}
-        <div className="col-span-2 w-full h-full grid grid-rows-6 gap-4 overflow-hidden">
+        <div className="col-span-2 w-full h-full flex flex-col gap-4 overflow-hidden">
           <img
             onError={(e) => {
               e.currentTarget.src = no_gallery;
@@ -118,12 +119,12 @@ const ProductPreview: FC<Props> = ({
             onClick={(e) => zoomElement(e)}
             src={selectedImg ? selectedImg : no_gallery}
             alt="prod_preview"
-            className="w-full row-span-5 h-full object-center object-fit object-contain 
-          p-4 bg-slate-50 border border-slate-200 rounded overflow-hidden cursor-zoom-in"
+            className="w-full h-[80%] object-center object-fit object-contain 
+          p-4 bg-slate-200 border border-slate-200 rounded overflow-hidden cursor-zoom-in"
           />
           <div
-            className="w-full row-span-1 grid grid-cols-4 gap-1
-           overflow-hidden rounded bg-slate-50 border border-slate-200 p-1"
+            className="w-full h-[19%] grid grid-cols-4 gap-1
+           overflow-hidden rounded bg-slate-200 border border-slate-200 p-1"
           >
             {product_obj?.gallery?.length >= 1 &&
               product_obj?.gallery?.map((img: any) => {
@@ -146,21 +147,21 @@ const ProductPreview: FC<Props> = ({
         </div>
 
         {/**Details*/}
-        <div className="col-span-2 w-full h-full flex flex-col justify-between">
+        <div className="col-span-2 w-full h-full flex flex-col justify-between overflow-hidden">
           <div
-            className="w-full h-full overflow-hidden flex flex-col 
-           space-y-4 pt-6"
+            className="w-full h-[calc(1005-4rem)] overflow-hidden flex flex-col 
+           space-y-4"
           >
-            <div className="w-full h-hit flex items-center pb-2 border-b border-slate-200">
+            <div className="w-full h-hit flex flex-col space-y-1 pb-4 border-b border-slate-200">
               <span
-                className="text-xs font-semibold text-slate-600 
-                whitespace-nowrap overflow-hidden text-ellipsis uppercase w-[60%]"
+                className="text-lg font-bold text-slate-700 
+                whitespace-nowrap overflow-hidden text-ellipsis uppercase w-full"
               >
                 {product_obj?.name}
               </span>
               <span
-                className="text-xs text-end font-semibold text-slate-500 
-                whitespace-nowrap overflow-hidden text-ellipsis uppercase w-[40%]"
+                className="text-sm font-bold text-slate-600 
+                whitespace-nowrap overflow-hidden text-ellipsis uppercase w-full"
               >
                 {selectedCurrency?.symbol}&nbsp;
                 {numberWithSpaces(
@@ -171,11 +172,29 @@ const ProductPreview: FC<Props> = ({
                   ).toFixed(2)
                 )}
               </span>
+              <small
+                className="text-[0.7rem] font-medium text-slate-500 
+                whitepsace-nowrap  w-full overflow-hidden text-ellipsis"
+              >
+                In Stock :&nbsp;
+                <span className="text-cyan-750 text-xs font-semibold">
+                  {currentProd[0]?.has_stock_count
+                    ? Number(currentProd[0]?.in_stock)
+                    : "Unlimited" ?? 0}
+                </span>
+              </small>
             </div>
             <p
               className="text-xs font-normal text-slate-400 overflow-hidden
-             text-ellipsis h-[6rem] w-full p-2 rounded border-dashed border-2 border-slate-200"
+             text-ellipsis max-h-[6rem] w-full h-[6rem]"
             >
+              <span
+                className="text-xs font-bold text-slate-600 
+                whitespace-nowrap overflow-hidden text-ellipsis uppercase w-full"
+              >
+                Description
+              </span>
+              <br />
               {product_obj?.description}
             </p>
             <div
@@ -183,23 +202,12 @@ const ProductPreview: FC<Props> = ({
           flex flex-col"
             >
               <div
-                className="text-xs h-6 w-full font-semibold text-slate-500 flex items-center justify-between 
+                className="text-xs h-6 w-full font-bold text-slate-600  
                 whitepsace-nowrap overflow-hidden text-ellipsis uppercase"
               >
-                <span>Customization</span>
-                <small
-                  className="text-[0.7rem] font-medium text-slate-500 
-                whitepsace-nowrap  w-[40%] text-end overflow-hidden text-ellipsis"
-                >
-                  In Stock :&nbsp;
-                  <span className="text-cyan-750 text-xs font-semibold">
-                    {currentProd[0]?.has_stock_count
-                      ? Number(currentProd[0]?.in_stock)
-                      : "Unlimited" ?? 0}
-                  </span>
-                </small>
+                Customization
               </div>
-              <div className="w-full h-[11.5rem] flex flex-col space-y-2 pt-2 px-2 mt-2 overflow-hidden overflow-y-scroll">
+              <div className="w-full h-[7rem] max-h-[7rem] flex flex-col space-y-2 mt-2">
                 {product_obj?.customization_option?.length >= 1 &&
                   product_obj?.customization_option?.map((cust: any) => {
                     return (
@@ -279,7 +287,7 @@ const ProductPreview: FC<Props> = ({
                 onClick={() => {
                   setQuantity((prev: number) => (prev <= 1 ? 1 : prev - 1));
                 }}
-                className="rounded rounded-r-none border border-cyan-750/40
+                className="rounded-sm rounded-r-none border border-cyan-750/40
              h-full w-9 flex items-center justify-center text-base text-cyan-750
              hover:bg-cyan-50 transition-all disabled:cursor-not-allowed disabled:opacity-80"
               >
@@ -300,14 +308,15 @@ const ProductPreview: FC<Props> = ({
                 onClick={() => {
                   if (
                     currentProd?.length >= 1 &&
-                    Number(currentProd[0]?.in_stock) > quantity && currentProd[0]?.has_stock_count
+                    Number(currentProd[0]?.in_stock) > quantity &&
+                    currentProd[0]?.has_stock_count
                   ) {
                     setQuantity((prev: number) => prev + 1);
-                  }else if(!currentProd[0]?.has_stock_count){
+                  } else if (!currentProd[0]?.has_stock_count) {
                     setQuantity((prev: number) => prev + 1);
                   }
                 }}
-                className="rounded rounded-l-none border border-cyan-750/40
+                className="rounded-sm rounded-l-none border border-cyan-750/40
              h-full w-9 flex items-center justify-center text-base text-cyan-750
              hover:bg-cyan-50 transition-all"
               >
