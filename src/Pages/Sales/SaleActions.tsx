@@ -7,10 +7,9 @@ import {
   loadInventoryData,
   updateLocalInventory_Changes,
 } from "../../Redux/Slices/InventorySlice";
-import { addSales, archieveSale } from "../../Redux/Slices/SalesSlice";
+import { addSales, archieveSale ,updateFloat,changeFloatDate } from "../../Redux/Slices/SalesSlice";
 import { updateAlert } from "../../Redux/Slices/NotificationsSlice";
 import Refund from "./Refund";
-import { updateFloat } from "../../Redux/Slices/SalesSlice";
 
 type Props = {
   showActions: boolean;
@@ -30,6 +29,9 @@ const SaleActions: FC<Props> = ({
   );
   const selectedCurrency = useSelector(
     (state: RootState) => state.SettingsData.selectedCurrency
+  );
+  const cash_float_date = useSelector(
+    (state: RootState) => state.Sales.cash_float_date
   );
   const cash_float = useSelector((state: RootState) => state.Sales.cash_float);
   const user = useSelector((state:RootState)=>state.UserInfo.user)
@@ -104,8 +106,16 @@ const SaleActions: FC<Props> = ({
         );
 
         //Update Cash Float
-        let openFloat =
-          cash_float?.filter((data: any) => data.status === "open" && data?.user?.email === user?.email)[0] ?? null;
+      const localFloat = () => {
+        let data = localStorage.getItem("cash_float");
+        return data
+          ? JSON.parse(data)?.filter(
+              (data: any) =>
+                data.status === "open" && data?.user?.email === user?.email
+            )[0]
+          : null;
+      };
+      let openFloat = localFloat();
         if (openFloat && currentSale?.payment_method === "cash") {
           dispatch(
             updateFloat([
@@ -159,6 +169,7 @@ const SaleActions: FC<Props> = ({
               },
             ])
           );
+          dispatch(changeFloatDate(cash_float_date));
         }
 
         //Deduct Stock From Inventory
@@ -250,7 +261,7 @@ const SaleActions: FC<Props> = ({
           updateAlert([
             ...alerts,
             {
-              message: "You can't void this sale, try a refund",
+              message: "Wrong passcode",
               id: new Date().getTime(),
               color: "bg-red-200",
             },

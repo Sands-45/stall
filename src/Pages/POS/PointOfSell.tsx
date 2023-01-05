@@ -165,7 +165,7 @@ const PointOfSell: FC<Props> = () => {
                   )
                 )?.length <= 0 && (
                   <div
-                    className={`h-full w-fit px-3 bg-white rounded border text-[0.65rem]
+                    className={`h-full w-fit px-3 bg-white rounded-sm border text-[0.65rem]
               uppercase font-semibold border-slate-300 text-slate-500 hover:text-cyan-750 hover:border-cyan-750 flex 
              items-center space-x-1 transition-all`}
                   >
@@ -202,7 +202,7 @@ const PointOfSell: FC<Props> = () => {
                           }
                         }}
                         key={cat}
-                        className={`h-full w-fit px-3 bg-white rounded border text-[0.6rem]
+                        className={`h-full w-fit px-3 bg-white rounded-sm border text-[0.6rem]
               uppercase font-semibold ${
                 selectedCategory?.some((data: any) =>
                   data

@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
 import { numberWithSpaces } from "../../Reusable Functions/Functions";
-import { addSales, updateFloat } from "../../Redux/Slices/SalesSlice";
+import { addSales, updateFloat ,changeFloatDate} from "../../Redux/Slices/SalesSlice";
 import {
   loadInventoryData,
   updateLocalInventory_Changes,
@@ -35,6 +35,9 @@ const Refund: FC<Props> = ({
   );
   const inventory_data_queue = useSelector(
     (state: RootState) => state.Inventory.inventory_changes_data
+  );
+  const cash_float_date = useSelector(
+    (state: RootState) => state.Sales.cash_float_date
   );
   const cash_float = useSelector((state: RootState) => state.Sales.cash_float);
   const user = useSelector((state: RootState) => state.UserInfo.user);
@@ -339,6 +342,7 @@ const Refund: FC<Props> = ({
                 },
               ])
             );
+            dispatch(changeFloatDate(cash_float_date));
           }
           setReason("");
           setType("amount");
@@ -479,6 +483,7 @@ const Refund: FC<Props> = ({
                 },
               ])
             );
+            dispatch(changeFloatDate(cash_float_date));
           }
           setReason("");
           setType("amount");

@@ -15,7 +15,7 @@ import {
   loadInventoryData,
   updateLocalInventory_Changes,
 } from "../../Redux/Slices/InventorySlice";
-import { updateFloat } from "../../Redux/Slices/SalesSlice";
+import { updateFloat,changeFloatDate } from "../../Redux/Slices/SalesSlice";
 import Authorize from "../../Components/Authorize/Authorize";
 
 type Props = {
@@ -44,6 +44,9 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
   );
   const user = useSelector((state: RootState) => state.UserInfo.user);
   const cash_float = useSelector((state: RootState) => state.Sales.cash_float);
+  const cash_float_date = useSelector(
+    (state: RootState) => state.Sales.cash_float_date
+  );
   const [paymentMethods, setMethod] = useState<any>([
     { method: "card", selected: true },
     { method: "cash", selected: false },
@@ -56,7 +59,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
       email: cart?.customers_details?.email,
       address: cart?.customers_details?.address,
     },
-    note: cart?.note??"",
+    note: cart?.note ?? "",
   });
   const [invoiceOptions, setInvoiceOptions] = useState<any[]>([
     "print",
@@ -216,8 +219,16 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
       });
 
       //Update Cash Float
-      let openFloat =
-        cash_float?.filter((data: any) => data.status === "open"  && data?.user?.email === user?.email)[0] ?? null;
+      const localFloat = () => {
+        let data = localStorage.getItem("cash_float");
+        return data
+          ? JSON.parse(data)?.filter(
+              (data: any) =>
+                data.status === "open" && data?.user?.email === user?.email
+            )[0]
+          : null;
+      };
+      let openFloat = localFloat();
       if (openFloat) {
         dispatch(
           updateFloat([
@@ -270,6 +281,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
             },
           ])
         );
+      dispatch(changeFloatDate(cash_float_date));
       }
 
       //Clear Cart
@@ -953,7 +965,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
               <div className="h-20 w-20 rounded-full bg-green-200 p-2">
                 <div
                   className="h-full w-full rounded-full bg-green-600 drop-shadow-lg
-              flex items-center justify-center text-2xl text-white transition-all duration-200"
+              flex items-center justify-center text-2xl text-white"
                 >
                   <TbChecks />
                 </div>

@@ -3,11 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
 import no_float from "../../Assets/no_float.png";
 import float_no_activity from "../../Assets/float_no_activity.png";
-import { updateFloat } from "../../Redux/Slices/SalesSlice";
+import { updateFloat,changeFloatDate} from "../../Redux/Slices/SalesSlice";
 import { numberWithSpaces } from "../../Reusable Functions/Functions";
 import { TbPrinter, TbFilter } from "react-icons/tb";
 import DatePicker from "../../Components/Date Picker/DatePicker";
-import { changeFloatDate } from "../../Redux/Slices/SalesSlice";
 
 type Props = {
   openFloat: boolean;
@@ -23,6 +22,9 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
   const fetched_cash_float = useSelector(
     (state: RootState) => state.Sales.cash_float
   );
+  const cash_float_date = useSelector(
+    (state: RootState) => state.Sales.cash_float_date
+  );
   const cash_float = useMemo(() => {
     return fetched_cash_float.length >= 1 ? fetched_cash_float : [];
   }, [fetched_cash_float]);
@@ -35,9 +37,6 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
     cash_float?.length >= 1
       ? [...cash_float]?.sort((a: any, b: any) => b.date - a.date)[0]
       : null
-  );
-  const cash_float_date = useSelector(
-    (state: RootState) => state.Sales.cash_float_date
   );
   const [floatFunction, setFunction] = useState("");
   const [openDatePicker, setDateOpen] = useState<boolean>(false);
@@ -162,7 +161,7 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
         time: "",
         note: "",
       });
-    } else {
+    } else if (currentFloat && !activityObj?.new) {
       if (floatFunction === "add" && currentFloat) {
         if (localData()) {
           //Save local
@@ -244,41 +243,43 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
           });
         }
       } else if (floatFunction === "minus" && currentFloat) {
-        //Save local
-        window.localStorage.setItem(
-          "cash_float",
-          JSON.stringify([
-            ...localData().filter(
-              (data: any) => data.id_two !== currentFloat?.id_two
-            ),
-            {
-              ...currentFloat,
-              total:
-                parseFloat(currentFloat?.total) -
-                Number(activityObj?.amount) / selectedCurrency?.rate_multiplier,
-              expenses:
-                currentFloat?.expenses +
-                Number(activityObj?.amount) / selectedCurrency?.rate_multiplier,
-              activities: [
-                ...currentFloat?.activities,
-                {
-                  ...activityObj,
-                  amount:
-                    "-" +
-                    Number(activityObj?.amount) /
-                      selectedCurrency?.rate_multiplier,
-                  time: new Date()?.getTime(),
-                  currency: selectedCurrency?.name,
-                },
-              ],
-              edited: true,
-              isNew: false,
-              isDeleted: false,
-            },
-          ])
-        );
-
         if (localData()) {
+          //Save local
+          window.localStorage.setItem(
+            "cash_float",
+            JSON.stringify([
+              ...localData().filter(
+                (data: any) => data.id_two !== currentFloat?.id_two
+              ),
+              {
+                ...currentFloat,
+                total:
+                  parseFloat(currentFloat?.total) -
+                  Number(activityObj?.amount) /
+                    selectedCurrency?.rate_multiplier,
+                expenses:
+                  currentFloat?.expenses +
+                  Number(activityObj?.amount) /
+                    selectedCurrency?.rate_multiplier,
+                activities: [
+                  ...currentFloat?.activities,
+                  {
+                    ...activityObj,
+                    amount:
+                      "-" +
+                      Number(activityObj?.amount) /
+                        selectedCurrency?.rate_multiplier,
+                    time: new Date()?.getTime(),
+                    currency: selectedCurrency?.name,
+                  },
+                ],
+                edited: true,
+                isNew: false,
+                isDeleted: false,
+              },
+            ])
+          );
+
           dispatch(
             updateFloat([
               ...localData().filter(
@@ -321,8 +322,10 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
         }
       }
     }
+    dispatch(changeFloatDate(cash_float_date));
   };
 
+  //Component
   //console.log(new Blob([JSON.stringify(activeFloat)]).size)
 
   //Component
@@ -955,14 +958,20 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
                         </span>
                       </div>
                     </div>
-                    {[...activeFloat?.activities]?.filter((log: any) =>
+                    {[...activeFloat?.activities]
+                      ?.filter((log: any) =>
                         log[
-                          logsType?.filter((data: any) => data?.active)[0]?.field
-                        ]?.toString()?.includes(
                           logsType?.filter((data: any) => data?.active)[0]
-                            ?.value?.toString()
-                        )
-                      )?.sort((a: any, b: any) => b.time - a.time)
+                            ?.field
+                        ]
+                          ?.toString()
+                          ?.includes(
+                            logsType
+                              ?.filter((data: any) => data?.active)[0]
+                              ?.value?.toString()
+                          )
+                      )
+                      ?.sort((a: any, b: any) => b.time - a.time)
                       ?.map((log: any, index: number) => {
                         return (
                           <li

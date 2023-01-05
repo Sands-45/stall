@@ -180,7 +180,7 @@ export const deleteSale = async (id: string) => {
 export const addFloat = async (obj: any) => {
   return await addDoc(cash_floatRef, {
     ...obj,
-    note:obj?.note??"",
+    note: obj?.note ?? "",
     isNew: false,
     isDeleted: false,
     edited: false,
@@ -192,7 +192,7 @@ export const updateFloats = async (obj: any) => {
   let docRef = doc(db, `companies/${org}/cash_float`, obj?.id);
   return await updateDoc(docRef, {
     ...obj,
-    note:obj?.note??"",
+    note: obj?.note ?? "",
     isNew: false,
     isDeleted: false,
     edited: false,
@@ -776,7 +776,7 @@ const FirestoreFunc: FC = () => {
     });
   }, [dispatch, inventory_data_queue, onlineStatus]);
 
-  //Fetch Stock Order Data
+  // // //Fetch Stock Order Data
   useEffect((): any => {
     return onSnapshot(
       user?.access === "admin"
@@ -823,7 +823,7 @@ const FirestoreFunc: FC = () => {
     );
   }, [dispatch, onlineStatus, stock_orders_date, user]);
 
-  //Fetch Suppliers Data
+  // //Fetch Suppliers Data
   useEffect((): any => {
     return onSnapshot(vendorsRef, (snapshot: { docs: any[] }) => {
       if (onlineStatus) {
@@ -848,7 +848,7 @@ const FirestoreFunc: FC = () => {
     });
   }, [dispatch, onlineStatus]);
 
-  //Fetch Sales Order Data
+  // //Fetch Sales Order Data
   useEffect((): any => {
     return onSnapshot(
       user?.access === "admin"
@@ -895,10 +895,10 @@ const FirestoreFunc: FC = () => {
     );
   }, [dispatch, onlineStatus, sales_date, user]);
 
-  //Fetch Cash Float Data
+  // //Fetch Cash Float Data
   useEffect((): any => {
     return onSnapshot(
-      user?.access === "admin" && cash_float
+      user?.access === "admin"
         ? query(
             cash_floatRef,
             where("date", ">=", new Date(cash_float_date?.start).getTime()),
@@ -940,7 +940,7 @@ const FirestoreFunc: FC = () => {
         }
       }
     );
-  }, [dispatch, onlineStatus, cash_float_date, user, cash_float]);
+  }, [dispatch, onlineStatus, cash_float_date, user]);
 
   return <></>;
 };
