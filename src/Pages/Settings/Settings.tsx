@@ -75,7 +75,7 @@ const Settings: FC<Props> = () => {
                 }}
                 key={item?.id}
                 className="bg-white rounded col-span-1 h-24 border border-slate-300 p-3 grid gap-4 grid-cols-12
-        hover:border-cyan-750 transition-all cursor-pointer select-none"
+        hover:border-cyan-750 hover:border-2 transition-all cursor-pointer select-none"
               >
                 <div className="col-span-2 h-full flex items-center justify-center">
                   <div className="h-10 w-10 rounded-full bg-cyan-750/20 flex items-center justify-center text-xl text-cyan-800">

@@ -3,10 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import logIn_background from "../../Assets/logIn_background.jpg";
 import reportsDemoImg from "../../Assets/Hero_reports.png";
 import logo from "../../Assets/Full Logo Tranparent Short.png";
-import { initializeApp } from "firebase/app";
-import { firebaseConfig } from "../../Firebase/Firebase";
 import {
-  getAuth,
   signInWithEmailAndPassword,
   setPersistence,
   browserLocalPersistence,
@@ -28,14 +25,11 @@ import {
 import { AppDispatch, RootState } from "../../Redux/store";
 import { crypt } from "../../Custom Functions/Functions";
 import { TbSearch } from "react-icons/tb";
+import { app,auth } from "../../Firebase/Firebase";
 
-// Initialize Firebase for auth======================
-initializeApp(firebaseConfig);
 
-//Initialize Services ======
-const auth = getAuth();
 // init services for firestore =========================
-const db = getFirestore(initializeApp(firebaseConfig));
+const db = getFirestore(app);
 
 type Props = {};
 

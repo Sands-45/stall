@@ -1,3 +1,6 @@
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+
 //Config Firebase ==================================
 export const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -8,3 +11,8 @@ export const firebaseConfig = {
     appId: process.env.REACT_APP_APP_ID,
     measurementId: "G-4PJ9S2MJP4",
   };  
+
+// initializeApp() is called before getAuth() for sure 
+export const app = initializeApp(firebaseConfig);
+
+export const auth = getAuth();

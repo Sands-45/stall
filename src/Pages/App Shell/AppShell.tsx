@@ -21,6 +21,7 @@ import { AiFillSetting } from "react-icons/ai";
 import { setCurrency } from "../../Redux/Slices/SettingsSlice";
 import FirestoreFunc from "../../Firebase/Firestore_Func";
 import AlertsWrapper from "../../Components/Toast Notifications/AlertsWrapper";
+import { auth } from "../../Firebase/Firebase";
 
 type Props = {};
 
@@ -118,7 +119,7 @@ const AppShell: FC<Props> = () => {
      no-scrollbar::-webkit-scrollbar bg-slate-200"
     >
       {/**FireStore */}
-      <FirestoreFunc />
+      {auth.currentUser && user?.email && <FirestoreFunc />}
       {/**FireStore */}
       {/**Alert */}
       <AlertsWrapper />
