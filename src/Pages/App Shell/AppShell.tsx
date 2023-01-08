@@ -1,6 +1,6 @@
 import { FC, useEffect, useMemo, useState } from "react";
 //import logo from "../../Assets/Full Logo Tranparent Short.png";
-import userImg from "../../Assets/portal images/user.png";
+//import userImg from "../../Assets/portal images/user.png";
 import { TbMessage2, TbCloudOff, TbCloudSnow } from "react-icons/tb";
 import Tooltip from "../../Components/Profile Tooltip/Tooltip";
 import { Link, NavLink, Outlet } from "react-router-dom";
@@ -166,11 +166,8 @@ const AppShell: FC<Props> = () => {
             className="h-10 2 w-10 group cursor-pointer rounded-full border border-slate-400
            flex items-center justify-center text-xl text-slate-600 relative"
           >
-            <img
-              src={userImg}
-              alt="user"
-              className="h-9 object-fit object-center object-cover"
-            />
+            <div className="h-9 w-9 bg-cyan-750 rounded-full flex items-center
+             justify-center text-white text-sm font-bold uppercase">{user?.name?.charAt(0)}</div>
             <div
               className={`h-2.5 w-2.5 rounded-full absolute top-0.5 -right-0.5 border border-white ${
                 onlineStatus ? "bg-green-600" : "bg-red-500"
