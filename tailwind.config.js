@@ -5,8 +5,10 @@ module.exports = {
     extend: {
       colors: {
         "cyan-750": "#2596be",
-        white: "#ffffff",
       },
+    fontFamily: {
+      sans: ['Inter', 'sans-serif'],
+    },
     },
     screens: {
       sm: "520px",

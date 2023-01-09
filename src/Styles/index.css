@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -199,19 +201,24 @@
     @apply selection:bg-cyan-750 selection:text-white font-sans;
   }
 
-  body {
-    scroll-behavior: smooth;
-    margin: 0;
-    padding: 0;
-  }
+  /* @font-face{
+    font-family:"Inter";
+    src:local("Inter"),URL(../Assets/fonts/Inter/Inter-VariableFont_slnt,wght.ttf) format(truetype);
+  } */
 
   html,
   *,
   body {
     scroll-behavior: smooth;
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
     scrollbar-color: #374151;
     scrollbar-width: none;
+    font-family: 'Inter', sans-serif;
+    -webkit-tap-highlight-color: transparent;
   }
+
   abbr[title] {
     border-bottom: none !important;
     cursor: inherit !important;

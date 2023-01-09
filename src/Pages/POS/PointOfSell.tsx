@@ -4,8 +4,9 @@ import {
   TbScan,
   TbCheck,
   TbCaretLeft,
-  TbCaretRight ,
+  TbCaretRight,
 } from "react-icons/tb";
+import { MdOutlineQrCodeScanner } from "react-icons/md";
 import { HiOutlineCollection } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -98,7 +99,7 @@ const PointOfSell: FC<Props> = () => {
   return (
     <>
       <div
-        className="w-full h-full print:hidden flex justify-between
+        className="w-full h-full print:hidden hidden md:flex justify-between
      overflow-hidden pl-[2.5%] space-x-4 bg-slate-100"
       >
         <div className="h-full w-[calc(100%-25rem)] py-4">
@@ -165,7 +166,7 @@ const PointOfSell: FC<Props> = () => {
                   )
                 )?.length <= 0 && (
                   <div
-                    className={`h-full w-fit px-3 bg-white rounded-sm border text-[0.65rem]
+                    className={`h-full w-fit px-3 bg-white rounded border text-[0.65rem]
               uppercase font-semibold border-slate-300 text-slate-500 hover:text-cyan-750 hover:border-cyan-750 flex 
              items-center space-x-1 transition-all`}
                   >
@@ -202,7 +203,7 @@ const PointOfSell: FC<Props> = () => {
                           }
                         }}
                         key={cat}
-                        className={`h-full w-fit px-3 bg-white rounded-sm border text-[0.6rem]
+                        className={`h-full w-fit px-3 bg-white rounded border text-[0.6rem]
               uppercase font-semibold ${
                 selectedCategory?.some((data: any) =>
                   data
@@ -250,7 +251,7 @@ const PointOfSell: FC<Props> = () => {
                   className="h-6 w-8 focus:outline-none text-base stroke-[3] text-slate-500 bg-slate-50 rounded
                  border border-slate-300 flex items-center justify-center"
                 >
-                  <TbCaretRight  />
+                  <TbCaretRight />
                 </button>
               </div>
             </div>
@@ -310,6 +311,54 @@ const PointOfSell: FC<Props> = () => {
           openCheckout={openCheckout}
         />
       </div>
+
+      {/** ============= Small Screens ================ */}
+      <div className="w-full h-full md:hidden flex flex-col space-y-6 pt-6 overflow-hidden">
+        <div className="w-full h-fit px-4">
+          <div
+            className="w-full relative h-12 flex items-center bg-white rounded
+          border border-slate-300 hover:border-cyan-750 overflow-hidden transition-all"
+          >
+            <TbSearch className="absolute text-xl text-slate-400 top-3.5 left-2.5 stroke-[2]" />
+            <input
+              onChange={(e) => {
+                changeSearch(e.target.value);
+              }}
+              value={productSearch}
+              autoComplete="off"
+              type="search"
+              name="point_of_sale_main_search"
+              id="point_of_sale_main_search"
+              className="h-full w-[calc(100%-3rem)] bg-inherit p-2 px-3
+                   pl-10 text-xs text-slate-600 placeholder:text-slate-400
+              border-0 focus:ring-0 font-medium"
+              placeholder="Quick Search ..."
+            />
+            <button
+              className="h-full w-12 bg-cyan-750 hover:opacity-80 text-white text-xl
+             flex items-center justify-center transition-all"
+            >
+              <MdOutlineQrCodeScanner />
+            </button>
+          </div>
+        </div>
+        <div className="w-full h-[calc(100%-4rem)] overflow-hidden pb-[4.75rem]">
+          <div
+            className="w-full h-full px-4 grid grid-cols-6 gap-4 auto-rows-min
+          overflow-hidden overflow-y-scroll no-scrollbar no-scrollbar::-webkit-scrollbar"
+          >
+            <Product
+              inventory_data={inventory_data}
+              setProObj={setProObj}
+              setPreview={setPreview}
+              setImg={setImg}
+              setProduct={setProduct}
+            />
+          </div>
+        </div>
+      </div>
+      {/** =============End Of Small Screens ================ */}
+
       {/** ============= Product Preview================ */}
       <ProductPreview
         product_obj={product_obj}

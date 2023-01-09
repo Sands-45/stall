@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { TbClick,TbInfinity } from "react-icons/tb";
+import { TbDotsVertical,TbInfinity } from "react-icons/tb";
 import { useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
 import { numberWithSpaces } from "../../Reusable Functions/Functions";
@@ -40,7 +40,7 @@ const Product: FC<Props> = ({
             });
             setPreview(true);
           }}
-          className={`col-span-1 h-[8.5rem] bg-slate-50/50 rounded hover:drop-shadow-xl group cursor-pointer box-shadow-one
+          className={`col-span-3 sm:col-span-2 lg:col-span-1 h-36 bg-white lg:bg-slate-50/50 rounded hover:drop-shadow-xl group cursor-pointer box-shadow-one
              transition-all flex flex-col justify-between p-3 select-none ${
               Number(prod?.in_stock) <= 0 && prod?.has_stock_count
                 ? "!pointer-events-none"
@@ -74,10 +74,10 @@ const Product: FC<Props> = ({
           </div>
           <div
             className="h-8 w-full pt-1 border-t border-slate-200 group-hover:text-cyan-800 bg-inherit transition-all text-cyan-750 
-                  text-base flex items-center justify-between px-1 focus:outline-none       "
+                  text-base flex items-center justify-between pl-1 focus:outline-none"
           >
             <span className="text-xs font-semibold uppercase">Add item</span>
-            <TbClick className="text-lg"/>
+            <TbDotsVertical className="text-lg"/>
           </div>
         </div>
       );

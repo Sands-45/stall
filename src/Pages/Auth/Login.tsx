@@ -145,7 +145,7 @@ const Login: FC<Props> = () => {
             />
             <div className="absolute top-0 left-0 right-0 bottom-0 flex flex-col items-center justify-center bg-gradient-to-tr from-cyan-900 to-cyan-750/80 space-y-6">
               <h1 className="text-white font-bold text-[2rem]">
-                Hey, Let's Get You Back In
+                Let's Get You Back In
               </h1>
               <form
                 onSubmit={(e) => handleLogIn(e)}
