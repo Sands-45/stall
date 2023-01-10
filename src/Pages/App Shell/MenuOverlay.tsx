@@ -11,6 +11,9 @@ import {
 import { HiShoppingBag } from "react-icons/hi";
 import { AiFillSetting } from "react-icons/ai";
 import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../Redux/store";
+import { setCurrency } from "../../Redux/Slices/SettingsSlice";
 
 type Props = {
   overlayMenuOpen: boolean;
@@ -18,6 +21,14 @@ type Props = {
 };
 
 const MenuOverlay: FC<Props> = ({ overlayMenuOpen, setMenuOverlay }) => {
+  const dispatch = useDispatch();
+  const currencies = useSelector(
+    (state: RootState) => state.SettingsData.currencies
+  );
+  const selectedCurrency = useSelector(
+    (state: RootState) => state.SettingsData.selectedCurrency
+  );
+
   //Component
   return (
     <div
@@ -26,7 +37,7 @@ const MenuOverlay: FC<Props> = ({ overlayMenuOpen, setMenuOverlay }) => {
       } fixed top-0 bottom-[3.75rem] bg-white z-[9999] min-w-screen transition-all duration-500 overflow-hidden pb-2`}
     >
       <div className="w-full h-full flex flex-col space-y-4">
-        <div className="h-12 w-full px-4 pt-4">
+        <div className="h-12 w-full px-4 pt-4 flex items-center justify-between">
           <button
             onClick={() => {
               setMenuOverlay(false);
@@ -36,6 +47,23 @@ const MenuOverlay: FC<Props> = ({ overlayMenuOpen, setMenuOverlay }) => {
           >
             <TbChevronLeft />
           </button>
+          <select
+            onChange={(e: any) => {
+              dispatch(setCurrency(JSON.parse(e.target.value)));
+              window.localStorage.setItem("selectedCurrency", e.target.value);
+            }}
+            className="h-9 w-[8rem] text-gray-500 focus:outline-none
+              uppercase text-xs font-semibold rounded-sm bg-slate-50 pt-2 border border-slate-300 focus:ring-0 focus:border-cyan-750"
+          >
+            <option value={selectedCurrency}>{selectedCurrency.name}</option>
+            {currencies?.map((cur: any) => {
+              return (
+                <option key={cur.name} value={JSON.stringify(cur)}>
+                  {cur.name}
+                </option>
+              );
+            })}
+          </select>
         </div>
 
         <div

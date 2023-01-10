@@ -3,7 +3,7 @@ import { FC, useEffect, useMemo, useState } from "react";
 //import userImg from "../../Assets/portal images/user.png";
 import { TbMessage2, TbCloudOff, TbCloudSnow } from "react-icons/tb";
 import Tooltip from "../../Components/Profile Tooltip/Tooltip";
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router";
 import { AppDispatch, RootState } from "../../Redux/store";
 import { useSelector, useDispatch } from "react-redux";
@@ -13,7 +13,6 @@ import {
   MdAnalytics,
   MdAssignment,
   MdStore,
-  MdTv,
   MdSupervisorAccount,
 } from "react-icons/md";
 import {
@@ -133,24 +132,13 @@ const AppShell: FC<Props> = () => {
         {/**Alert */}
         <div className="w-full h-14 bg-white flex items-center justify-between px-[2.5%]">
           <div className="w-fit h-fit">
-            <Link
-              to="/portal"
-              className="focus:outline-none outline-none w-fit h-fit"
-            >
-              <div className="h-8 px-3 rounded-sm border-2 border-cyan-750 bg-slate-50 text-sm text-cyan-750 font-bold flex items-center justify-center space-x-2">
-                <MdTv className="text-lg" />
-                <span>Portal</span>
-              </div>
-            </Link>
-          </div>
-          <div className="flex items-center space-x-2 w-fit">
             <select
               onChange={(e: any) => {
                 dispatch(setCurrency(JSON.parse(e.target.value)));
                 window.localStorage.setItem("selectedCurrency", e.target.value);
               }}
-              className="h-8 w-[7rem] text-gray-500 focus:outline-none
-              uppercase text-xs font-semibold rounded-sm bg-slate-50 border-slate-200 focus:ring-0 focus:border-cyan-750"
+              className="h-8 w-[8rem] text-gray-500 focus:outline-none
+              uppercase text-xs font-semibold rounded-sm bg-slate-50 pt-1.5 border-2 border-slate-300 focus:ring-0 focus:border-cyan-750"
             >
               <option value={selectedCurrency}>{selectedCurrency.name}</option>
               {currencies?.map((cur: any) => {
@@ -161,6 +149,8 @@ const AppShell: FC<Props> = () => {
                 );
               })}
             </select>
+          </div>
+          <div className="flex items-center space-x-2 w-fit">
             <div className="h-8 w-8 rounded bg-slate-50 border border-slate-200 flex items-center justify-center text-lg text-slate-500">
               <TbMessage2 />
             </div>
@@ -170,7 +160,7 @@ const AppShell: FC<Props> = () => {
               </abbr>
             </div>
             <div
-              className="h-10 2 w-10 group cursor-pointer rounded-full border border-slate-400
+              className="h-9 w-9 group cursor-pointer rounded-full
            flex items-center justify-center text-xl text-slate-600 relative"
             >
               <div
@@ -184,7 +174,7 @@ const AppShell: FC<Props> = () => {
                   onlineStatus ? "bg-green-600" : "bg-red-500"
                 }`}
               ></div>
-              <Tooltip position="top-10 right-0" />
+              <Tooltip position="top-9 right-0" />
             </div>
           </div>
         </div>

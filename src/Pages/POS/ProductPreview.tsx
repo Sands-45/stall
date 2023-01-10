@@ -6,6 +6,7 @@ import {
   TbPlus,
   TbMinus,
   TbCaretDown,
+  TbChevronLeft,
 } from "react-icons/tb";
 import { useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
@@ -81,14 +82,14 @@ const ProductPreview: FC<Props> = ({
   //Component
   return (
     <div
-      className={`fixed top-0 left-0 right-0 bottom-0 h-screen w-screen p-6 pt-20 z-[999] ${
+      className={`fixed top-0 left-0 right-0 bottom-0 h-screen w-screen md:p-6  pt-8 md:pt-20 z-[999] ${
         openPreview ? "flex" : "hidden"
       } 
-     justify-center bg-cyan-750/40 overflow-hidden overflow-y-scroll`}
+     justify-center bg-white md:bg-cyan-750/40 overflow-hidden overflow-y-scroll no-scrollbar no-scrollbar::webkit-scrollbar`}
     >
       <div
-        className="w-[45rem] h-[27rem] bg-white rounded-sm relative p-4 
-      grid grid-cols-4 gap-4"
+        className="h-full w-screen md:w-[45rem] md:h-[27rem] bg-white md:rounded-sm relative p-4 
+      grid grid-cols-2 md:grid-cols-4 gap-4"
       >
         {/**Close Btn */}
         <button
@@ -104,10 +105,12 @@ const ProductPreview: FC<Props> = ({
             setCustomization([]);
             setPreview(false);
           }}
-          className="absolute top-0 -right-9 h-7 w-7 rounded-sm
-         bg-red-600 hover:opacity-80 border border-white transition-all text-white text-sm"
+          className="absolute -top-6 left-2 md:left-auto md:top-0 md:-right-9 h-7 w-7 rounded md:rounded-sm outline-none focus:outline-none
+         md:bg-red-600 bg-inherit hover:opacity-80 border border-white transition-all md:text-white text-slate-600 text-sm
+         flex items-center justify-center"
         >
-          &times;
+          <span className="hidden md:flex">&times;</span>{" "}
+          <TbChevronLeft className="md:hidden text-2xl stroke-[3]" />
         </button>
 
         {/**images  Prev*/}
@@ -119,11 +122,11 @@ const ProductPreview: FC<Props> = ({
             onClick={(e) => zoomElement(e)}
             src={selectedImg ? selectedImg : no_gallery}
             alt="prod_preview"
-            className="w-full h-[80%] object-center object-fit object-contain 
+            className="w-full h-[calc(100%-4rem)] object-center object-fit object-contain 
           p-4 bg-slate-200 border border-slate-200 rounded overflow-hidden cursor-zoom-in"
           />
           <div
-            className="w-full h-[19%] grid grid-cols-4 gap-1
+            className="w-full h-16 grid grid-cols-4 gap-1.5
            overflow-hidden rounded bg-slate-200 border border-slate-200 p-1"
           >
             {product_obj?.gallery?.length >= 1 &&

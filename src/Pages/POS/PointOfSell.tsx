@@ -329,22 +329,22 @@ const PointOfSell: FC<Props> = () => {
               type="search"
               name="point_of_sale_main_search"
               id="point_of_sale_main_search"
-              className="h-full w-[calc(100%-3rem)] bg-inherit p-2 px-3
+              className="h-full w-[calc(100%-3rem)] md:w-[calc(100%-5rem)] bg-inherit p-2 px-3
                    pl-10 text-xs text-slate-600 placeholder:text-slate-400
               border-0 focus:ring-0 font-medium"
               placeholder="Quick Search ..."
             />
             <button
-              className="h-full w-12 bg-cyan-750 hover:opacity-80 text-white text-xl
+              className="h-full w-12 md:w-20 bg-cyan-750 hover:opacity-80 text-white text-xl
              flex items-center justify-center transition-all"
             >
               <MdOutlineQrCodeScanner />
             </button>
           </div>
         </div>
-        <div className="w-full h-[calc(100%-4rem)] overflow-hidden pb-[4.75rem]">
+        <div className="w-full h-[calc(100%-4rem)] overflow-hidden pb-[9rem] relative">
           <div
-            className="w-full h-full px-4 grid grid-cols-8 sm:grid-cols-6 md:grid-cols-8 gap-4 auto-rows-min
+            className="w-full h-full px-4 pb-4 grid grid-cols-8 sm:grid-cols-6 md:grid-cols-8 gap-4 auto-rows-min
           overflow-hidden overflow-y-scroll no-scrollbar no-scrollbar::-webkit-scrollbar"
           >
             <Product
@@ -354,6 +354,20 @@ const PointOfSell: FC<Props> = () => {
               setImg={setImg}
               setProduct={setProduct}
             />
+          </div>
+
+          <div
+            className="absolute bottom-[4rem] w-full h-20 px-4 pt-1 bg-slate-200 flex items-center justify-center
+        "
+          >
+            <button
+              disabled={!cart?.products?.length}
+              className="outline-none focus:outline-none h-12 w-full md:max-w-[20rem] rounded
+               border border-cyan-750/50 bg-white uppercase text-xs text-cyan-750 font-bold"
+            >
+              proceed to cart &nbsp;
+              {cart?.products?.length ? "[ " + cart?.products?.length + " ]" : ""}
+            </button>
           </div>
         </div>
       </div>

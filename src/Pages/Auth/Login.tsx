@@ -123,7 +123,7 @@ const Login: FC<Props> = () => {
   //Check If User Is Logged
   useEffect(() => {
     if (user && window.localStorage.getItem("current_workspace")) {
-      navigate("/portal");
+      navigate("/app");
     } else if (user && !window.localStorage.getItem("current_workspace")) {
       setOverlay(true);
     }
@@ -311,7 +311,7 @@ const Login: FC<Props> = () => {
                           window.localStorage.setItem("dataSynced", "true");
                           window.location.reload();
                           setOverlay(false);
-                          navigate("/portal");
+                          navigate("/app");
                         }}
                         className="px-6 h-8 text-xs text-cyan-750 font-semibold border-2 border-cyan-800/90 bg-cyan-50 rounded hover:opacity-80 transition-all"
                       >
