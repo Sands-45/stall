@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3](https://github.com/Sands-45/stall/compare/v0.1.2...v0.1.3) (2023-01-10)
+
+
+### Features
+
+* added a date picker and some new fix ([c09a593](https://github.com/Sands-45/stall/commit/c09a593c4005b642d6b23f003b115cb3ce3ad043))
+* mobile responsiveness on small screens plus view bug fix ([0a38ac2](https://github.com/Sands-45/stall/commit/0a38ac2fc76a8521817c91cd0a7505e846ef243b))
+* revoking or correcting an applyed discount now available ([4d73a2e](https://github.com/Sands-45/stall/commit/4d73a2e0107c632248fdd98bb6117d41b7371754))
+
+
+### Bug Fixes
+
+* cash Foat snapshot cause a re-render fixed and minor cash float edit ([0460aea](https://github.com/Sands-45/stall/commit/0460aea024eaf4ec033680d9bf867e4cd2d0c400))
+* inveentory decution on sale or refund and cashflow sync to avoid duplicates ([58982d2](https://github.com/Sands-45/stall/commit/58982d27800a2fe29fb6d0c171082e6ad973eef4))
+* when refunding profit is now calculated properly ([eb50258](https://github.com/Sands-45/stall/commit/eb502589b15b635123ee9f48bcd7e58f8bb116d3))
+
 ### [0.1.2](https://github.com/Sands-45/stall/compare/v0.1.1...v0.1.2) (2022-12-28)
 
 
