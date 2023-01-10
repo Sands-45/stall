@@ -25,7 +25,7 @@ const MenuOverlay: FC<Props> = ({ overlayMenuOpen, setMenuOverlay }) => {
         overlayMenuOpen ? "left-0 right-0" : "-left-[200%]"
       } fixed top-0 bottom-[3.75rem] bg-white z-[9999] min-w-screen transition-all duration-500 overflow-hidden pb-2`}
     >
-      <div className="w-full h-full flex flex-col space-y-6">
+      <div className="w-full h-full flex flex-col space-y-4">
         <div className="h-12 w-full px-4 pt-4">
           <button
             onClick={() => {
@@ -47,7 +47,7 @@ const MenuOverlay: FC<Props> = ({ overlayMenuOpen, setMenuOverlay }) => {
               setMenuOverlay(false);
             }}
             to="/app"
-            className="col-span-3 h-32 bg-slate-100 rounded border border-slate-200 group
+            className="col-span-3 sm:col-span-2 h-32 bg-slate-100 rounded border border-slate-200 group
             hover:border-cyan-750 transition-all flex flex-col items-center justify-center space-y-2
             text-slate-600"
           >
@@ -61,7 +61,7 @@ const MenuOverlay: FC<Props> = ({ overlayMenuOpen, setMenuOverlay }) => {
               setMenuOverlay(false);
             }}
             to="/app/sales"
-            className="col-span-3 h-32 bg-slate-100 rounded border border-slate-200 group
+            className="col-span-3 sm:col-span-2 h-32 bg-slate-100 rounded border border-slate-200 group
             hover:border-cyan-750 transition-all flex flex-col items-center justify-center space-y-2
             text-slate-600"
           >
@@ -75,7 +75,7 @@ const MenuOverlay: FC<Props> = ({ overlayMenuOpen, setMenuOverlay }) => {
               setMenuOverlay(false);
             }}
             to="/app/reports"
-            className="col-span-3 h-32 bg-slate-100 rounded border border-slate-200 group
+            className="col-span-3 sm:col-span-2 h-32 bg-slate-100 rounded border border-slate-200 group
             hover:border-cyan-750 transition-all flex flex-col items-center justify-center space-y-2
             text-slate-600"
           >
@@ -89,7 +89,7 @@ const MenuOverlay: FC<Props> = ({ overlayMenuOpen, setMenuOverlay }) => {
               setMenuOverlay(false);
             }}
             to="/app/campaigns"
-            className="col-span-3 h-32 bg-slate-100 rounded border border-slate-200 group
+            className="col-span-3 sm:col-span-2 h-32 bg-slate-100 rounded border border-slate-200 group
             hover:border-cyan-750 transition-all flex flex-col items-center justify-center space-y-2
             text-slate-600"
           >
@@ -103,7 +103,7 @@ const MenuOverlay: FC<Props> = ({ overlayMenuOpen, setMenuOverlay }) => {
               setMenuOverlay(false);
             }}
             to="/app/customers"
-            className="col-span-3 h-32 bg-slate-100 rounded border border-slate-200 group
+            className="col-span-3 sm:col-span-2 h-32 bg-slate-100 rounded border border-slate-200 group
             hover:border-cyan-750 transition-all flex flex-col items-center justify-center space-y-2
             text-slate-600"
           >
@@ -117,7 +117,7 @@ const MenuOverlay: FC<Props> = ({ overlayMenuOpen, setMenuOverlay }) => {
               setMenuOverlay(false);
             }}
             to="/app/inventory"
-            className="col-span-3 h-32 bg-slate-100 rounded border border-slate-200 group
+            className="col-span-3 sm:col-span-2 h-32 bg-slate-100 rounded border border-slate-200 group
             hover:border-cyan-750 transition-all flex flex-col items-center justify-center space-y-2
             text-slate-600"
           >
@@ -131,7 +131,7 @@ const MenuOverlay: FC<Props> = ({ overlayMenuOpen, setMenuOverlay }) => {
               setMenuOverlay(false);
             }}
             to="/app/online-store"
-            className="col-span-3 h-32 bg-slate-100 rounded border border-slate-200 group
+            className="col-span-3 sm:col-span-2 h-32 bg-slate-100 rounded border border-slate-200 group
             hover:border-cyan-750 transition-all flex flex-col items-center justify-center space-y-2
             text-slate-600"
           >
@@ -145,7 +145,7 @@ const MenuOverlay: FC<Props> = ({ overlayMenuOpen, setMenuOverlay }) => {
               setMenuOverlay(false);
             }}
             to="/app/settings"
-            className="col-span-3 h-32 bg-slate-100 rounded border border-slate-200 group
+            className="col-span-3 sm:col-span-2 h-32 bg-slate-100 rounded border border-slate-200 group
             hover:border-cyan-750 transition-all flex flex-col items-center justify-center space-y-2
             text-slate-600"
           >

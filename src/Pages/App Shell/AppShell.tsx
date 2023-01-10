@@ -123,7 +123,7 @@ const AppShell: FC<Props> = () => {
     <>
       <div
         className="w-screen h-screen overflow-hidden no-scrollbar
-     no-scrollbar::-webkit-scrollbar bg-slate-200 hidden md:block"
+     no-scrollbar::-webkit-scrollbar bg-slate-200 hidden lg:block"
       >
         {/**FireStore */}
         {auth.currentUser && user?.email && <FirestoreFunc />}
@@ -317,7 +317,7 @@ const AppShell: FC<Props> = () => {
       {/**Small Or Mobile App Shell */}
       <div
         className="w-screen h-screen overflow-hidden no-scrollbar
-     no-scrollbar::-webkit-scrollbar bg-slate-200 md:hidden relative"
+     no-scrollbar::-webkit-scrollbar bg-slate-200 lg:hidden relative"
       >
         <MenuOverlay
           setMenuOverlay={setMenuOverlay}
@@ -332,7 +332,7 @@ const AppShell: FC<Props> = () => {
       bg-white shadow-md flex items-center justify-center space-x-4 p-2 z-[99]"
         >
           <button
-            onClick={() => setMenuOverlay(true)}
+            onClick={() => setMenuOverlay((prev: any) => (prev ? false : true))}
             className="h-9 w-9 flex items-center justify-center text-cyan-750
            text-2xl select-none group outline-none focus:outline-none"
           >
@@ -346,13 +346,20 @@ const AppShell: FC<Props> = () => {
               <HiShoppingBag />
             ) : location.pathname === "/app/sales" ? (
               <MdReceipt />
+            ) : location.pathname === "/app/reports" ? (
+              <MdAnalytics />
+            ) : location.pathname === "/app/campaigns" ? (
+              <MdLoyalty />
+            ) : location.pathname === "/app/customers" ? (
+              <MdSupervisorAccount />
+            ) : location.pathname === "/app/inventory" ? (
+              <MdAssignment />
+            ) : location.pathname === "/app/online-store" ? (
+              <MdStore />
+            ) : location.pathname === "/app/settings" ? (
+              <AiFillSetting />
             ) : (
-              location.pathname === "/app/reports"?<MdAnalytics/>:
-              location.pathname === "/app/campaigns"?<MdLoyalty/>:
-              location.pathname === "/app/customers"?<MdSupervisorAccount/>:
-              location.pathname === "/app/inventory"?<MdAssignment/>:
-              location.pathname === "/app/online-store"?<MdStore/>:
-              location.pathname === "/app/settings"?<AiFillSetting/>:""
+              ""
             )}
           </div>
           <button

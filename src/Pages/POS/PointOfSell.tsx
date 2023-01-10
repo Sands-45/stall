@@ -99,7 +99,7 @@ const PointOfSell: FC<Props> = () => {
   return (
     <>
       <div
-        className="w-full h-full print:hidden hidden md:flex justify-between
+        className="w-full h-full print:hidden hidden lg:flex justify-between
      overflow-hidden pl-[2.5%] space-x-4 bg-slate-100"
       >
         <div className="h-full w-[calc(100%-25rem)] py-4">
@@ -313,8 +313,8 @@ const PointOfSell: FC<Props> = () => {
       </div>
 
       {/** ============= Small Screens ================ */}
-      <div className="w-full h-full md:hidden flex flex-col space-y-6 pt-6 overflow-hidden">
-        <div className="w-full h-fit px-4">
+      <div className="w-full h-full lg:hidden flex flex-col space-y-6 pt-6 overflow-hidden">
+        <div className="w-full h-12 px-4">
           <div
             className="w-full relative h-12 flex items-center bg-white rounded
           border border-slate-300 hover:border-cyan-750 overflow-hidden transition-all"
@@ -344,7 +344,7 @@ const PointOfSell: FC<Props> = () => {
         </div>
         <div className="w-full h-[calc(100%-4rem)] overflow-hidden pb-[4.75rem]">
           <div
-            className="w-full h-full px-4 grid grid-cols-6 gap-4 auto-rows-min
+            className="w-full h-full px-4 grid grid-cols-8 sm:grid-cols-6 md:grid-cols-8 gap-4 auto-rows-min
           overflow-hidden overflow-y-scroll no-scrollbar no-scrollbar::-webkit-scrollbar"
           >
             <Product
