@@ -48,7 +48,7 @@ const Authorize: FC<Props> = ({
     <div
       className={`fixed left-0 right-0 top-0 bottom-0 ${
         showAuthorize ? "flex" : "hidden"
-      } justify-center items-center z-[9999] bg-cyan-750/50 backdrop-blur-sm`}
+      } justify-center items-center z-[999999] bg-cyan-750/50 backdrop-blur-sm`}
     >
       <div className="w-[27rem] h-fit bg-white rounded drop-shadow-xl shadow-xl p-4 relative">
         {/**Close Button */}

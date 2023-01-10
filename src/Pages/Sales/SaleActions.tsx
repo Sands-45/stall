@@ -7,7 +7,12 @@ import {
   loadInventoryData,
   updateLocalInventory_Changes,
 } from "../../Redux/Slices/InventorySlice";
-import { addSales, archieveSale ,updateFloat,changeFloatDate } from "../../Redux/Slices/SalesSlice";
+import {
+  addSales,
+  archieveSale,
+  updateFloat,
+  changeFloatDate,
+} from "../../Redux/Slices/SalesSlice";
 import { updateAlert } from "../../Redux/Slices/NotificationsSlice";
 import Refund from "./Refund";
 
@@ -34,7 +39,7 @@ const SaleActions: FC<Props> = ({
     (state: RootState) => state.Sales.cash_float_date
   );
   const cash_float = useSelector((state: RootState) => state.Sales.cash_float);
-  const user = useSelector((state:RootState)=>state.UserInfo.user)
+  const user = useSelector((state: RootState) => state.UserInfo.user);
   const [showAuthorize, setAuthorize] = useState<boolean>(false);
   const [reason, setReason] = useState<string>("");
   const dispatch: AppDispatch = useDispatch();
@@ -106,16 +111,16 @@ const SaleActions: FC<Props> = ({
         );
 
         //Update Cash Float
-      const localFloat = () => {
-        let data = localStorage.getItem("cash_float");
-        return data
-          ? JSON.parse(data)?.filter(
-              (data: any) =>
-                data.status === "open" && data?.user?.email === user?.email
-            )[0]
-          : null;
-      };
-      let openFloat = localFloat();
+        const localFloat = () => {
+          let data = localStorage.getItem("cash_float");
+          return data
+            ? JSON.parse(data)?.filter(
+                (data: any) =>
+                  data.status === "open" && data?.user?.email === user?.email
+              )[0]
+            : null;
+        };
+        let openFloat = localFloat();
         if (openFloat && currentSale?.payment_method === "cash") {
           dispatch(
             updateFloat([
@@ -306,18 +311,18 @@ const SaleActions: FC<Props> = ({
         <div
           className={`w-full md:w-[30rem] print:w-full h-full bg-white drop-shadow-2xl p-6 space-y-4`}
         >
-        {/**Close button */}
-        <button
-          onClick={() => {
-            setActions(false);
-            setCurrentSale("");
-          }}
-          className="h-8 w-8 bg-white text-slate-500 font-medium text-xl rounded
+          {/**Close button */}
+          <button
+            onClick={() => {
+              setActions(false);
+              setCurrentSale("");
+            }}
+            className="h-8 w-8 bg-white text-slate-500 font-medium text-xl rounded
       hover:bg-red-100 hover:transition-all border border-slate-300 block md:hidden"
-        >
-          &times;
-        </button>
-        {/**Close button */}
+          >
+            &times;
+          </button>
+          {/**Close button */}
 
           <div className="h-8 w-full flex items-center justify-between print:hidden">
             <button
@@ -552,7 +557,7 @@ const SaleActions: FC<Props> = ({
               <div className="h-fit w-full pb-4 border-b border-dashed border-slate-300">
                 <div className="w-full h-fit overflow-hidden text-slate-700 space-y-1">
                   <p className="text-xs uppercase font-bold w-full whitespace-nowrap overflow-hidden text-ellipsis">
-                    Test Shop
+                    {user?.workspace_name}
                   </p>
                   <p className="text-xs uppercase font-medium w-full whitespace-nowrap overflow-hidden text-ellipsis">
                     146 Maddle Street Mulbaton 1456
@@ -639,6 +644,44 @@ const SaleActions: FC<Props> = ({
 
               {/**Totals */}
               <ul className="w-full h-fit overflow-hidden py-4 space-y-1 border-dashed border-y border-slate-300">
+                {currentSale?.payment_method === "cash" && (
+                  <>
+                    <li className="w-full h-4 flex items-center justify-between">
+                      <span className="text-xs text-slate-600 font-semibold">
+                        Tendered Amount
+                      </span>
+                      <span className="text-xs text-slate-700 font-semibold">
+                        {selectedCurrency?.symbol}&nbsp;
+                        {currentSale?.products?.length >= 1 &&
+                        currentSale?.tendered_amount
+                          ? numberWithSpaces(
+                              (
+                                selectedCurrency?.rate_multiplier *
+                                currentSale?.tendered_amount
+                              ).toFixed(2)
+                            )
+                          : "0.00"}
+                      </span>
+                    </li>
+                    <li className="w-full h-4 flex items-center justify-between">
+                  <span className="text-xs text-slate-600 font-semibold">
+                    Change
+                  </span>
+                  <span className="text-xs text-slate-700 font-semibold">
+                    {selectedCurrency?.symbol}&nbsp;
+                    {currentSale?.products?.length >= 1 &&
+                    currentSale?.change
+                      ? numberWithSpaces(
+                          (
+                            selectedCurrency?.rate_multiplier *
+                            currentSale?.change
+                          ).toFixed(2)
+                        )
+                      : "0.00"}
+                  </span>
+                </li>
+                  </>
+                )}
                 <li className="w-full h-4 flex items-center justify-between">
                   <span className="text-xs text-slate-600 font-semibold">
                     Tip ({currentSale?.tip_percent ?? 0}%)

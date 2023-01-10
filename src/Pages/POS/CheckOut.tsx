@@ -15,7 +15,7 @@ import {
   loadInventoryData,
   updateLocalInventory_Changes,
 } from "../../Redux/Slices/InventorySlice";
-import { updateFloat,changeFloatDate } from "../../Redux/Slices/SalesSlice";
+import { updateFloat, changeFloatDate } from "../../Redux/Slices/SalesSlice";
 import Authorize from "../../Components/Authorize/Authorize";
 
 type Props = {
@@ -26,7 +26,13 @@ type Props = {
   setSmCart: any;
 };
 
-const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout ,setSmCart}) => {
+const CheckOut: FC<Props> = ({
+  cart,
+  setCart,
+  isCheckout,
+  openCheckout,
+  setSmCart,
+}) => {
   const dispatch: AppDispatch = useDispatch();
   const inventory_data = useSelector(
     (state: RootState) => state.Inventory.inventory_data
@@ -49,8 +55,8 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout ,setSmCar
     (state: RootState) => state.Sales.cash_float_date
   );
   const [paymentMethods, setMethod] = useState<any>([
-    { method: "card", selected: true },
-    { method: "cash", selected: false },
+    { method: "cash", selected: true },
+    { method: "card", selected: false },
     { method: "paypal", selected: false },
     { method: "account", selected: false },
   ]);
@@ -84,7 +90,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout ,setSmCar
   const createTransaction = () => {
     //Start process and show loader
     startTransact(true);
-    setSmCart(false)
+    setSmCart(false);
 
     setTimeout(() => {
       //Update State
@@ -283,7 +289,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout ,setSmCar
             },
           ])
         );
-      dispatch(changeFloatDate(cash_float_date));
+        dispatch(changeFloatDate(cash_float_date));
       }
 
       //Clear Cart
@@ -302,42 +308,88 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout ,setSmCar
   const applyDiscount = (verify: any) => {
     if (verify) {
       if (discountObj?.type === "amount") {
-        let value =
-          Number(discountObj?.value) / selectedCurrency?.rate_multiplier;
-        setCart((prev: any) => ({
-          ...prev,
-          profit: prev?.profit - value,
-          total: prev?.total - value,
-          discount_type: discountObj?.type,
-          discount_amount: value,
-          discount_percent: ((value / prev?.total) * 100)?.toFixed(0),
-          discount_code: "none",
-        }));
-        discountFormRef &&
-          discountFormRef.current &&
-          discountFormRef.current.reset();
-        setDiscount({
-          type: "amount",
-          value: "",
-        });
+        if (cart?.discount_amount > 0) {
+          let value =
+            Number(discountObj?.value) / selectedCurrency?.rate_multiplier;
+          setCart((prev: any) => ({
+            ...prev,
+            profit: prev?.profit + value,
+            total: prev?.total + value,
+            discount_type: discountObj?.type,
+            discount_amount: Number(prev?.discount_amount) - value,
+            discount_percent:
+              Number(prev?.discount_percent) -
+              (value / (prev?.total + value)) * 100,
+            discount_code: "none",
+          }));
+          discountFormRef &&
+            discountFormRef.current &&
+            discountFormRef.current.reset();
+          setDiscount({
+            type: "amount",
+            value: "",
+          });
+        } else {
+          let value =
+            Number(discountObj?.value) / selectedCurrency?.rate_multiplier;
+          setCart((prev: any) => ({
+            ...prev,
+            profit: prev?.profit - value,
+            total: prev?.total - value,
+            discount_type: discountObj?.type,
+            discount_amount: value,
+            discount_percent: (value / prev?.total) * 100,
+            discount_code: "none",
+          }));
+          discountFormRef &&
+            discountFormRef.current &&
+            discountFormRef.current.reset();
+          setDiscount({
+            type: "amount",
+            value: "",
+          });
+        }
       } else if (discountObj?.type === "percent") {
-        let value = (Number(discountObj?.value) / 100) * cart?.total;
-        setCart((prev: any) => ({
-          ...prev,
-          profit: prev?.profit - value,
-          total: prev?.total - value,
-          discount_type: discountObj?.type,
-          discount_amount: value,
-          discount_percent: discountObj?.value,
-          discount_code: "none",
-        }));
-        discountFormRef &&
-          discountFormRef.current &&
-          discountFormRef.current.reset();
-        setDiscount({
-          type: "amount",
-          value: "",
-        });
+        if (cart?.discount_amount > 0) {
+          let value =
+            (Number(discountObj?.value) / 100) *
+            (cart?.total + cart.discount_amount);
+          setCart((prev: any) => ({
+            ...prev,
+            profit: prev?.profit + value,
+            total: prev?.total + value,
+            discount_type: discountObj?.type,
+            discount_amount: prev?.discount_amount - value,
+            discount_percent:
+              Number(prev?.discount_percent) - Number(discountObj?.value),
+            discount_code: "none",
+          }));
+          discountFormRef &&
+            discountFormRef.current &&
+            discountFormRef.current.reset();
+          setDiscount({
+            type: "amount",
+            value: "",
+          });
+        } else {
+          let value = (Number(discountObj?.value) / 100) * cart?.total;
+          setCart((prev: any) => ({
+            ...prev,
+            profit: prev?.profit - value,
+            total: prev?.total - value,
+            discount_type: discountObj?.type,
+            discount_amount: value,
+            discount_percent: discountObj?.value,
+            discount_code: "none",
+          }));
+          discountFormRef &&
+            discountFormRef.current &&
+            discountFormRef.current.reset();
+          setDiscount({
+            type: "amount",
+            value: "",
+          });
+        }
       }
     }
     setAuthorize(false);
@@ -421,7 +473,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout ,setSmCar
           </div>
 
           {/**Customer Details */}
-          <div className="w-full h-fit space-y-3 p-3 rounded bg-slate-50 border border-slate-100">
+          <div className="w-full h-fit space-y-3 p-3 rounded bg-slate-50 border border-slate-200">
             <input
               onChange={(e) => {
                 setDetails((prev: any) => ({
@@ -506,7 +558,6 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout ,setSmCar
             className="flex items-center justify-between"
           >
             <input
-              disabled={cart?.discount_amount > 0}
               onChange={(e) => {
                 setDiscount((prev: any) => ({
                   ...prev,
@@ -518,32 +569,49 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout ,setSmCar
               type="text"
               name="discount"
               id="discount"
+              required
               placeholder="Discount ..."
-              className="w-[calc(100%-12rem)] h-10 rounded rounded-r-none bg-slate-50 border border-slate-200 text-xs text-slate-600
+              className="w-[calc(100%-12rem)] h-10 rounded rounded-r-none bg-slate-50 border border-slate-300 text-xs text-slate-600
           placeholder:text-slate-400 px-3 focus:ring-0 focus:border-cyan-750 transition-all disabled:cursor-not-allowed"
             />
             <select
-              disabled={cart?.discount_amount > 0}
+              required
               onChange={(e) => {
                 setDiscount((prev: any) => ({
                   ...prev,
                   type: e.target.value,
                 }));
               }}
-              className="h-10 w-28 border border-l-0 focus:border-l border-slate-200 bg-slate-50 text-xs text-slate-400
-          focus:ring-0  focus:border-cyan-750 transition-all overflow-hidden disabled:cursor-not-allowed"
+              className="h-10 w-28 border border-l-0 focus:border-l border-slate-300 bg-slate-50 text-xs text-slate-500
+          focus:ring-0  focus:border-cyan-750 transition-all overflow-hidden disabled:cursor-not-allowed font-medium"
             >
-              <option value="amount">Amount</option>
-              <option value="percent">Percent</option>
-              <option value="code">Code</option>
+              <option value="">Type</option>
+              <option
+                disabled={
+                  cart?.discount_amount > 0 && cart?.discount_type !== "amount"
+                }
+                value="amount"
+              >
+                Amount
+              </option>
+              <option
+                disabled={
+                  cart?.discount_amount > 0 && cart?.discount_type !== "percent"
+                }
+                value="percent"
+              >
+                Percent
+              </option>
+              <option disabled value="code">
+                Code
+              </option>
             </select>
             <button
-              disabled={cart?.discount_amount > 0}
               type="submit"
               className="w-20 h-10 bg-cyan-750 text-[0.65rem] uppercase font-medium text-white rounded-r
             hover:bg-cyan-800 transition-all disabled:cursor-not-allowed"
             >
-              Apply
+              {cart?.discount_amount > 0 ? "Revoke" : "Apply"}
             </button>
           </form>
 
@@ -596,7 +664,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout ,setSmCar
               name="tip"
               id="tip"
               placeholder="Tip ..."
-              className="w-[calc(100%-12rem)] h-10 rounded rounded-r-none bg-slate-50 border border-slate-200 text-xs text-slate-600
+              className="w-[calc(100%-12rem)] h-10 rounded rounded-r-none bg-slate-50 border border-slate-300 text-xs text-slate-600
   placeholder:text-slate-400 px-3 focus:ring-0 focus:border-cyan-750 transition-all disabled:cursor-not-allowed"
             />
             <select
@@ -607,7 +675,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout ,setSmCar
                   type: e.target.value,
                 }));
               }}
-              className="h-10 w-28 border border-l-0 focus:border-l border-slate-200 bg-slate-50 text-xs text-slate-400
+              className="h-10 w-28 border border-l-0 focus:border-l border-slate-300 bg-slate-50 text-xs text-slate-500 font-medium
           focus:ring-0  focus:border-cyan-750 transition-all overflow-hidden disabled:cursor-not-allowed"
             >
               <option value="amount">Amount</option>
@@ -702,7 +770,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout ,setSmCar
                   </li>
                   <li className="h-8 w-full flex items-center justify-between">
                     <span className="text-xs text-slate-400 font-semibold">
-                      Discount ({cart?.discount_percent}%)
+                      Discount ({cart?.discount_percent?.toFixed(0)}%)
                     </span>
                     <span className="text-xs text-slate-600 font-semibold">
                       {selectedCurrency?.symbol}&nbsp;
@@ -754,8 +822,8 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout ,setSmCar
                 {paymentMethods?.filter(
                   (methods: any) => methods.method === "cash"
                 )[0]?.selected && (
-                  <div className="w-full flex items-center justify-between mt-3">
-                    <div className="flex w-full h-fit rounded border border-slate-200 hover:border-cyan-750 overflow-hidden">
+                  <div className="w-full flex flex-col space-y-4 items-center justify-between mt-3">
+                    <div className="flex w-full h-fit rounded-sm border border-slate-300 hover:border-cyan-750 overflow-hidden">
                       <div
                         className="w-16 h-8 text-xs text-slate-500 font-medium flex items-center justify-center
               border-r border-slate-200"
@@ -775,6 +843,8 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout ,setSmCar
                                 selectedCurrency?.symbol +
                                 " " +
                                 Number(e.target.value),
+                                tendered_amount:Number(e.target.value) /
+                                selectedCurrency?.rate_multiplier,
                               change:
                                 Number(e.target.value) -
                                 selectedCurrency?.rate_multiplier * cart?.total,
