@@ -81,7 +81,7 @@ const Sale: FC<Props> = ({
       currentSale?.transact_id === sale?.transact_id && "bg-slate-100"
     } transition-all`}
             >
-              <div className="h-full col-span-1 overflow-hidden flex items-center justify-center text-ellipsis whitespace-nowrap">
+              <div className="h-full col-span-1 overflow-hidden hidden md:flex items-center justify-center text-ellipsis whitespace-nowrap">
                 <input
                   type="checkbox"
                   name="select_all"
@@ -128,7 +128,7 @@ const Sale: FC<Props> = ({
                 onClick={() => {
                   saleClickFunc(sale);
                 }}
-                className="h-full col-span-2 overflow-hidden flex items-center space-x-2 
+                className="h-full pl-4 md:pl-0 col-span-3 md:col-span-2 overflow-hidden flex items-center space-x-2 
           text-xs text-slate-400 font-semibold text-ellipsis whitespace-nowrap"
               >
                 <div

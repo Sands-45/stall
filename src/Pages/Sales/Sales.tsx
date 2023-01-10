@@ -10,6 +10,7 @@ import {
   TbDownload,
   TbCaretLeft,
   TbCaretRight,
+  TbFilter,
 } from "react-icons/tb";
 import no_sales from "../../Assets/no_sales.png";
 import { Link } from "react-router-dom";
@@ -195,7 +196,7 @@ const Sales: FC<Props> = () => {
   //Component ==========
   return (
     <>
-      <div className="w-full h-full overflow-hidden px-[2.5%] py-4 bg-slate-100 flex flex-col space-y-4">
+      <div className="w-full h-full overflow-hidden px-[2.5%] py-4 lg:pb-4 pb-20 bg-slate-100 flex flex-col space-y-4 overflow-y-scroll no-scrollbar webkit::-scrollbar">
         {/**Top Nav ============ */}
         <div className="h-10 w-full grid grid-cols-3 lg:grid-cols-6 gap-4">
           <div className="col-span-2 h-full flex items-center space-x-4">
@@ -244,7 +245,7 @@ const Sales: FC<Props> = () => {
                 className="h-10 w-full bg-white rounded border border-slate-200
                px-3 pr-8 focus:ring-0 focus:border-cyan-750 text-xs text-slate-500 placeholder:text-slate-400"
               />
-              <TbSearch className="absolute right-3 top-3 text-lg text-slate-500" />
+              <TbSearch className="absolute right-3 top-3 text-base text-slate-500" />
             </label>
           </div>
 
@@ -257,13 +258,22 @@ const Sales: FC<Props> = () => {
             } text-xs text-slate-500 font-medium`}
             localName="sales_date"
             changeDate={changeSalesDate}
-            parentWidth="col-span-1"
+            parentWidth="col-span-1 hidden lg:flex"
           />
 
           <div
             className="rounded h-full col-span-1 bg-white relative 
            border border-slate-200 hover:border-cyan-750 transition-all
-            flex items-center justify-between px-3 text-xs text-slate-500 font-medium cursor-pointer group"
+            lg:hidden flex items-center justify-between px-3 text-xs text-slate-500 font-medium cursor-pointer group"
+          >
+            <span className="uppercase text-[0.65rem]">Filters</span>
+            <TbFilter className="text-lg group-hover:-rotate-180 transition-all" />
+          </div>
+
+          <div
+            className="rounded h-full col-span-1 bg-white relative 
+           border border-slate-200 hover:border-cyan-750 transition-all
+            hidden lg:flex items-center justify-between px-3 text-xs text-slate-500 font-medium cursor-pointer group"
           >
             <span className="uppercase text-[0.65rem]">{currentView}</span>
             <TbCaretDown className="text-lg group-hover:-rotate-180 transition-all" />
@@ -418,7 +428,7 @@ const Sales: FC<Props> = () => {
         {/**Top Nav ============ */}
 
         {/**Stats ============ */}
-        <div className="w-full h-fit overflow-hidded grid grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="w-full h-fit overflow-hidded grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           <div
             className="col-span-1 h-20 px-6 bg-white rounded border
            border-slate-200 p-4 flex flex-col justify-center space-y-1 overflow-hidden"
@@ -522,9 +532,9 @@ const Sales: FC<Props> = () => {
         </div>
 
         {/**Sales Table */}
-        <div className="w-full h-[calc(100%-19rem)] md:h-[calc(100%-8.5rem)] bg-white border border-slate-200 rounded overflow-hidden">
+        <div className="w-full min-h-[30rem] h-[calc(100%-19rem)] md:h-[calc(100%-8.5rem)] bg-white border border-slate-200 rounded overflow-hidden">
           <div className="h-12 w-full bg-slate-50 border-b border-slate-200 grid grid-cols-5 md:grid-cols-12 gap-1 text-slate-500">
-            <div className="h-full col-span-1 overflow-hidden flex items-center justify-center text-ellipsis whitespace-nowrap">
+            <div className="h-full col-span-1 overflow-hidden hidden md:flex items-center justify-center text-ellipsis whitespace-nowrap">
               <input
                 type="checkbox"
                 name="select_all"
@@ -546,7 +556,7 @@ const Sales: FC<Props> = () => {
               />
             </div>
             <div
-              className="h-full col-span-2 overflow-hidden flex items-center 
+              className="h-full pl-4 md:pl-0 col-span-3 md:col-span-2 overflow-hidden flex items-center 
           text-xs font-bold text-ellipsis whitespace-nowrap uppercase"
             >
               customer's Name
@@ -631,7 +641,8 @@ const Sales: FC<Props> = () => {
                 <TbCaretLeft />
               </button>
               <span className="text-[0.65rem] font-semibold text-slate-600 lowercasee">
-                {pageNumber - 7 + 1} &nbsp; to &nbsp; {pageNumber} &nbsp; of &nbsp; {sales.length}
+                {pageNumber - 7 + 1} &nbsp; to &nbsp; {pageNumber} &nbsp; of
+                &nbsp; {sales.length}
               </span>
               <button
                 onClick={() => {

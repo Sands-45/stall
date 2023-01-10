@@ -23,9 +23,10 @@ type Props = {
   setCart: any;
   isCheckout: any;
   openCheckout: any;
+  setSmCart: any;
 };
 
-const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
+const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout ,setSmCart}) => {
   const dispatch: AppDispatch = useDispatch();
   const inventory_data = useSelector(
     (state: RootState) => state.Inventory.inventory_data
@@ -83,6 +84,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
   const createTransaction = () => {
     //Start process and show loader
     startTransact(true);
+    setSmCart(false)
 
     setTimeout(() => {
       //Update State
@@ -350,15 +352,15 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
     <>
       <div
         className={`fixed right-0 left-0
-       h-screen min-w-screen bg-cyan-750/40 z-[9999] ${
+       h-screen min-w-screen bg-cyan-750/40 z-[99999] ${
          isCheckout ? "top-0 bottom-0" : "top-[200%]"
-       }  print:hidden lg:flex lg:justify-center
-      space-y-4 lg:space-y-0 lg:space-x-4 pt-24 p-4 overflow-hidden overflow-y-scroll transition-all`}
+       }  print:hidden lg:flex lg:justify-center backdrop-blur-sm
+      space-y-4 lg:space-y-0 lg:space-x-4 pt-16 md:pt-24 p-4 overflow-hidden overflow-y-scroll transition-all`}
       >
         {/**Close Button */}
         <button
           onClick={() => openCheckout(false)}
-          className="h-8 w-fit px-4 rounded-sm bg-white  font-medium uppercase
+          className="h-8 w-fit px-4 rounded-sm bg-white  font-semibold uppercase
          border-2 border-white absolute right-6 top-6 text-xs text-slate-600 hover:bg-red-100 transition-all"
         >
           close
@@ -367,7 +369,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
 
         {/**First Half */}
         <div
-          className={`w-[25rem] h-[30rem] bg-white
+          className={`w-full md:w-[25rem] h-[30rem] bg-white
        rounded-md m-auto lg:m-0 p-6 overflow-hidden ${
          showProcessDone ? "hidden" : "flex"
        } flex-col space-y-4`}
@@ -624,7 +626,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
 
         {/**Other Half */}
         <div
-          className="transition-all w-[25rem] h-[30rem] bg-white rounded-md m-auto lg:m-0
+          className="transition-all w-full md:w-[25rem] h-[30rem] bg-white rounded-md m-auto lg:m-0
        flex flex-col justify-between p-6 space-y-4"
         >
           {!showProcessDone ? (
@@ -802,7 +804,7 @@ const CheckOut: FC<Props> = ({ cart, setCart, isCheckout, openCheckout }) => {
                 {paymentMethods?.filter(
                   (methods: any) => methods.method === "card"
                 )[0]?.selected && (
-                  <div className="mt-5 m-auto w-[95%] h-[12rem] rounded-lg bg-gradient-to-tr from-cyan-700 to-cyan-800 drop-shadow-xl p-4">
+                  <div className="mt-5 m-auto w-full lg:w-[95%] h-[11.5rem] md:h-[12rem] rounded-lg bg-gradient-to-tr from-cyan-700 to-cyan-800 drop-shadow-xl p-4">
                     <div className="w-full h-fit flex items-center justify-between">
                       <img
                         src={master_card_logo}

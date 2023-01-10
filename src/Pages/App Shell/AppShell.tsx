@@ -137,8 +137,8 @@ const AppShell: FC<Props> = () => {
                 dispatch(setCurrency(JSON.parse(e.target.value)));
                 window.localStorage.setItem("selectedCurrency", e.target.value);
               }}
-              className="h-8 w-[8rem] text-gray-500 focus:outline-none
-              uppercase text-xs font-semibold rounded-sm bg-slate-50 pt-1.5 border-2 border-slate-300 focus:ring-0 focus:border-cyan-750"
+              className="h-9 w-[8rem] text-gray-500 focus:outline-none
+              uppercase text-xs font-semibold rounded-sm bg-slate-50 pt-2 border-2 border-slate-300 focus:ring-0 focus:border-cyan-750"
             >
               <option value={selectedCurrency}>{selectedCurrency.name}</option>
               {currencies?.map((cur: any) => {

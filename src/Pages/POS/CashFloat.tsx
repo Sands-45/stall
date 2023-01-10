@@ -335,7 +335,7 @@ const CashFloat: FC<Props> = ({ openFloat, setFloatOpen }) => {
         className={`fixed print:hidden print:-right-4 ${
           openFloat ? "bottom-0 top-0" : "bottom-[200%]"
         } left-0 right-0 transition-all bg-slate-200 print:bg-white no-scrollbar no-scrollbar::webkit-scrollbar
-        flex flex-col items-center p-6 overflow-hidden overflow-y-scroll print:overflow-hidden print:h-fit`}
+        flex flex-col items-center p-6 overflow-hidden overflow-y-scroll print:overflow-hidden print:h-fit z-[99999]`}
       >
         <div
           className="container max-w-[60rem] print:max-w-screen flex flex-col items-center space-y-6 overflow-hidden overflow-y-scroll

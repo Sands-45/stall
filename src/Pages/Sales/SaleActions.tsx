@@ -296,23 +296,36 @@ const SaleActions: FC<Props> = ({
             setActions(false);
             setCurrentSale("");
           }}
-          className="absolute top-0 right-[30rem] h-8 w-8 bg-white rounded-bl-sm text-slate-500 font-medium text-xl
-      hover:bg-red-100 hover:transition-all border border-slate-300 border-r-0 border-t-0"
+          className="md:absolute top-0 md:right-[30rem] h-8 w-8 bg-white rounded-bl-sm text-slate-500 font-medium text-xl
+      hover:bg-red-100 hover:transition-all border border-slate-300 border-r-0 border-t-0 hidden md:block"
         >
           &times;
         </button>
         {/**Close button */}
 
         <div
-          className={`w-[30rem] print:w-full h-full bg-white drop-shadow-2xl p-6 space-y-4`}
+          className={`w-full md:w-[30rem] print:w-full h-full bg-white drop-shadow-2xl p-6 space-y-4`}
         >
+        {/**Close button */}
+        <button
+          onClick={() => {
+            setActions(false);
+            setCurrentSale("");
+          }}
+          className="h-8 w-8 bg-white text-slate-500 font-medium text-xl rounded
+      hover:bg-red-100 hover:transition-all border border-slate-300 block md:hidden"
+        >
+          &times;
+        </button>
+        {/**Close button */}
+
           <div className="h-8 w-full flex items-center justify-between print:hidden">
             <button
               disabled={currentSale?.not_eligable_for_refund}
               onClick={() => {
                 setAuthorize(true);
               }}
-              className="h-8 w-20 bg-cyan-750 hover:bg-cyan-800 text-[0.65rem] uppercase
+              className="h-8 w-[19%] md:w-20 whitespace-normal overflow-hidden text-ellipsis px-2 bg-cyan-750 hover:bg-cyan-800 text-[0.65rem] uppercase
                font-medium text-white rounded-sm disabled:cursor-not-allowed disabled:opacity-80
                "
             >
@@ -323,21 +336,21 @@ const SaleActions: FC<Props> = ({
               onClick={() => {
                 openRefund(true);
               }}
-              className="h-8 w-20 bg-cyan-750 hover:bg-cyan-800 text-[0.65rem] uppercase
+              className="h-8 w-[19%] md:w-20 whitespace-normal overflow-hidden text-ellipsis px-2 bg-cyan-750 hover:bg-cyan-800 text-[0.65rem] uppercase
                font-medium text-white rounded-sm disabled:cursor-not-allowed disabled:opacity-80
                "
             >
               Refund
             </button>
             <button
-              className="h-8 w-20 bg-cyan-750 hover:bg-cyan-800 text-[0.65rem] uppercase
+              className="h-8 w-[19%] md:w-20 whitespace-normal overflow-hidden text-ellipsis px-2 bg-cyan-750 hover:bg-cyan-800 text-[0.65rem] uppercase
                font-medium text-white rounded-sm
                "
             >
               Exchange
             </button>
             <button
-              className="h-8 w-20 bg-cyan-750 hover:bg-cyan-800 text-[0.65rem] uppercase
+              className="h-8 w-[19%] md:w-20 whitespace-normal overflow-hidden text-ellipsis px-2 bg-cyan-750 hover:bg-cyan-800 text-[0.65rem] uppercase
                font-medium text-white rounded-sm
                "
             >
@@ -348,7 +361,7 @@ const SaleActions: FC<Props> = ({
               onClick={() => {
                 window.print();
               }}
-              className="h-8 w-20 bg-cyan-750 hover:bg-cyan-800 text-[0.65rem] uppercase
+              className="h-8 w-[19%] md:w-20 whitespace-normal overflow-hidden text-ellipsis px-2 bg-cyan-750 hover:bg-cyan-800 text-[0.65rem] uppercase
                font-medium text-white rounded-sm
                "
             >
@@ -532,7 +545,7 @@ const SaleActions: FC<Props> = ({
             </span>
             {/**Slip Preview */}
             <div
-              className="w-[27rem] h-fit flex flex-col
+              className="w-full md:w-[27rem] h-fit flex flex-col
            border border-slate-200 rounded-sm p-6 bg-slate-50 print:bg-white print:max-w-full print:w-full print:border-none
             print:fixed print:top-0 print:left-0 print:bottom-0 print:right-0 prirnt:z-[9999] print:rounded-none"
             >

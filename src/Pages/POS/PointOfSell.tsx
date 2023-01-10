@@ -77,6 +77,7 @@ const PointOfSell: FC<Props> = () => {
   const [isCheckout, openCheckout] = useState<boolean>(false);
   const [openFloat, setFloatOpen] = useState<boolean>(false);
   const [showAuthorize, setAuthorize] = useState<boolean>(false);
+  const [smallScreenCart, setSmCart] = useState<boolean>(false);
 
   //Open Float with Auth Funct
   const authFloat = (value: any) => {
@@ -309,6 +310,8 @@ const PointOfSell: FC<Props> = () => {
           setCustomization={setCustomization}
           setQuantity={setQuantity}
           openCheckout={openCheckout}
+          smallScreenCart={smallScreenCart}
+          setSmCart={setSmCart}
         />
       </div>
 
@@ -361,15 +364,33 @@ const PointOfSell: FC<Props> = () => {
         "
           >
             <button
+              onClick={() => setSmCart(true)}
               disabled={!cart?.products?.length}
-              className="outline-none focus:outline-none h-12 w-full md:max-w-[20rem] rounded
-               border border-cyan-750/50 bg-white uppercase text-xs text-cyan-750 font-bold"
+              className="outline-none focus:outline-none focus:border-cyan-750 h-12 w-full md:max-w-[20rem] rounded
+               border border-cyan-750/50 bg-white uppercase text-xs text-cyan-750 font-bold transition-all"
             >
               proceed to cart &nbsp;
-              {cart?.products?.length ? "[ " + cart?.products?.length + " ]" : ""}
+              {cart?.products?.length
+                ? "[ " + cart?.products?.length + " ]"
+                : ""}
             </button>
           </div>
         </div>
+
+        {/** ============= Cart ================ */}
+        <Cart
+          cart={cart}
+          setCart={setCart}
+          setProduct={setProduct}
+          setPreview={setPreview}
+          setImg={setImg}
+          setProObj={setProObj}
+          setCustomization={setCustomization}
+          setQuantity={setQuantity}
+          openCheckout={openCheckout}
+          smallScreenCart={smallScreenCart}
+          setSmCart={setSmCart}
+        />
       </div>
       {/** =============End Of Small Screens ================ */}
 
@@ -396,6 +417,7 @@ const PointOfSell: FC<Props> = () => {
         cart={cart}
         isCheckout={isCheckout}
         openCheckout={openCheckout}
+        setSmCart={setSmCart}
       />
 
       {/**Flaot */}

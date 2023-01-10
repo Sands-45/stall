@@ -82,7 +82,7 @@ const ProductPreview: FC<Props> = ({
   //Component
   return (
     <div
-      className={`fixed top-0 md:left-0 md:right-0 bottom-0 h-screen w-screen md:p-6  pt-8 md:pt-20 z-[999] flex ${
+      className={`fixed top-0 md:left-0 md:right-0 bottom-0 h-screen w-screen md:p-6  pt-8 md:pt-20 z-[99999] flex ${
         openPreview ? "md:flex left-0 right-0" : "md:hidden -left-[200%]"
       }  transition-all duration-200
      justify-center bg-white md:bg-cyan-750/40 overflow-hidden overflow-y-scroll no-scrollbar no-scrollbar::webkit-scrollbar`}
