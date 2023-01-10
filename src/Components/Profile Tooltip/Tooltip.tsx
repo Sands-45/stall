@@ -1,5 +1,6 @@
 import { FC } from "react";
-import { signOut, getAuth } from "firebase/auth";
+import { signOut} from "firebase/auth";
+import { auth } from "../../Firebase/Firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { changeLocation, updateUserData } from "../../Redux/Slices/UserSlice";
@@ -19,7 +20,6 @@ type Props = {
 const Tooltip: FC<Props> = ({ position }) => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
-  const auth = getAuth();
   const user = useSelector((state:RootState)=>state.UserInfo.user)
 
   //component

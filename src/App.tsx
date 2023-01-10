@@ -4,7 +4,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landing from "./Pages/Landing/Landing";
 import Login from "./Pages/Auth/Login";
 //Lazy Loading Components
-const Portal = lazy(() => import("./Pages/Portal/Portal"));
 const AppShell = lazy(() => import("./Pages/App Shell/AppShell"));
 const PointOfSell = lazy(() => import("./Pages/POS/PointOfSell"));
 const Sales = lazy(() => import("./Pages/Sales/Sales"));
@@ -37,7 +36,6 @@ const App: FC = () => {
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/logIn" element={<Login />} />
-            <Route path="/portal" element={<Portal />} />
             <Route path="/app" element={<AppShell />}>
               <Route path="" element={<PointOfSell />} />
               <Route path="sales" element={<Sales />} />

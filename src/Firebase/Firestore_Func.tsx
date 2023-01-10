@@ -9,7 +9,6 @@ import {
   doc,
   deleteDoc,
   updateDoc,
-  enableIndexedDbPersistence,
   getFirestore,
   query,
   where,
@@ -26,8 +25,11 @@ import { addSales, updateFloat } from "../Redux/Slices/SalesSlice";
 export const db = getFirestore();
 
 // Subsequent queries will use persistence, if it was enabled successfully
-enableIndexedDbPersistence(db);
-let workspace = localStorage.getItem("current_workspace");
+//enableIndexedDbPersistence(db);
+var workspace = localStorage.getItem("current_workspace");
+window.addEventListener("storage", () => {
+  workspace = localStorage.getItem("current_workspace");
+});
 export let org = workspace
   ? JSON.parse(workspace?.replace(/\s/gim, ""))
   : ""?.toLocaleLowerCase();
@@ -230,6 +232,7 @@ const FirestoreFunc: FC = () => {
     (state: RootState) => state.Inventory.stock_orders_date
   );
 
+  
   //Listen For Offline and Online Changes
   useEffect(() => {
     const setOnline = () => {
@@ -242,7 +245,7 @@ const FirestoreFunc: FC = () => {
     window.addEventListener("online", setOnline);
 
     // cleanup if we unmount
-    return () => {
+    return  () => {
       window.removeEventListener("offline", setOffline);
       window.removeEventListener("online", setOnline);
     };

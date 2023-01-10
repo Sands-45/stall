@@ -309,6 +309,12 @@ const AppShell: FC<Props> = () => {
         className="w-screen h-screen overflow-hidden no-scrollbar
      no-scrollbar::-webkit-scrollbar bg-slate-200 lg:hidden relative"
       >
+        {/**FireStore */}
+        {auth.currentUser && user?.email && <FirestoreFunc />}
+        {/**FireStore */}
+        {/**Alert */}
+        <AlertsWrapper />
+        {/**Alert */}
         <MenuOverlay
           setMenuOverlay={setMenuOverlay}
           overlayMenuOpen={overlayMenuOpen}

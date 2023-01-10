@@ -1,5 +1,9 @@
 import { FC } from "react";
-import { TbChevronLeft } from "react-icons/tb";
+import { signOut } from "firebase/auth";
+import {auth} from "../../Firebase/Firebase"
+import { useNavigate } from "react-router-dom";
+import { changeLocation, updateUserData } from "../../Redux/Slices/UserSlice";
+import { TbChevronLeft,TbPower } from "react-icons/tb";
 import {
   MdReceipt,
   MdLoyalty,
@@ -12,7 +16,7 @@ import { HiShoppingBag } from "react-icons/hi";
 import { AiFillSetting } from "react-icons/ai";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../Redux/store";
+import { AppDispatch, RootState } from "../../Redux/store";
 import { setCurrency } from "../../Redux/Slices/SettingsSlice";
 
 type Props = {
@@ -21,13 +25,14 @@ type Props = {
 };
 
 const MenuOverlay: FC<Props> = ({ overlayMenuOpen, setMenuOverlay }) => {
-  const dispatch = useDispatch();
+  const dispatch:AppDispatch = useDispatch();
   const currencies = useSelector(
     (state: RootState) => state.SettingsData.currencies
   );
   const selectedCurrency = useSelector(
     (state: RootState) => state.SettingsData.selectedCurrency
   );
+  const navigate = useNavigate();
 
   //Component
   return (
@@ -47,13 +52,14 @@ const MenuOverlay: FC<Props> = ({ overlayMenuOpen, setMenuOverlay }) => {
           >
             <TbChevronLeft />
           </button>
+          <div className="h-fit w-fit flex items-center space-x-4">
           <select
             onChange={(e: any) => {
               dispatch(setCurrency(JSON.parse(e.target.value)));
               window.localStorage.setItem("selectedCurrency", e.target.value);
             }}
             className="h-9 w-[8rem] text-gray-500 focus:outline-none
-              uppercase text-xs font-semibold rounded-sm bg-slate-50 pt-2 border border-slate-300 focus:ring-0 focus:border-cyan-750"
+              uppercase text-xs font-semibold rounded bg-slate-50 pt-2 border border-slate-300 focus:ring-0 focus:border-cyan-750"
           >
             <option value={selectedCurrency}>{selectedCurrency.name}</option>
             {currencies?.map((cur: any) => {
@@ -64,6 +70,24 @@ const MenuOverlay: FC<Props> = ({ overlayMenuOpen, setMenuOverlay }) => {
               );
             })}
           </select>
+          <button
+        disabled={
+          window.localStorage.getItem("dataSynced") === "true" ? false : true
+        }
+        onClick={() => {
+          dispatch(changeLocation("Stall"));
+          dispatch(updateUserData(null));
+          signOut(auth).then(() => {
+            window.localStorage.clear();
+            document.title = "Stall";
+            navigate("/login");
+          });
+        }}
+         className="h-9 w-9 rounded bg-red-50 text-red-600 text-ms flex items-center justify-center
+          border border-red-300">
+            <TbPower/>
+          </button>
+          </div>
         </div>
 
         <div

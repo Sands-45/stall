@@ -25,8 +25,7 @@ import {
 import { AppDispatch, RootState } from "../../Redux/store";
 import { crypt } from "../../Custom Functions/Functions";
 import { TbSearch } from "react-icons/tb";
-import { app,auth } from "../../Firebase/Firebase";
-
+import { app, auth } from "../../Firebase/Firebase";
 
 // init services for firestore =========================
 const db = getFirestore(app);
@@ -242,12 +241,12 @@ const Login: FC<Props> = () => {
           saved_workspaces?.length >= 1 && showOverlay
             ? "w-screen left-0  z-[999]"
             : "w-0 -left-[200%]  -z-[999]"
-        } transition-all duration-300 flex flex-col justify-center items-center space-y-6`}
+        } transition-all duration-300 flex flex-col justify-center items-center space-y-6 px-4 overflow-hidden`}
       >
         <h1 className="text-cyan-900 text-3xl font-bold">
           Select The Workspace
         </h1>
-        <div className="w-fit h-fit relative">
+        <div className="w-full md:w-fit h-fit relative">
           <label htmlFor="search_workspace">
             <input
               type="search"
@@ -259,13 +258,13 @@ const Login: FC<Props> = () => {
               onChange={(e) => {
                 setSearch(e.target.value);
               }}
-              className="h-11 w-[27rem] p-2 px-4 text-xs text-slate-700 placeholder:text-slate-400
+              className="h-11 w-full md:w-[27rem] p-2 px-4 text-xs text-slate-700 placeholder:text-slate-400
               rounded-full bg-white border border-cyan-900/50 focus:border-cyan-900/80 focus:ring-0 focus:outline-none"
             />
           </label>
           <TbSearch className="absolute right-4 top-3 text-slate-500 text-lg" />
         </div>
-        <ul className="h-[20rem] w-[27rem] p-2 space-y-3 overflow-hidden overflow-y-scroll no-scrollbar no-scrollbar::-webkit-scrollbar">
+        <ul className="h-[20rem] w-full md:w-[27rem] p-2 space-y-3 overflow-hidden overflow-y-scroll no-scrollbar no-scrollbar::-webkit-scrollbar">
           {saved_workspaces?.length >= 1 &&
             [...saved_workspaces]
               ?.filter((data: any) =>
@@ -293,11 +292,6 @@ const Login: FC<Props> = () => {
                       <button
                         onClick={() => {
                           dispatch(setCurrent_workspace(space));
-                          dispatch(
-                            updateUserData(
-                              crypt("savedLocal", JSON.stringify(user))
-                            )
-                          );
                           window.localStorage.setItem(
                             "current_workspace",
                             JSON.stringify(space?.workspace_name)
@@ -308,8 +302,9 @@ const Login: FC<Props> = () => {
                               crypt("savedLocal", JSON.stringify(user))
                             )
                           );
+                          dispatch(updateUserData(user));
                           window.localStorage.setItem("dataSynced", "true");
-                          window.location.reload();
+                          //window.location.reload();
                           setOverlay(false);
                           navigate("/app");
                         }}

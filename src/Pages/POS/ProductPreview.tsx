@@ -82,9 +82,9 @@ const ProductPreview: FC<Props> = ({
   //Component
   return (
     <div
-      className={`fixed top-0 left-0 right-0 bottom-0 h-screen w-screen md:p-6  pt-8 md:pt-20 z-[999] ${
-        openPreview ? "flex" : "hidden"
-      } 
+      className={`fixed top-0 md:left-0 md:right-0 bottom-0 h-screen w-screen md:p-6  pt-8 md:pt-20 z-[999] flex ${
+        openPreview ? "md:flex left-0 right-0" : "md:hidden -left-[200%]"
+      }  transition-all duration-200
      justify-center bg-white md:bg-cyan-750/40 overflow-hidden overflow-y-scroll no-scrollbar no-scrollbar::webkit-scrollbar`}
     >
       <div
@@ -115,6 +115,7 @@ const ProductPreview: FC<Props> = ({
 
         {/**images  Prev*/}
         <div className="col-span-2 w-full h-full flex flex-col gap-4 overflow-hidden">
+          <div className="w-full h-[calc(100%-4rem)] bg-slate-200 rounded overflow-hidden">
           <img
             onError={(e) => {
               e.currentTarget.src = no_gallery;
@@ -122,9 +123,9 @@ const ProductPreview: FC<Props> = ({
             onClick={(e) => zoomElement(e)}
             src={selectedImg ? selectedImg : no_gallery}
             alt="prod_preview"
-            className="w-full h-[calc(100%-4rem)] object-center object-fit object-contain 
-          p-4 bg-slate-200 border border-slate-200 rounded overflow-hidden cursor-zoom-in"
-          />
+            className="w-full h-full object-center object-fit object-contain 
+          p-4 bg-slate-200 border border-slate-200 cursor-zoom-in"
+          /></div>
           <div
             className="w-full h-16 grid grid-cols-4 gap-1.5
            overflow-hidden rounded bg-slate-200 border border-slate-200 p-1"
